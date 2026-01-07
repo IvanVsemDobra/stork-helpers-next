@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import { login } from '@/services/auth.service'
 import { useAuthStore } from '@/store/auth.store'
 import Link from 'next/link'
+import toast from 'react-hot-toast'
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -27,16 +28,17 @@ export const LoginForm = () => {
     <Formik
       initialValues={{ email: '', password: '' }}
       validationSchema={validationSchema}
-      onSubmit={async (values, { setSubmitting }) => {
+      onSubmit={async values => {
         try {
           const user = await login(values)
           setUser(user)
           router.push('/my-day')
-        } catch (error) {
-          // тут пуш-повідомлення
-          console.error(error)
-        } finally {
-          setSubmitting(false)
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            toast.error(error.message)
+          } else {
+            toast.error('Сталася невідома помилка')
+          }
         }
       }}
     >

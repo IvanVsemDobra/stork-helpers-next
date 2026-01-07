@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation'
 import { register } from '@/services/auth.service'
 import { useAuthStore } from '@/store/auth.store'
 import Link from 'next/link'
+import toast from 'react-hot-toast'
+import axios from 'axios'
 
 const validationSchema = Yup.object({
   name: Yup.string().max(32, 'Максимум 32 символи').required('Обовʼязкове поле'),
@@ -28,16 +30,19 @@ export const RegistrationForm = () => {
     <Formik
       initialValues={{ name: '', email: '', password: '' }}
       validationSchema={validationSchema}
-      onSubmit={async (values, { setSubmitting }) => {
+      onSubmit={async values => {
         try {
           const user = await register(values)
           setUser(user)
           router.push('/my-day')
-        } catch (error) {
-          // тут пуш-повідомлення
-          console.error(error)
-        } finally {
-          setSubmitting(false)
+        } catch (error: unknown) {
+          if (axios.isAxiosError(error)) {
+            toast.error(error.response?.data?.message || 'Помилка реєстрації. Спробуйте пізніше')
+          } else if (error instanceof Error) {
+            toast.error(error.message)
+          } else {
+            toast.error('Невідома помилка')
+          }
         }
       }}
     >
