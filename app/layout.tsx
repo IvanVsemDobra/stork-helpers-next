@@ -20,11 +20,7 @@ export const metadata: Metadata = {
   description: 'Pregnancy helper application',
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="uk">
       <body className={`${lato.variable} ${comfortaa.variable}`}>
