@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+
 import Link from 'next/link';
 import styles from './Header.module.scss';
 import { MenuOutlined } from '@ant-design/icons';
@@ -16,7 +18,8 @@ export const Header = () => {
     return (
         <header className={styles.header}>
             <Link href="/" className={styles.header__logo}>
-                Stork Helpers
+                <Image src="/logo.svg" alt="Stork Helpers Logo" width={40} height={40} />
+                <span>Лелека</span>
             </Link>
 
             <button className={styles.header__burger} onClick={openBurgerMenu}>

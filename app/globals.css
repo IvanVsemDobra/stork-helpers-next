@@ -109,6 +109,8 @@
   --color-scheme-foreground: var(--color-bg-card);
   --color-scheme-border: var(--color-border-default);
   --color-scheme-accent: var(--color-accent-primary);
+  --color-scheme-foreground-alt: var(--theme-light);
+  --color-scheme-text: var(--color-text-primary);
 
   --font-family: var(--font-family-base);
   --second-family: var(--font-family-accent);

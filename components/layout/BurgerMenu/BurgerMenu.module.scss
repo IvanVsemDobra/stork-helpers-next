@@ -11,19 +11,24 @@
     gap: 12px;
     padding: 12px 16px;
     border-radius: 12px;
-    color: #666;
     text-decoration: none;
     transition: all 0.2s;
-    font-weight: 500;
+
+    /* Typography */
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    color: var(--color-scheme-text);
 
     &:hover {
         background-color: #f5f5f5;
-        color: #333;
     }
 
     &.active {
         background-color: #FDF2F8;
         color: #DB2777;
+        font-weight: 500;
     }
 }
 

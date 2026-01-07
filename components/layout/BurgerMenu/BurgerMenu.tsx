@@ -5,21 +5,16 @@ import { useUiStore } from '@/store/ui.store';
 import { useAuthStore } from '@/store/auth.store';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import {
-    HomeOutlined,
-    HeartOutlined,
-    BookOutlined,
-    UserOutlined
-} from '@ant-design/icons';
+import Image from 'next/image';
 import styles from './BurgerMenu.module.scss';
 import { UserBar } from '../UserBar/UserBar';
 import { AuthBar } from '../AuthBar/AuthBar';
 
 const NAV_ITEMS = [
-    { label: 'Мій день', href: '/', icon: <HomeOutlined /> },
-    { label: 'Подорож', href: '/journey', icon: <HeartOutlined /> },
-    { label: 'Щоденник', href: '/diary', icon: <BookOutlined /> },
-    { label: 'Профіль', href: '/profile', icon: <UserOutlined /> },
+    { label: 'Мій день', href: '/', icon: '/icons/calendar.svg' },
+    { label: 'Подорож', href: '/journey', icon: '/icons/journey.svg' },
+    { label: 'Щоденник', href: '/diary', icon: '/icons/diary.svg' },
+    { label: 'Профіль', href: '/profile', icon: '/icons/profile.svg' },
 ];
 
 export const BurgerMenu = () => {
@@ -43,7 +38,7 @@ export const BurgerMenu = () => {
                         className={`${styles.link} ${pathname === item.href ? styles.active : ''}`}
                         onClick={closeBurgerMenu}
                     >
-                        {item.icon}
+                        <Image src={item.icon} alt={item.label} width={24} height={24} />
                         {item.label}
                     </Link>
                 ))}

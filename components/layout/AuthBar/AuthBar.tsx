@@ -2,16 +2,19 @@
 
 import Link from 'next/link';
 import styles from './AuthBar.module.scss';
-import { Button } from 'antd';
 
 export const AuthBar = () => {
     return (
         <div className={styles.authBar}>
-            <Link href="/auth/login" style={{ width: '100%' }}>
-                <Button block type="default">Увійти</Button>
+            <Link href="/auth/register" className={styles.link}>
+                <button className={`${styles.button} ${styles.buttonRegister}`}>
+                    Зареєструватися
+                </button>
             </Link>
-            <Link href="/auth/register" style={{ width: '100%' }}>
-                <Button block type="primary">Зареєструватися</Button>
+            <Link href="/auth/login" className={styles.link}>
+                <button className={`${styles.button} ${styles.buttonLogin}`}>
+                    Увійти
+                </button>
             </Link>
         </div>
     );
