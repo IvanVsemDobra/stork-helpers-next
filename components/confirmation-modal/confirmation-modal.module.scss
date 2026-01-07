@@ -1,0 +1,112 @@
+$base-distance: 8px;
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #00000040;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+
+    .content {
+        position: relative;
+        background-color: #fff;
+        border-radius: $base-distance * 5;
+        padding: $base-distance * 8 $base-distance * 2.5;
+        width: 335px;
+        display: flex;
+        flex-direction: column;
+        gap: $base-distance * 6;
+
+        .closeBtn {
+            position: absolute;
+            top: $base-distance * 2.5;
+            right: $base-distance * 2.5;
+            cursor: pointer;
+            background-color: #fff;
+            border: none;
+            font-size: 13.5px;
+            padding: 5.5px;
+            svg {
+                    stroke: currentColor;
+                    stroke-width: 48px;
+                }
+        }
+
+        .title {
+            font-weight: 700;
+            font-size: $base-distance * 4.5;
+            font-family: 'Comfortaa', cursive;
+            text-align: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: $base-distance * 3;
+
+            .btn {
+                border-radius: 100px;
+                border: none;
+                height: 42px;
+                font-family: 'Lato', sans-serif;
+                cursor: pointer;
+                font-weight: 500;
+                font-size: 14px;
+            }
+
+            .cancel {
+                background-color: #FFDAE0;
+                border-bottom: $base-distance * 0.5 solid var(--Color-Scheme-Accent, #FFCBD3)
+            }
+            
+            .confirm {
+                background-color: #0000000D;
+                border-bottom: $base-distance * 0.5 solid var(--Opacity-Neutral-Darkest-15, #00000026)
+            }
+        }
+    }
+
+    @media screen and (min-width: 768px) {
+        .content {
+            padding: $base-distance * 8 $base-distance * 4;
+            width: $base-distance * 88;
+
+            .closeBtn {
+                top: 31px;
+                right: 31px;
+            }
+
+            .actions {
+                gap: $base-distance * 3;
+                flex-direction: row;
+                justify-content: center;
+
+                .btn {
+                    width: $base-distance * 33.5;
+                }
+            }
+        }
+    }
+
+    @media screen and (min-width: 1440px) {
+        .content {
+            width: $base-distance * 96;
+            padding: $base-distance * 8;
+
+            .title {
+                font-size: $base-distance * 6;
+            }
+
+            .btn {
+                font-size: $base-distance * 2;
+            }
+        }
+    }
+}
