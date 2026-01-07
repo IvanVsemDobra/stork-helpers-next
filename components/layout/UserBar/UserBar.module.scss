@@ -1,0 +1,33 @@
+.userBar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    &__info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    &__name {
+        font-weight: bold;
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &__email {
+        font-size: 12px;
+        color: #888;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
