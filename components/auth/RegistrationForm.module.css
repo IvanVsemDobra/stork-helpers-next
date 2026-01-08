@@ -7,9 +7,8 @@
 }
 
 .auth_logo_img {
-}
-
-.auth_logo_name {
+  width: 105px;
+  height: 45px;
 }
 
 .auth_container {
@@ -98,6 +97,22 @@
   line-height: 150%;
   color: var(--color-scheme-text);
 }
+.auth_button:hover {
+  background: var(--color-scheme-foreground);
+}
+
+.auth_button:focus {
+  background: var(--color-scheme-foreground);
+}
+
+.auth_button:active {
+  background: var(--color-scheme-accent);
+}
+
+.auth_button:disabled {
+  background: var(--color-scheme-foreground-alt);
+  opacity: 0.3;
+}
 
 .auth_text {
   margin-top: 24px;
@@ -116,19 +131,36 @@
   text-decoration-skip-ink: none;
 }
 
+.auth_image {
+  display: none;
+}
+
 /* tablet */
 @media (min-width: 768px) {
   .auth_input {
     width: 480px;
     height: 37px;
   }
+  .auth_button {
+    width: 480px;
+    height: 42px;
+  }
 }
 
 /* desktop */
 @media (min-width: 1280px) {
+  .auth_wraper {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
   .auth_input {
     height: 40px;
     font-size: 16px;
+  }
+
+  .auth_button {
+    height: 44px;
   }
 
   .auth_label {
@@ -143,5 +175,13 @@
   }
   .auth_text {
     font-size: 16px;
+  }
+
+  .auth_image {
+    display: block;
+    background-image: url('/images/twoStorksInTheNest/two_storks_in_the_nest.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
   }
 }

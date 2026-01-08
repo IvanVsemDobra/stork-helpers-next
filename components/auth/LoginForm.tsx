@@ -8,8 +8,8 @@ import { login } from '@/services/auth.service'
 import { useAuthStore } from '@/store/auth.store'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
-import Image from 'next/image'
 import css from '@/components/auth/LoginForm.module.css'
+import AppLogo from '@/components/auth/AppLogo'
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -30,6 +30,8 @@ export const LoginForm = () => {
     <Formik
       initialValues={{ email: '', password: '' }}
       validationSchema={validationSchema}
+      validateOnMount={true}
+      validateOnChange={true}
       onSubmit={async values => {
         try {
           const user = await login(values)
@@ -45,55 +47,54 @@ export const LoginForm = () => {
       }}
     >
       {({ isSubmitting, isValid }) => (
-        <Form>
-          <div className={css.auth_logo}>
-            <Image
-              className={css.auth_logo_img}
-              src="/images/stork/stork.jpg"
-              alt="Лелека"
-              width={30}
-              height={30}
-              priority
-              sizes="30px"
-            />
-            <p className={css.auth_logo_name}>Лелека</p>
-          </div>
-          <div className={css.auth_container}>
-            <h1 className={css.auth_title}>Вхід</h1>
-            <div className={css.auth_wrap_input}>
-              <Field
-                className={css.auth_input}
-                name="email"
-                maxLength={64}
-                type="email"
-                placeholder="Пошта"
-              ></Field>
-              <ErrorMessage name="email">
-                {msg => <div className={css.ui_error}>{msg}</div>}
-              </ErrorMessage>
-              <Field
-                className={css.auth_input}
-                name="password"
-                maxLength={128}
-                type="password"
-                placeholder="Пароль"
-              ></Field>
-              <ErrorMessage name="password">
-                {msg => <div className={css.ui_error}>{msg}</div>}
-              </ErrorMessage>
-              <button className={css.auth_button} type="submit" disabled={isSubmitting || !isValid}>
-                Увійти
-              </button>
+        <div className={css.auth_wraper}>
+          <Form>
+            <div className={css.auth_logo}>
+              <AppLogo className={css.auth_logo_img} />
             </div>
 
-            <div className={css.auth_text}>
-              Нeмає акаунту?
-              <Link className={css.auth_text_link} href="/auth/register">
-                Зареєструватися
-              </Link>
+            <div className={css.auth_container}>
+              <h1 className={css.auth_title}>Вхід</h1>
+              <div className={css.auth_wrap_input}>
+                <Field
+                  className={css.auth_input}
+                  name="email"
+                  maxLength={64}
+                  type="email"
+                  placeholder="Пошта"
+                ></Field>
+                <ErrorMessage name="email">
+                  {msg => <div className={css.ui_error}>{msg}</div>}
+                </ErrorMessage>
+                <Field
+                  className={css.auth_input}
+                  name="password"
+                  maxLength={128}
+                  type="password"
+                  placeholder="Пароль"
+                ></Field>
+                <ErrorMessage name="password">
+                  {msg => <div className={css.ui_error}>{msg}</div>}
+                </ErrorMessage>
+                <button
+                  className={css.auth_button}
+                  type="submit"
+                  disabled={isSubmitting || !isValid}
+                >
+                  Увійти
+                </button>
+              </div>
+
+              <div className={css.auth_text}>
+                Нeмає акаунту?
+                <Link className={css.auth_text_link} href="/auth/register">
+                  Зареєструватися
+                </Link>
+              </div>
             </div>
-          </div>
-        </Form>
+          </Form>
+          <div className={css.auth_image} />
+        </div>
       )}
     </Formik>
   )
