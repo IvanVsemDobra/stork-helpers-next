@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Lato, Comfortaa } from 'next/font/google'
 import './globals.css'
 import { Providers } from './providers'
+import { Toaster } from 'react-hot-toast'
 
 const lato = Lato({
   subsets: ['latin'],
@@ -27,8 +28,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${lato.variable} ${comfortaa.variable}`}>
         <Providers>
           <Layout>{children}</Layout>
+          <Toaster position="top-center" />
         </Providers>
-
       </body>
     </html>
   )
