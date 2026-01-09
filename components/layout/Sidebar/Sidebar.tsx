@@ -6,8 +6,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from './Sidebar.module.scss';
 import { useAuthStore } from '@/store/auth.store';
-import { UserBar } from '../UserBar/UserBar';
-import { AuthBar } from '../AuthBar/AuthBar';
+import { UserBar } from '@/components/layout/UserBar/UserBar';
+import { AuthBar } from '@/components/layout/AuthBar/AuthBar';
 
 const NAV_ITEMS = [
     { label: 'Мій день', href: '/', icon: '/icons/calendar.svg' },

@@ -18,10 +18,9 @@
     border-bottom: 4px solid var(--color-scheme-accent);
     border-radius: 100px;
     padding: 10px 24px;
-    width: 100%;
-    /* Using 100% to fit container, max-width can be 280px if needed */
-    max-width: 280px;
-    height: 46px;
+    width: 268px;
+    /* max-width removed in favor of fixed 268px as requested */
+    height: 42px;
     font-family: var(--font-family);
     /* Inherit font */
     font-size: 16px;
@@ -62,8 +61,8 @@
 .buttonLogin {
     background: var(--opacity-neutral-darkest-5);
     color: #333;
-    border-bottom: 4px solid transparent;
-    border-bottom-color: var(--opacity-neutral-darkest-10);
+    border: none;
+    border-bottom: 4px solid var(--opacity-neutral-darkest-15);
 
     &:hover,
     &:focus-visible {

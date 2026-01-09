@@ -7,8 +7,8 @@ export const useProtectedRoute = () => {
   const router = useRouter()
 
   useEffect(() => {
-    if (!isLoading && !user) {
+    if (!user) {
       router.push('/auth/login')
     }
-  }, [user, isLoading, router])
+  }, [user, router])
 }

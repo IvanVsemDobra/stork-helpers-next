@@ -7,8 +7,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import styles from './BurgerMenu.module.scss';
-import { UserBar } from '../UserBar/UserBar';
-import { AuthBar } from '../AuthBar/AuthBar';
+import { UserBar } from '@/components/layout/UserBar/UserBar';
+import { AuthBar } from '@/components/layout/AuthBar/AuthBar';
+import { useEffect, useState } from 'react';
 
 const NAV_ITEMS = [
     { label: 'Мій день', href: '/', icon: '/icons/calendar.svg' },
@@ -21,31 +22,52 @@ export const BurgerMenu = () => {
     const { isBurgerMenuOpen, closeBurgerMenu } = useUiStore();
     const { user } = useAuthStore();
     const pathname = usePathname();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) return null;
 
     return (
         <Drawer
-            title="Меню"
+            title={null}
             placement="left"
             onClose={closeBurgerMenu}
             open={isBurgerMenuOpen}
-            width={280}
+            styles={{ wrapper: { width: 335 } }}
+            closeIcon={<span className={styles.closeIcon}>✕</span>}
+            className={styles.drawer}
         >
-            <nav className={styles.nav}>
-                {NAV_ITEMS.map((item) => (
-                    <Link
-                        key={item.href}
-                        href={user ? item.href : '/auth/login'}
-                        className={`${styles.link} ${pathname === item.href ? styles.active : ''}`}
-                        onClick={closeBurgerMenu}
-                    >
-                        <Image src={item.icon} alt={item.label} width={24} height={24} />
-                        {item.label}
+            <div className={styles.container}>
+                <div className={styles.header}>
+                    <Link href="/" className={styles.logo} onClick={closeBurgerMenu}>
+                        <Image src="/logo.svg" alt="Stork Helpers Logo" width={40} height={40} />
+                        <span>Лелека</span>
                     </Link>
-                ))}
-            </nav>
+                    <button className={styles.closeButton} onClick={closeBurgerMenu}>
+                        ✕
+                    </button>
+                </div>
 
-            <div className={styles.footer}>
-                {user ? <UserBar /> : <AuthBar />}
+                <nav className={styles.nav}>
+                    {NAV_ITEMS.map((item) => (
+                        <Link
+                            key={item.href}
+                            href={user ? item.href : '/auth/login'}
+                            className={`${styles.link} ${pathname === item.href ? styles.active : ''}`}
+                            onClick={closeBurgerMenu}
+                        >
+                            <Image src={item.icon} alt={item.label} width={24} height={24} />
+                            {item.label}
+                        </Link>
+                    ))}
+                </nav>
+
+                <div className={styles.footer}>
+                    {user ? <UserBar /> : <AuthBar />}
+                </div>
             </div>
         </Drawer>
     );

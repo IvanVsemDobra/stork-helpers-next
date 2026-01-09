@@ -24,11 +24,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="uk">
+    <html lang="uk" suppressHydrationWarning>
       <body className={`${lato.variable} ${comfortaa.variable}`}>
         <Providers>
           <Layout>{children}</Layout>
-          <Toaster position="top-center" />
         </Providers>
       </body>
     </html>
