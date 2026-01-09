@@ -1,11 +1,18 @@
 .card {
   background-color: var(--color-bg-card);
+
   border-radius: 24px;
+
   padding: 40px 24px;
+
   border: 1px solid var(--color-border-default);
+
   display: flex;
+
   flex-direction: column;
+
   align-items: center;
+
   width: 100%;
 }
 
@@ -17,11 +24,17 @@
 
 .imageWrapper {
   position: relative;
+
   width: 120px;
+
   height: 120px;
+
   border-radius: 50%;
+
   overflow: hidden;
+
   margin-bottom: 20px;
+
   border: 4px solid var(--theme-light);
 }
 
@@ -31,32 +44,48 @@
 
 .name {
   font-family: var(--second-family);
+
   font-size: 20px;
+
   font-weight: 700;
+
   color: var(--color-text-primary);
+
   margin-bottom: 4px;
+
   text-align: center;
 }
 
 .email {
   font-size: 14px;
+
   color: var(--color-text-secondary);
+
   margin-bottom: 24px;
 }
 
 .uploadBtn {
   width: 100%;
+
   padding: 12px;
+
   border-radius: 12px;
+
   border: 2px solid var(--theme-main);
+
   background: transparent;
+
   color: var(--theme-darkest);
+
   font-weight: 600;
+
   cursor: pointer;
+
   transition: all 0.3s ease;
 }
 
 .uploadBtn:hover {
   background-color: var(--theme-main);
+
   color: var(--color-white);
 }
