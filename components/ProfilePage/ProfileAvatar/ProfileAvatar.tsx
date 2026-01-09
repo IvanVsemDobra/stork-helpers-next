@@ -3,7 +3,7 @@
 import { useRef } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import Image from 'next/image'
-import { toast } from 'react-toastify'
+import { toast } from 'react-hot-toast'
 import styles from './ProfileAvatar.module.css'
 import { uploadAvatar } from '@/services/profile.service'
 import { useAuthStore } from '@/store/auth.store'
@@ -20,11 +20,6 @@ export default function ProfileAvatar() {
     },
     onError: () => toast.error('Помилка завантаження'),
   })
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) mutate(file)
-  }
 
   return (
     <div className={styles.card}>
@@ -48,7 +43,16 @@ export default function ProfileAvatar() {
       >
         {isPending ? 'Завантаження...' : 'Змінити фото'}
       </button>
-      <input ref={fileInputRef} type="file" hidden accept="image/*" onChange={handleFileChange} />
+      <input
+        ref={fileInputRef}
+        type="file"
+        hidden
+        accept="image/*"
+        onChange={e => {
+          const file = e.target.files?.[0]
+          if (file) mutate(file)
+        }}
+      />
     </div>
   )
 }
