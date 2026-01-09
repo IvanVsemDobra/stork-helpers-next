@@ -10,6 +10,7 @@ import { useAuthStore } from '@/store/auth.store'
 
 const validationSchema = Yup.object({
   name: Yup.string().min(2, 'Занадто коротке').required("Обов'язково"),
+  email: Yup.string().email('Невірний формат пошти').required("Обов'язково"),
   theme: Yup.string().oneOf(['boy', 'girl', 'neutral']).required("Обов'язково"),
   dueDate: Yup.date().required("Обов'язково"),
 })
@@ -21,9 +22,9 @@ export default function ProfileEditForm() {
     mutationFn: updateProfile,
     onSuccess: updatedUser => {
       setUser(updatedUser)
-      toast.success('Дані збережено успішно!')
+      toast.success('Дані збережено!')
     },
-    onError: () => toast.error('Помилка при збереженні'),
+    onError: () => toast.error('Помилка збереження'),
   })
 
   if (!user) return null
@@ -34,6 +35,7 @@ export default function ProfileEditForm() {
         enableReinitialize
         initialValues={{
           name: user.name || '',
+          email: user.email || '',
           theme: user.theme || 'neutral',
           dueDate: user.dueDate ? new Date(user.dueDate).toISOString().split('T')[0] : '',
         }}
@@ -44,8 +46,18 @@ export default function ProfileEditForm() {
           <Form className={styles.form}>
             <div className={styles.fieldGroup}>
               <label className={styles.label}>Ваше ім’я</label>
-              <Field name="name" className={styles.input} placeholder="Введіть ваше ім’я" />
+              <Field name="name" className={styles.input} />
               {touched.name && errors.name && <div className={styles.error}>{errors.name}</div>}
+            </div>
+
+            <div className={styles.fieldGroup}>
+              <label className={styles.label}>Email</label>
+              <Field
+                name="email"
+                className={styles.input}
+                disabled
+                title="Email не можна змінити"
+              />
             </div>
 
             <div className={styles.fieldGroup}>
