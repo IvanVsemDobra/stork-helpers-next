@@ -1,8 +1,7 @@
-import React from 'react'
 import Link from 'next/link'
-import { Layout } from '@/components/layout/Layout' // Перевір шлях до Layout
-import { DiaryEntryDetails } from '@/components/diary-page/DiaryEntryDetails' // Перевір шлях до компонента
-import { DiaryEntry } from '@/interfaces/diary' // Перевір шлях до інтерфейсів
+import { Layout } from '@/components/layout/Layout'
+import { DiaryEntryDetails } from '@/components/diary-page/diary-entry-details.component'
+import { DiaryEntry } from '@/interfaces/diary'
 
 interface PageProps {
   params: {
@@ -11,20 +10,17 @@ interface PageProps {
 }
 
 export default function DiaryEntryPage({ params }: PageProps) {
-  // 1. Імітуємо отримання даних з бекенду по ID
-  // У майбутньому тут буде запит: const entry = await getEntryById(params.entryId)
   const mockEntry: DiaryEntry = {
     id: params.entryId,
-    title: `Запис від ${new Date().toLocaleDateString()}`, // Динамічний заголовок для прикладу
+    title: `Запис від ${new Date().toLocaleDateString()}`,
     date: new Date().toLocaleDateString(),
-    emotions: ['smile', 'sun'], // Приклад списку емоцій
+    emotions: ['smile', 'sun'],
     content: `Це детальний текст запису з ID: ${params.entryId}. Тут ти можеш побачити повну історію своїх думок, відчуттів та нотаток за цей день.`,
   }
 
   return (
     <Layout>
       <div className="container mx-auto p-4 h-full">
-        {/* Кнопка "Назад" - важлива для мобільної версії */}
         <div className="mb-4">
           <Link
             href="/diary"
@@ -33,8 +29,6 @@ export default function DiaryEntryPage({ params }: PageProps) {
             ← Повернутися до списку
           </Link>
         </div>
-
-        {/* Відображаємо компонент деталей */}
         <div className="bg-white rounded-lg border shadow-sm h-[calc(100vh-150px)] overflow-hidden">
           <DiaryEntryDetails entry={mockEntry} />
         </div>

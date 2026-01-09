@@ -1,0 +1,44 @@
+$base-distance: 8px;
+
+.diaryListContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 24px 16px;
+    width: 335px;
+    background-color: #FFF4F6;
+    border-radius: 32px;
+    margin: 32px auto;
+    height: calc(100vh - 64px);
+
+    .topContainer {
+        display: flex;
+        justify-content: space-between;
+
+        .title {
+            margin: 0;
+        }
+
+        .addEntryButton {
+            display: flex;
+            gap: 8px;
+            background-color: #FFF4F6;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+            width: 114px;
+            height: 24px;
+            align-items: center;
+        
+            .newEntry {
+                padding: 0;
+                margin: 0;
+            }
+        
+            .addCircle {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    }
+}
