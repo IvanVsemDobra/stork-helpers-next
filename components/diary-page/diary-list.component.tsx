@@ -10,7 +10,7 @@ export const DiaryList: React.FC<DiaryListProps> = ({ entries = [] }) => {
         <button className={styles.addEntryButton}>
           <p className={styles.newEntry}>Новий запис</p>
           <svg className={styles.addCircle}>
-            <use href="/sprite.svg.svg#icon-add_circle" />
+            <use href="/sprite.svg#icon-add_circle" />
           </svg>
         </button>
       </div>
