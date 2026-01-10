@@ -45,5 +45,5 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
         </div>
       </div>
     </div>
-  )
+  );
 }
