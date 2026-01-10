@@ -61,7 +61,7 @@ export default function TasksList({ isAuthenticated }: TasksListProps) {
             )}
 
             {isModalOpen && (
-                <AddTaskModal onClose={() => setIsModalOpen(false)} />
+                <AddTaskModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
             )}
         </section>
     )
