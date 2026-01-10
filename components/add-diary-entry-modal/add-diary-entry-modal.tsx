@@ -3,17 +3,26 @@
 import React, { useEffect } from 'react'
 import { CloseOutlined } from '@ant-design/icons'
 import styles from './add-diary-entry-modal.module.scss'
+import AddDiaryEntryForm from './AddDiaryEntryForm'
 
 interface AddDiaryEntryModalProps {
   isOpen?: boolean
   onClose: () => void
   isEdit?: boolean
+  onSubmitSuccess: () => void
+  initialData?: {
+    title: string
+    emotions: string[]
+    message: string
+  }
 }
 
 export const AddDiaryEntryModal: React.FC<AddDiaryEntryModalProps> = ({
   isOpen = true,
   onClose,
+  onSubmitSuccess,
   isEdit = false,
+  initialData,
 }) => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -33,10 +42,13 @@ export const AddDiaryEntryModal: React.FC<AddDiaryEntryModalProps> = ({
           <CloseOutlined />
         </button>
 
-        <h2 className={styles.title}>
-          {isEdit ? 'Редагувати запис' : 'Новий запис'}
-        </h2>
+        <h2 className={styles.title}>{isEdit ? 'Редагувати запис' : 'Новий запис'}</h2>
+        <AddDiaryEntryForm
+          initialData={initialData}
+          onSubmitSuccess={onSubmitSuccess}
+          onClose={onClose}
+        />
       </div>
     </div>
-  );
+  )
 }
