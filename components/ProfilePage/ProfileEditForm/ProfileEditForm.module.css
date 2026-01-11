@@ -12,6 +12,14 @@
   gap: 24px;
 }
 
+.formTitle {
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
 .fieldGroup {
   display: flex;
   flex-direction: column;

@@ -1,4 +1,3 @@
-
 'use client'
 
 import { Formik, Form, Field, ErrorMessage } from 'formik'
@@ -14,14 +13,16 @@ import AppLogo from '@/components/auth/AppLogo'
 import css from './RegistrationForm.module.css'
 
 const validationSchema = Yup.object({
-  name: Yup.string().max(32, 'Максимум 32 символи').required('Обовʼязкове поле'),
+  name: Yup.string()
+    .max(32, 'Максимум 32 символи')
+    .required('Обовʼязкове поле'),
   email: Yup.string()
     .email('Некоректний email')
     .max(64, 'Максимум 64 символи')
     .required('Обовʼязкове поле'),
   password: Yup.string()
     .min(8, 'Мінімум 8 символів')
-    .max(128, 'Максимум 128 символів')
+    .max(128, 'Максимум 128 символи')
     .required('Обовʼязкове поле'),
 })
 
@@ -37,7 +38,12 @@ export const RegistrationForm = () => {
         try {
           const user = await register(values)
           setUser(user)
-          router.push('/profile/edit')
+
+          if (!user.hasCompletedOnboarding) {
+            router.push('/profile/edit')
+          } else {
+            router.push('/')
+          }
         } catch (error: unknown) {
           if (axios.isAxiosError(error)) {
             toast.error(error.response?.data?.message || 'Помилка реєстрації')
@@ -88,4 +94,4 @@ export const RegistrationForm = () => {
       )}
     </Formik>
   )
-} 
+}

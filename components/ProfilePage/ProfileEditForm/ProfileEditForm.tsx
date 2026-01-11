@@ -38,7 +38,7 @@ function AvatarPreview({ defaultAvatar, setPreview }: { defaultAvatar: string; s
 export default function ProfileEditForm() {
   const router = useRouter()
   const { user, setUser } = useAuthStore()
-  const defaultAvatar = '/images/plant/plant.jpg' 
+  const defaultAvatar = '/images/plant/plant.jpg'
   const [preview, setPreview] = useState(defaultAvatar)
 
   const mutation = useMutation({
@@ -86,6 +86,8 @@ export default function ProfileEditForm() {
       >
         {({ setFieldValue, isSubmitting }) => (
           <Form className={styles.form}>
+            <h1 className={styles.formTitle}>Давайте познайомимось ближче</h1>
+
             <AvatarPreview defaultAvatar={defaultAvatar} setPreview={setPreview} />
 
             <div className={styles.fieldGroup}>
