@@ -1,7 +1,7 @@
 import { Layout } from '@/components/layout/Layout'
 import type { Metadata } from 'next'
 import { Lato, Comfortaa } from 'next/font/google'
-// import './globals.css'
+import './globals.css'
 import { Providers } from './providers'
 // import { Toaster } from 'react-hot-toast'
 
