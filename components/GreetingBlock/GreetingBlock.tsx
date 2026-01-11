@@ -1,7 +1,7 @@
 'use client'
 
 import { useAuthStore } from '@/store/auth.store'
-import styles from './GreetingBlock.module.scss'
+import styles from './GreetingBlock.module.css'
 
 export const GreetingBlock = () => {
   const user = useAuthStore(state => state.user)
