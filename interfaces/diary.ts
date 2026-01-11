@@ -1,20 +1,30 @@
+export interface Emotion {
+  _id: string;
+  title: string;
+  description?: string;
+  isActive: boolean;
+}
+
 export interface DiaryEntry {
-  id: string;
+  _id: string;
   title: string;
   date: string;
-  emotions: string[]; // Або масив іконок/enum
-  content?: string;
+  // Емоції можуть бути масивом ID або об'єктів (якщо використано populate)
+  emotions: string[] | Emotion[]; 
+  description: string; 
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface DiaryListProps {
   entries: DiaryEntry[];
-  onEntrySelect?: (id: string) => void;
+  onSelect: (entry: DiaryEntry) => void; 
+  onRefresh: () => void;
 }
 
 export interface DiaryEntryDetailsProps {
-  entry: DiaryEntry | null; // null означає, що запис не вибрано
-}
-
-export interface GreetingBlockProps {
-  userName?: string;
+  entry: DiaryEntry | null;
+  onDeleteSuccess: () => void;
+  onEditTrigger: (entry: DiaryEntry) => void;
 }
