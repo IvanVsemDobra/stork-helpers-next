@@ -1,13 +1,8 @@
-'use client'
-
-import React from 'react'
-
-const ProfilePage = () => {
+export default function ProfilePage() {
   return (
-    <div>
-      <h1>Profile Page</h1>
-    </div>
+    <>
+      <div>ProfilePage</div>
+      <div>Містить в собі: ProfileAvatar, ProfileEditForm.</div>
+    </>
   )
 }
-
-export default ProfilePage

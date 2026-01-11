@@ -10,12 +10,13 @@ interface PageProps {
 }
 
 export default function DiaryEntryPage({ params }: PageProps) {
+  const { entryId } = params
   const mockEntry: DiaryEntry = {
-    id: params.entryId,
+    id: entryId,
     title: `Запис від ${new Date().toLocaleDateString()}`,
     date: new Date().toLocaleDateString(),
     emotions: ['smile', 'sun'],
-    content: `Це детальний текст запису з ID: ${params.entryId}. Тут ти можеш побачити повну історію своїх думок, відчуттів та нотаток за цей день.`,
+    content: `Це детальний текст запису з ID: ${entryId}. Тут ти можеш побачити повну історію своїх думок, відчуттів та нотаток за цей день.`,
   }
 
   return (

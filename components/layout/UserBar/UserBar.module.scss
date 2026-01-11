@@ -1,0 +1,67 @@
+.userBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    width: 100%;
+
+    &__info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+        min-width: 0; // For text truncation to work
+    }
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    &__name {
+        font-family: var(--font-lato);
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #000000;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &__email {
+        font-family: var(--font-lato);
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #000000;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &__logout {
+        color: #000000 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        padding: 0 !important;
+        border: none !important;
+
+        &:hover {
+            color: rgba(0, 0, 0, 0.7) !important;
+            background-color: transparent !important;
+        }
+
+        svg {
+            display: block;
+            width: 40px;
+            height: 40px;
+        }
+    }
+}

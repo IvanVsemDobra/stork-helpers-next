@@ -1,8 +1,9 @@
+import { Layout } from '@/components/layout/Layout'
 import type { Metadata } from 'next'
 import { Lato, Comfortaa } from 'next/font/google'
-import './globals.css'
+// import './globals.css'
 import { Providers } from './providers'
-import { Toaster } from 'react-hot-toast'
+// import { Toaster } from 'react-hot-toast'
 
 const lato = Lato({
   subsets: ['latin'],
@@ -23,11 +24,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="uk">
+    <html lang="uk" suppressHydrationWarning>
       <body className={`${lato.variable} ${comfortaa.variable}`}>
         <Providers>
-          {children}
-          <Toaster position="top-center" />
+          <Layout>
+            <div>
+              Початок лейауту: Загальний макет для сторінок. Складається з компонентів: Header,
+              Breadcrumbs, SideBar та рендерить дочірні компоненти (children).
+            </div>
+            {children}
+            Кінець лейауту
+          </Layout>
         </Providers>
       </body>
     </html>

@@ -4,8 +4,11 @@ export type User = {
   id: string
   name: string
   email: string
+  avatar?: string
+  theme?: 'girl' | 'boy' | 'neutral'
+  dueDate?: string
+  hasCompletedOnboarding: boolean
 }
-
 
 export interface AuthState {
   user: User | null
