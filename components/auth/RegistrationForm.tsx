@@ -38,7 +38,11 @@ export const RegistrationForm = () => {
         try {
           const user = await register(values)
           setUser(user)
-          router.push('/auth/profile/edit')
+          if (!user.hasCompletedOnboarding) {
+            router.push('/profile/edit')
+          } else {
+            router.push('/')
+          }
         } catch (error: unknown) {
           if (axios.isAxiosError(error)) {
             toast.error(error.response?.data?.message || 'Помилка реєстрації. Спробуйте пізніше')
