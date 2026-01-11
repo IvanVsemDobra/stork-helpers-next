@@ -15,19 +15,3 @@ export const MomTipCard = ({ tipIndex, momDailyTips }: momDailyTipsProps) => {
   )
 }
 
-// const MS_IN_DAY = 1000 * 60 * 60 * 24;
-
-// const today = new Date();
-// today.setHours(0, 0, 0, 0);
-
-// const due = new Date(dueDate);
-// due.setHours(0, 0, 0, 0);
-
-// let tipIndex = null;
-
-// if (today < due) {
-//   const daysDiff = Math.floor((due - today) / MS_IN_DAY);
-//   tipIndex = daysDiff % 7+1;
-// }
-
-// tipIndex === null → показуємо повідомлення замість поради
