@@ -4,6 +4,7 @@ import axios from 'axios'
 import { Field, Form, Formik, ErrorMessage } from 'formik'
 import { useId } from 'react'
 import * as Yup from 'yup'
+import styles from './AddDiaryEntryForm.module.css'
 
 interface AddDiaryEntryFormProps {
   initialData?: {
@@ -23,12 +24,8 @@ interface FormValues {
 }
 
 const validationSchema = Yup.object({
-  title: Yup.string()
-    .min(2, 'Має бути щонайменше 2 символи')
-    .required('Заголовок обовʼязковий'),
-  emotions: Yup.array()
-    .min(1, 'Виберіть хоча б одну категорію')
-    .required(),
+  title: Yup.string().min(2, 'Має бути щонайменше 2 символи').required('Заголовок обовʼязковий'),
+  emotions: Yup.array().min(1, 'Виберіть хоча б одну категорію').required(),
   message: Yup.string().required('Поле обовʼязкове'),
 })
 
@@ -77,32 +74,49 @@ export default function AddDiaryEntryForm({
       enableReinitialize
       onSubmit={handleSubmit}
     >
-      <Form>
+      <Form className={styles.form}>
         {/* Заголовок */}
-        <label htmlFor={`${fieldId}-title`}>Заголовок</label>
-        <Field id={`${fieldId}-title`} name="title" />
-        <ErrorMessage name="title" component="div" />
+        <div className={styles.fieldGroup}>
+          <label htmlFor={`${fieldId}-title`} className={styles.label}>
+            Заголовок
+          </label>
+          <Field id={`${fieldId}-title`} name="title" className={styles.input} />
+          <ErrorMessage name="title" component="div" className={styles.errorMessage} />
+        </div>
 
         {/* Категорії */}
-        <p>Категорії</p>
-        {EMOTIONS.map(e => (
-          <label key={e.id}>
-            <Field
-              type="checkbox"
-              name="emotions"
-              value={e.id}
-            />
-            {e.label}
+        <div className={styles.fieldGroup}>
+          <label className={styles.label}>
+            Категорії
           </label>
-        ))}
-        <ErrorMessage name="emotions" component="div" />
+          <div className={styles.checkboxGroup}>
+            {EMOTIONS.map(e => (
+              <label key={e.id} className={styles.checkboxItem}>
+                <Field type="checkbox" name="emotions" value={e.id} />
+                {e.label}
+              </label>
+            ))}
+          </div>
+
+          <ErrorMessage name="emotions" component="div" className={styles.errorMessage} />
+        </div>
 
         {/* Повідомлення */}
-        <label htmlFor={`${fieldId}-message`}>Запис</label>
-        <Field as="textarea" id={`${fieldId}-message`} name="message" />
-        <ErrorMessage name="message" component="div" />
+        <div className={styles.fieldGroup}>
+          <label htmlFor={`${fieldId}-message`} className={styles.label}>
+            Запис
+          </label>
+          <Field as="textarea" id={`${fieldId}-message`} name="message" className={styles.input} />
+          <ErrorMessage name="message" component="div" className={styles.errorMessage} />
+        </div>
 
-        <button type="submit">Зберегти</button>
+        <div className={styles.buttonGroup}>
+          <button
+            type="submit"
+            className={`${styles.button}`}>
+              Зберегти
+          </button>
+        </div>
       </Form>
     </Formik>
   )
