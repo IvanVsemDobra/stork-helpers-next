@@ -4,11 +4,10 @@ $base-distance: 8px;
     display: flex;
     flex-direction: column;
     padding: 24px 16px;
-    width: 335px;
     background-color: #FFF4F6;
     border-radius: 32px;
-    margin: 32px auto;
-    height: calc(100vh - 64px);
+    margin: 32px 20px;
+    gap: 16px;
 
     .topContainer {
         display: flex;
@@ -16,6 +15,8 @@ $base-distance: 8px;
 
         .title {
             margin: 0;
+            font-family: 'Comfortaa', cursive;
+            font-weight: 700;
         }
 
         .addEntryButton {
@@ -29,6 +30,28 @@ $base-distance: 8px;
             width: 114px;
             height: 24px;
             align-items: center;
+            font-family: 'Lato', sans-serif;
+            font-weight: 500;
+            flex-wrap: nowrap;
+            color: var(--color-neutral-darker); 
+            transition: color 0.2s ease, background-color 0.2s ease;
+
+            span {
+                color: inherit;
+            }
+
+            svg {
+                fill: currentColor;
+            }
+
+            &:hover {
+                color: #ffffff;
+            }
+
+            &:active {
+                color: #B2B2B2;
+            }
+
         
             .newEntry {
                 padding: 0;
@@ -40,5 +63,59 @@ $base-distance: 8px;
                 height: 24px;
             }
         }
+    }
+
+    .listContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        .entryCard {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                background-color: #FFDAE0;
+                padding: 16px;
+                border-radius: 16px;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+
+                &:hover {
+                    background-color: #ffcbd3;
+                }
+
+                &:active {
+                    background-color: #B2B2B2;
+                }
+        
+                .entryHeader {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+        
+                    .entryTitle {
+                        padding: 0;
+                        margin: 0;
+                        font-family: 'Lato', sans-serif;
+                        font-weight: 600;
+                    }
+                }
+        
+                .emotionsWrapper {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    flex-wrap: wrap;
+        
+                    .emotionTag {
+                        background-color: #FFF4F6;
+                        padding: 2px 12px;
+                        border-radius: 100px;
+                        font-family: 'Lato', sans-serif;
+                        font-weight: 400;
+                        font-size: 14px;
+                    }
+                }
+            }
     }
 }

@@ -6,13 +6,22 @@ import { DiaryEntry, DiaryListProps } from '../../interfaces/diary'
 import { AddDiaryEntryModal } from '../add-diary-entry-modal/add-diary-entry-modal'
 import styles from './diary-list.module.scss'
 
-export const DiaryList: React.FC<DiaryListProps> = ({ entries, onSelect, onRefresh }) => {
+export const DiaryList: React.FC<DiaryListProps> = ({
+  entries,
+  allEmotions,
+  onSelect,
+  onRefresh,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const router = useRouter()
 
+  const getEmotionTitle = (id: string): string => {
+    const emotion = allEmotions.find(e => e._id === id)
+    return emotion ? emotion.title : '...'
+  }
+
   const handleEntryClick = (entry: DiaryEntry) => {
-    // Якщо ширина екрану менше 1024px — йдемо на окрему сторінку
-    if (window.innerWidth < 1024) {
+    if (window.innerWidth < 1440) {
       router.push(`/diary/${entry._id}`)
     } else {
       onSelect(entry)
@@ -25,15 +34,15 @@ export const DiaryList: React.FC<DiaryListProps> = ({ entries, onSelect, onRefre
         <h3 className={styles.title}>Ваші записи</h3>
         <button className={styles.addEntryButton} onClick={() => setIsModalOpen(true)}>
           <span>Новий запис</span>
-          <svg className={styles.addCircle} width="24" height="24">
+          <svg width="24" height="24">
             <use href="/sprite.svg#icon-add_circle" />
           </svg>
         </button>
       </div>
 
-      <div className="flex flex-col gap-3 px-4 pb-4">
+      <div className={styles.listContainer}>
         {entries.length === 0 ? (
-          <p className="text-gray-400 text-center py-10">Щоденник порожній</p>
+          <p className={styles.emptyText}>Порожньо</p>
         ) : (
           entries.map(entry => (
             <div
@@ -41,10 +50,28 @@ export const DiaryList: React.FC<DiaryListProps> = ({ entries, onSelect, onRefre
               className={styles.entryCard}
               onClick={() => handleEntryClick(entry)}
             >
-              <h3 className={styles.entryTitle}>{entry.title}</h3>
-              <span className={styles.entryDate}>
-                {new Date(entry.date).toLocaleDateString('uk-UA')}
-              </span>
+              <div className={styles.entryHeader}>
+                <h4 className={styles.entryTitle}>{entry.title}</h4>
+                <span className={styles.entryDate}>
+                  {new Date(entry.date)
+                    .toLocaleDateString('uk-UA', {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    })
+                    .replace(/\s*р\.?$/, '')}
+                </span>
+              </div>
+
+              {entry.emotions.length > 0 && (
+                <div className={styles.emotionsWrapper}>
+                  {entry.emotions.map(id => (
+                    <span key={id} className={styles.emotionTag}>
+                      {getEmotionTitle(id)}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           ))
         )}

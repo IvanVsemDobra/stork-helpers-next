@@ -9,8 +9,7 @@ export interface DiaryEntry {
   _id: string;
   title: string;
   date: string;
-  // Емоції можуть бути масивом ID або об'єктів (якщо використано populate)
-  emotions: string[] | Emotion[]; 
+  emotions: string[];
   description: string; 
   userId: string;
   createdAt: string;
@@ -21,6 +20,7 @@ export interface DiaryListProps {
   entries: DiaryEntry[];
   onSelect: (entry: DiaryEntry) => void; 
   onRefresh: () => void;
+  allEmotions: Emotion[];
 }
 
 export interface DiaryEntryDetailsProps {

@@ -35,7 +35,6 @@ export default function AddDiaryEntryForm({
   const [availableEmotions, setAvailableEmotions] = useState<Emotion[]>([])
   const API_BASE = process.env.NEXT_PUBLIC_API_URL
 
-  // Завантажуємо емоції з бекенду
   useEffect(() => {
     const fetchEmotions = async () => {
       try {
@@ -51,23 +50,27 @@ export default function AddDiaryEntryForm({
   const initialValues: FormValues = initialData
     ? {
         title: initialData.title,
-        // Якщо емоції прийшли як об'єкти, беремо тільки їхні ID
-        emotions: initialData.emotions.map(e => (typeof e === 'string' ? e : e._id)),
+        emotions: initialData.emotions.map((e: string | Emotion) =>
+          typeof e === 'string' ? e : e._id
+        ),
         description: initialData.description,
       }
     : { title: '', emotions: [], description: '' }
 
   const handleSubmit = async (values: FormValues) => {
     try {
-      const url =
-        isEdit && initialData ? `${API_BASE}/api/diary/${initialData._id}` : `${API_BASE}/api/diary`
-
-      const method = isEdit ? 'put' : 'post'
-
-      await axios[method](url, values)
+      if (isEdit && initialData) {
+        await axios.patch(`${API_BASE}/api/diaries/me/${initialData._id}`, values, {
+          withCredentials: true,
+        })
+      } else {
+        await axios.post(`${API_BASE}/api/diaries/me`, values, {
+          withCredentials: true,
+        })
+      }
       onSubmitSuccess()
       onClose()
-    } catch (error) {
+    } catch {
       alert('Помилка збереження запису')
     }
   }
@@ -91,7 +94,7 @@ export default function AddDiaryEntryForm({
         <div>
           <p className="font-bold mb-2">Ваші емоції</p>
           <div className="flex gap-2 flex-wrap">
-            {availableEmotions.map(e => (
+            {availableEmotions.map((e: Emotion) => (
               <label
                 key={e._id}
                 className="flex items-center gap-1 border p-2 rounded cursor-pointer hover:bg-gray-50"
