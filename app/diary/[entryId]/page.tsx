@@ -1,3 +1,5 @@
-export default function DiaryEntryDetails() {
-  return <div>DiaryEntryDetails component</div>
+import { DiaryEntryDetails } from '@/components/diary/DiaryEntryDetails/DiaryEntryDetails'
+
+export default function DiaryEntryPage() {
+  return <DiaryEntryDetails />
 }
