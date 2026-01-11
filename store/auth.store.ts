@@ -7,6 +7,7 @@ export type User = {
   avatar?: string
   theme?: 'girl' | 'boy' | 'neutral'
   dueDate?: string
+  hasCompletedOnboarding: boolean
 }
 
 export interface AuthState {

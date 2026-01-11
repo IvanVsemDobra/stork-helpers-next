@@ -1,8 +1,9 @@
+import { Layout } from '@/components/layout/Layout'
 import type { Metadata } from 'next'
 import { Lato, Comfortaa } from 'next/font/google'
-import './globals.css'
+// import './globals.css'
 import { Providers } from './providers'
-import { Toaster } from 'react-hot-toast'
+// import { Toaster } from 'react-hot-toast'
 
 const lato = Lato({
   subsets: ['latin'],
@@ -17,17 +18,16 @@ const comfortaa = Comfortaa({
 })
 
 export const metadata: Metadata = {
-  title: 'Pregnancy App',
-  description: 'Pregnancy helper application',
+  title: 'Leleka',
+  description: 'Pregnancy tracking application',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="uk">
+    <html lang="uk" suppressHydrationWarning>
       <body className={`${lato.variable} ${comfortaa.variable}`}>
         <Providers>
-          {children}
-          <Toaster position="top-center" />
+          <Layout>{children}</Layout>
         </Providers>
       </body>
     </html>

@@ -36,7 +36,7 @@ export const LoginForm = () => {
         try {
           const user = await login(values)
           setUser(user)
-          router.push('/my-day')
+          router.push('/')
         } catch (error: unknown) {
           if (error instanceof Error) {
             toast.error(error.message)

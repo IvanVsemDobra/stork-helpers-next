@@ -1,10 +1,14 @@
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAuthStore } from '@/store/auth.store'
+
 export const useProtectedRoute = () => {
-  const { user, isLoading } = useAuth()
+  const { user } = useAuthStore()
   const router = useRouter()
 
   useEffect(() => {
-    if (!isLoading && !user) {
+    if (!user) {
       router.push('/auth/login')
     }
-  }, [user, isLoading])
+  }, [user, router])
 }

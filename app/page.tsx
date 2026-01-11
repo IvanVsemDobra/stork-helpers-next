@@ -1,27 +1,27 @@
-import styles from './page.module.css'
-import Link from 'next/link'
+import css from './page.module.css'
+// Містить в собі компоненти:
+// GreetingBlock,
+// StatusBlock,
+// BabyTodayCard,
+// MomTipCard,
+// TasksReminderCard,
+// FeelingCheckCard,
 
-export default function Home() {
+// Загальна поведінка блоків на сторінці:
+// Десктоп:
+// Всі блоки-компоненти на цій сторінці повинні мати статичну (фіксовану) висоту згідно з макетом. У разі, якщо внутрішній контент перевищує висоту блоку, всередині блоку повинен з'являтись вертикальний скрол.
+// Планшет та мобілка:
+// Висота блоків динамічно змінюється відповідно до кількості контенту.
+
+export default function DashboardPage() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <div className={styles.intro}>
-          <h1>Мій день</h1>
-          <p>
-            Застосунок для підтримки під час вагітності: відстежуйте завдання, емоції та щоденні
-            нотатки.
-          </p>
-        </div>
-
-        <div className={styles.ctas}>
-          <Link href="/auth/login" className={styles.primary}>
-            Увійти
-          </Link>
-          <Link href="/auth/register" className={styles.secondary}>
-            Створити акаунт
-          </Link>
-        </div>
-      </main>
+    <div className={css.container}>
+      <section>GreetingBlock</section>
+      <section>StatusBlock</section>
+      <section>BabyTodayCard</section>
+      <section>MomTipCard</section>
+      <section>TasksReminderCard</section>
+      <section>FeelingCheckCard</section>
     </div>
   )
 }
