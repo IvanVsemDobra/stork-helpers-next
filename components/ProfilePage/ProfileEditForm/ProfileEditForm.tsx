@@ -1,109 +1,125 @@
 'use client'
 
-import { useEffect, useMemo } from 'react' // Додав useMemo
-import { Formik, Form, Field } from 'formik'
+import { useState, useEffect } from 'react'
+import { Formik, Form, Field, ErrorMessage, useFormikContext } from 'formik'
 import * as Yup from 'yup'
 import { useMutation } from '@tanstack/react-query'
-import { toast } from 'react-hot-toast'
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
+import Image from 'next/image'
+
+import { updateProfile, uploadAvatar } from '@/services/profile.service'
+import { useAuthStore, User } from '@/store/auth.store'
 import styles from './ProfileEditForm.module.css'
-import { updateProfile } from '@/services/profile.service'
-import { useAuthStore } from '@/store/auth.store'
 
-// 1. Виправляємо валідацію за ТЗ
-const validationSchema = Yup.object({
-  name: Yup.string()
-    .min(2, 'Занадто коротке')
-    .max(32, 'Максимум 32 символи') // Додано за ТЗ
-    .required("Обов'язково"),
-  email: Yup.string().email('Невірний формат').required("Обов'язково"),
-  theme: Yup.string().oneOf(['boy', 'girl', 'neutral']).required("Обов'язково"),
-  dueDate: Yup.date()
-    .required("Обов'язково")
-    .test('range', 'Дата має бути в межах 1-40 тижнів', value => {
-      if (!value) return false
-      const date = new Date(value)
-      const now = new Date()
-      const minDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
-      const maxDate = new Date(now.getTime() + 280 * 24 * 60 * 60 * 1000)
-      return date >= minDate && date <= maxDate
-    }),
-})
+interface ProfileFormValues {
+  name: string
+  theme: 'boy' | 'girl' | 'neutral'
+  dueDate: string
+  avatar: File | null
+}
 
-export default function ProfileEditForm() {
-  const { user, setUser } = useAuthStore()
-
-  // 2. Обчислюємо межі дат для атрибутів min/max інпуту
-  const dateLimits = useMemo(() => {
-    const now = new Date()
-    const min = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-    const max = new Date(now.getTime() + 280 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-    return { min, max }
-  }, [])
-
-  const applyTheme = (theme: string) => {
-    document.documentElement.setAttribute('data-theme', theme)
-  }
+function AvatarPreview({ defaultAvatar, setPreview }: { defaultAvatar: string; setPreview: (src: string) => void }) {
+  const { values } = useFormikContext<ProfileFormValues>()
 
   useEffect(() => {
-    if (user?.theme) applyTheme(user.theme)
-  }, [user?.theme])
+    if (values.avatar) {
+      const url = URL.createObjectURL(values.avatar)
+      setPreview(url)
+      return () => URL.revokeObjectURL(url)
+    } else {
+      setPreview(defaultAvatar)
+    }
+  }, [values.avatar, defaultAvatar, setPreview])
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: updateProfile,
-    onSuccess: updatedUser => {
+  return null
+}
+
+export default function ProfileEditForm() {
+  const router = useRouter()
+  const { user, setUser } = useAuthStore()
+  const defaultAvatar = '/images/plant/plant.jpg'
+  const [preview, setPreview] = useState(defaultAvatar)
+
+  const mutation = useMutation({
+    mutationFn: async (values: ProfileFormValues) => {
+      if (values.avatar) {
+        const updatedUser = await uploadAvatar(values.avatar)
+        setUser(updatedUser)
+      }
+
+      const updatedUser = await updateProfile({
+        name: values.name,
+        theme: values.theme,
+        dueDate: values.dueDate,
+      })
+      return updatedUser
+    },
+    onSuccess: (updatedUser: User) => {
       setUser(updatedUser)
-      if (updatedUser.theme) applyTheme(updatedUser.theme)
-      toast.success('Дані збережено!')
+      toast.success('Профіль збережено')
+      router.push('/diary')
     },
     onError: () => toast.error('Помилка збереження'),
   })
 
   if (!user) return null
 
+  const validationSchema = Yup.object({
+    name: Yup.string().min(2, 'Занадто коротке').required("Обов'язково"),
+    theme: Yup.string().oneOf(['boy', 'girl', 'neutral']).required("Обов'язково"),
+    dueDate: Yup.date().required("Обов'язково"),
+  })
+
   return (
     <div className={styles.container}>
-      <Formik
+      <Formik<ProfileFormValues>
         enableReinitialize
         initialValues={{
           name: user.name || '',
-          email: user.email || '',
           theme: user.theme || 'neutral',
           dueDate: user.dueDate ? new Date(user.dueDate).toISOString().split('T')[0] : '',
+          avatar: null,
         }}
         validationSchema={validationSchema}
-        onSubmit={values => mutate(values)}
+        onSubmit={(values) => mutation.mutate(values)}
       >
-        {({ errors, touched, resetForm, dirty }) => (
+        {({ setFieldValue, isSubmitting }) => (
           <Form className={styles.form}>
-            {/* Поле Ім'я */}
+            <h1 className={styles.formTitle}>Давайте познайомимось ближче</h1>
+
+            <AvatarPreview defaultAvatar={defaultAvatar} setPreview={setPreview} />
+
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>Ваше ім’я</label>
-              <Field
-                name="name"
-                className={`${styles.input} ${
-                  touched.name && errors.name ? styles.inputError : ''
-                }`}
-              />
-              {touched.name && errors.name && <div className={styles.errorText}>{errors.name}</div>}
+              <label className={styles.label}>Аватар</label>
+              <div className={styles.avatarWrapper}>
+                <Image
+                  src={preview} 
+                  alt="Avatar"
+                  width={164}
+                  height={164}
+                  className={styles.avatarImage}
+                />
+                <label className={styles.uploadLabel}>
+                  Завантажити фото
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={(e) => setFieldValue('avatar', e.currentTarget.files?.[0] || null)}
+                  />
+                </label>
+              </div>
             </div>
 
-            {/* Поле Email */}
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>Email</label>
-              <Field
-                name="email"
-                className={`${styles.input} ${
-                  touched.email && errors.email ? styles.inputError : ''
-                }`}
-              />
-              {touched.email && errors.email && (
-                <div className={styles.errorText}>{errors.email}</div>
-              )}
+              <label className={styles.label}>Імʼя</label>
+              <Field name="name" className={styles.input} />
+              <ErrorMessage name="name" component="div" className={styles.errorText} />
             </div>
 
-            {/* Поле Тема */}
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>Хто у вас буде?</label>
+              <label className={styles.label}>Стать дитини</label>
               <div className={styles.selectWrapper}>
                 <Field as="select" name="theme" className={styles.select}>
                   <option value="neutral">Ще не знаємо</option>
@@ -111,40 +127,18 @@ export default function ProfileEditForm() {
                   <option value="girl">Дівчинка</option>
                 </Field>
               </div>
+              <ErrorMessage name="theme" component="div" className={styles.errorText} />
             </div>
 
-            {/* Поле Дата з обмеженням 1-40 тижнів */}
             <div className={styles.fieldGroup}>
               <label className={styles.label}>Очікувана дата пологів</label>
-              <Field
-                type="date"
-                name="dueDate"
-                min={dateLimits.min} // Тепер календар не дасть вибрати дату через рік
-                max={dateLimits.max}
-                className={`${styles.input} ${
-                  touched.dueDate && errors.dueDate ? styles.inputError : ''
-                }`}
-              />
-              {touched.dueDate && errors.dueDate && (
-                <div className={styles.errorText}>{errors.dueDate}</div>
-              )}
+              <Field type="date" name="dueDate" className={styles.input} />
+              <ErrorMessage name="dueDate" component="div" className={styles.errorText} />
             </div>
 
             <div className={styles.actions}>
-              <button
-                type="button"
-                onClick={() => resetForm()}
-                className={styles.cancelBtn}
-                disabled={!dirty || isPending}
-              >
-                Скасувати
-              </button>
-              <button
-                type="submit"
-                className={styles.saveBtn}
-                disabled={isPending || !dirty} // Кнопка активна тільки якщо були зміни
-              >
-                {isPending ? 'Збереження...' : 'Зберегти зміни'}
+              <button type="submit" className={styles.saveBtn} disabled={isSubmitting || mutation.isPending}>
+                {mutation.isPending ? 'Збереження...' : 'Зберегти зміни'}
               </button>
             </div>
           </Form>

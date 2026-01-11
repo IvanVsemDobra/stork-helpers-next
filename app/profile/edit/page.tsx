@@ -1,8 +1,10 @@
-export default function OnboardingPage() {
-  return (
-    <>
-      <div> OnboardingPage</div>
-      <div>Містить в собі компоненти: OnboardingForm</div>
-    </>
-  )
+'use client'
+
+import ProfileEditForm from '@/components/ProfilePage/ProfileEditForm/ProfileEditForm'
+import { useProtectedRoute } from '@/hooks/useProtectedRoute'
+
+export default function ProfileEditPage() {
+  useProtectedRoute()
+
+  return <ProfileEditForm />
 }
