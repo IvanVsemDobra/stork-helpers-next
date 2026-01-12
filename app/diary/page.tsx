@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
+import { api } from '@/app/api/client'
 import { DiaryList } from '@/components/diary-page/diary-list.component'
 import { DiaryEntryDetails } from '@/components/diary-page/diary-entry-details.component'
 import { AddDiaryEntryModal } from '@/components/add-diary-entry-modal/add-diary-entry-modal'
@@ -13,13 +14,10 @@ export default function DiaryPage() {
   const [allEmotions, setAllEmotions] = useState<Emotion[]>([])
   const [selectedEntry, setSelectedEntry] = useState<DiaryEntry | null>(null)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL
   const checkIsDesktop = () => typeof window !== 'undefined' && window.innerWidth >= 1440
   const fetchEntries = useCallback(async () => {
     try {
-      const { data } = await axios.get<DiaryEntry[]>(`${API_BASE}/diaries/me`, {
-        withCredentials: true,
-      })
+      const { data } = await api.get<DiaryEntry[]>('/diaries/me')
       setEntries(data)
 
       if (selectedEntry) {
@@ -29,9 +27,11 @@ export default function DiaryPage() {
         setSelectedEntry(data[0])
       }
     } catch (e: unknown) {
-      console.error('Помилка завантаження списку:', e)
+      if (axios.isAxiosError(e)) {
+        console.error('Помилка завантаження списку:', e.response?.status, e.message)
+      }
     }
-  }, [API_BASE, selectedEntry])
+  }, [selectedEntry])
 
   useEffect(() => {
     let isIgnore = false
@@ -39,23 +39,22 @@ export default function DiaryPage() {
     async function initData() {
       try {
         const [emotionsRes, entriesRes] = await Promise.all([
-          axios.get<Emotion[]>(`${API_BASE}/emotions/emotions`, { withCredentials: true }),
-          axios.get<DiaryEntry[]>(`${API_BASE}/diaries/me`, { withCredentials: true }),
+          api.get<Emotion[]>('/emotions/emotions'),
+          api.get<DiaryEntry[]>('/diaries/me'),
         ])
 
         if (!isIgnore) {
-          const emotions = emotionsRes.data
-          const data = entriesRes.data
+          setAllEmotions(emotionsRes.data)
+          setEntries(entriesRes.data)
 
-          setAllEmotions(emotions)
-          setEntries(data)
-
-          if (checkIsDesktop() && data.length > 0 && !selectedEntry) {
-            setSelectedEntry(data[0])
+          if (checkIsDesktop() && entriesRes.data.length > 0 && !selectedEntry) {
+            setSelectedEntry(entriesRes.data[0])
           }
         }
       } catch (e: unknown) {
-        console.error('Помилка при ініціалізації даних:', e)
+        if (axios.isAxiosError(e)) {
+          console.error('Помилка при ініціалізації даних:', e.response?.status)
+        }
       }
     }
 
@@ -63,7 +62,7 @@ export default function DiaryPage() {
     return () => {
       isIgnore = true
     }
-  }, [API_BASE, selectedEntry])
+  }, [selectedEntry])
 
   return (
     <div className={styles.containersGroup}>
