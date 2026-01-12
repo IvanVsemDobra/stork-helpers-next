@@ -6,7 +6,7 @@ import { Button, Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { ConfirmationModal } from '@/components/confirmation-modal/confirmation-modal';
+import { ConfirmationModal } from '@/components/confirmation-modal/confirmation-modal.component';
 import styles from './UserBar.module.scss';
 
 export const UserBar = () => {
@@ -64,8 +64,12 @@ export const UserBar = () => {
 
             <ConfirmationModal
                 isOpen={isModalOpen}
+                title="Ви впевнені, що хочете вийти?"
+                confirmText="Вийти"
+                cancelText="Скасувати"
                 onConfirm={handleConfirmLogout}
                 onCancel={handleCancelLogout}
+                variant="danger"
             />
         </>
     );

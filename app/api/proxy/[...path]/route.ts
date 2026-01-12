@@ -17,11 +17,11 @@ async function proxy(req: NextRequest, path: string[]) {
   const requestHeaders = new Headers(req.headers);
   requestHeaders.delete('host');
   requestHeaders.delete('connection');
-  requestHeaders.delete('accept-encoding'); 
-  
+  requestHeaders.delete('accept-encoding');
+
   try {
-    const body = ['GET', 'HEAD'].includes(req.method) 
-      ? undefined 
+    const body = ['GET', 'HEAD'].includes(req.method)
+      ? undefined
       : await req.arrayBuffer();
 
     const backendRes = await fetch(targetUrl, {
@@ -29,6 +29,7 @@ async function proxy(req: NextRequest, path: string[]) {
       headers: requestHeaders,
       body,
       credentials: 'include',
+      redirect: 'manual',
     });
 
     const responseData = await backendRes.arrayBuffer();
