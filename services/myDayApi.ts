@@ -1,6 +1,6 @@
-import { protectedApi } from './axios'
+import { protectedApi } from './protectedApi'
 
 export const myDayApi = {
-  getFirstWeekInfo: () =>
-    protectedApi.get('/proxy/weeks/public/my-day'),
+  getMyDay: () =>
+    protectedApi.get('/weeks/public/my-day'),
 }
