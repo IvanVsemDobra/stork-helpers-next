@@ -15,8 +15,6 @@ export interface WeekData extends BabyData {
 
 export interface BabyInfo extends BabyData {
   analogy: string
-  babySize: number
-  babyWeight: number
   interestingFact: string
 }
 
