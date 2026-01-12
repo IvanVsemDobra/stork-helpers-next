@@ -1,6 +1,9 @@
 import { MomTipCard } from '@/components/MomTipCard/mom-tip-card'
 import css from './page.module.css'
-import { getFirstWeekInfo, getMyDayWeekInfo } from '@/services/weeks.service'
+import {
+  getFirstWeekInfo,
+  getMyDayWeekInfo,
+} from '@/services/server/weeks.server'
 // Містить в собі компоненти:
 // GreetingBlock,
 // StatusBlock,
