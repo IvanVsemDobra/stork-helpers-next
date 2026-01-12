@@ -25,7 +25,6 @@ export const DiaryEntryDetails: React.FC<DiaryEntryDetailsProps> = ({
 
   if (!entry) return null
 
-
   const getEmotionTitle = (id: string) =>
     allEmotions.find((e: Emotion) => e._id === id)?.title || '...'
 
@@ -72,7 +71,7 @@ export const DiaryEntryDetails: React.FC<DiaryEntryDetailsProps> = ({
           </button>
         </div>
 
-        <div className={styles.content}>
+        <div className={styles.emotionsList}>
           <p className={styles.mainText}>{entry.description}</p>
 
           {entry.emotions.length > 0 && (

@@ -6,7 +6,7 @@ $base-distance: 8px;
     background-color: #FFF4F6;
     border-radius: $base-distance * 4;
     padding: $base-distance * 3 $base-distance * 3 112px $base-distance * 3;
-    margin: 0 auto;
+    margin: 0 $base-distance * 3;
     gap: $base-distance * 3;
     height: 100%;
 
@@ -117,7 +117,7 @@ $base-distance: 8px;
 
 @media screen and (min-width: 768px) {
     .detailsContainer {
-        margin: 0 $base-distance * 4 0 0;
+        margin: 0 $base-distance * 4 0 $base-distance * 4;
     }
 }
 
