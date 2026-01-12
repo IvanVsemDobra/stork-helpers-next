@@ -11,7 +11,6 @@ interface Emotion {
   title: string
 }
 
-
 interface DiaryEntry {
   _id: string
   title: string
@@ -19,14 +18,12 @@ interface DiaryEntry {
   message: string
 }
 
-
 interface AddDiaryEntryFormProps {
   initialData?: DiaryEntry | null
   isEdit?: boolean
   onSubmitSuccess: () => void
   onClose: () => void
 }
-
 
 interface FormValues {
   title: string
@@ -71,7 +68,6 @@ export default function AddDiaryEntryForm({
     fetchEmotions()
   }, [API_BASE])
 
-
   const initialValues: FormValues = initialData
     ? {
         title: initialData.title,
@@ -85,7 +81,6 @@ export default function AddDiaryEntryForm({
         emotions: [],
         message: '',
       }
-
 
   const handleSubmit = async (values: FormValues) => {
     try {
@@ -138,7 +133,6 @@ export default function AddDiaryEntryForm({
           </div>
           <ErrorMessage name="emotions" component="div" className={styles.errorMessage} />
         </div>
-
 
         <div className={styles.fieldGroup}>
           <label htmlFor={`${fieldId}-message`} className={styles.label}>

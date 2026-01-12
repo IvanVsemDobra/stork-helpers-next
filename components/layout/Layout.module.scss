@@ -1,0 +1,36 @@
+.layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--color-bg-primary);
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 280px;
+    background-color: var(--color-bg-primary);
+    min-height: 100vh;
+    width: calc(100% - 280px);
+
+    @media (max-width: 1024px) {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+.authContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 0;
+    background-color: var(--color-bg-primary);
+    min-height: 100vh;
+    width: 100%;
+}
+
+.main {
+    flex: 1;
+    /* No padding to avoid conflicts with page-level styles */
+    width: 100%;
+}

@@ -1,17 +1,36 @@
 import { create } from 'zustand'
 
-type User = {
+export type User = {
   id: string
   name: string
   email: string
+  avatar?: string
+  theme?: 'girl' | 'boy' | 'neutral'
+  dueDate?: string
+  hasCompletedOnboarding: boolean
 }
 
-type AuthState = {
+export interface AuthState {
   user: User | null
-  setUser: (user: User | null) => void
+  isAuthenticated: boolean
+
+  setUser: (user: User) => void
+  clearAuth: () => void
 }
 
 export const useAuthStore = create<AuthState>(set => ({
   user: null,
-  setUser: user => set({ user }),
+  isAuthenticated: false,
+
+  setUser: user =>
+    set({
+      user,
+      isAuthenticated: true,
+    }),
+
+  clearAuth: () =>
+    set({
+      user: null,
+      isAuthenticated: false,
+    }),
 }))
