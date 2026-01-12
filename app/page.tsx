@@ -1,14 +1,12 @@
 import { MomTipCard } from '@/components/MomTipCard/mom-tip-card'
 import css from './page.module.css'
-import {
-  getFirstWeekInfo,
-  getMyDayWeekInfo,
-} from '@/services/server/weeks.server'
+import { getFirstWeekInfo, getMyDayWeekInfo } from '@/services/server/weeks.server'
+import { BabyTodayCard } from '@/components/BabyTodayCard/baby-today-card'
 // Містить в собі компоненти:
 // GreetingBlock,
 // StatusBlock,
-// BabyTodayCard,
-// MomTipCard,
+// BabyTodayCard,       +
+// MomTipCard,          +
 // TasksReminderCard,
 // FeelingCheckCard,
 
@@ -25,15 +23,23 @@ export default async function DashboardPage() {
   } catch {
     weekData = await getFirstWeekInfo()
   }
-  const tipIndex = (6 - weekData.daysToMeeting % 7)
+  const tipIndex = 6 - (weekData.daysToMeeting % 7)
+
   return (
     <div className={css.container}>
+      {/* в компонентах огортайте розмітку в <section></section>, а при 
+      додаванні компонентів сюди теги <section></section> прибирайте */}
       <section>GreetingBlock</section>
-      <section>StatusBlock</section>
-      <section>BabyTodayCard</section>
-      <section>
+      <section>StatusBlock</section>      
+        <BabyTodayCard
+          image={weekData.image}
+          imageAlt={weekData.imageAlt}
+          babySize={weekData.babySize}
+          babyWeight={weekData.babyWeight}
+          babyActivity={weekData.babyActivity}
+          babyDevelopment={weekData.babyDevelopment}
+        />
         <MomTipCard tipIndex={tipIndex} momDailyTips={weekData.momDailyTips} />
-      </section>
       <section>TasksReminderCard</section>
       <section>FeelingCheckCard</section>
     </div>
