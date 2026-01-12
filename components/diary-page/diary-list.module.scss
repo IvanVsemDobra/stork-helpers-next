@@ -2,12 +2,17 @@ $base-distance: 8px;
 
 .diaryListContainer {
     display: flex;
-    flex-direction: column;
-    padding: 24px 16px;
+    padding: $base-distance * 3 $base-distance * 2;
     background-color: #FFF4F6;
-    border-radius: 32px;
-    margin: 32px 20px;
-    gap: 16px;
+    border-radius: $base-distance * 4;
+    margin: 0 $base-distance * 2.5;
+    height: 100%;
+
+    .firstColumn {
+        display: flex;
+        flex-direction: column;
+        gap: $base-distance * 2;
+    }
 
     .topContainer {
         display: flex;
@@ -21,14 +26,14 @@ $base-distance: 8px;
 
         .addEntryButton {
             display: flex;
-            gap: 8px;
+            gap: $base-distance * 2;
             background-color: #FFF4F6;
             border: none;
             cursor: pointer;
             padding: 0;
             margin: 0;
             width: 114px;
-            height: 24px;
+            height: $base-distance * 3;
             align-items: center;
             font-family: 'Lato', sans-serif;
             font-weight: 500;
@@ -59,8 +64,8 @@ $base-distance: 8px;
             }
         
             .addCircle {
-                width: 24px;
-                height: 24px;
+                width: $base-distance * 3;
+                height: $base-distance * 3;
             }
         }
     }
@@ -68,15 +73,15 @@ $base-distance: 8px;
     .listContainer {
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: $base-distance * 2;
 
         .entryCard {
                 display: flex;
                 flex-direction: column;
-                gap: 8px;
+                gap: $base-distance;
                 background-color: #FFDAE0;
-                padding: 16px;
-                border-radius: 16px;
+                padding: $base-distance * 2;
+                border-radius: $base-distance * 2;
                 cursor: pointer;
                 transition: background-color 0.2s ease;
 
@@ -104,7 +109,7 @@ $base-distance: 8px;
                 .emotionsWrapper {
                     display: flex;
                     align-items: center;
-                    gap: 8px;
+                    gap: $base-distance;
                     flex-wrap: wrap;
         
                     .emotionTag {
@@ -117,5 +122,22 @@ $base-distance: 8px;
                     }
                 }
             }
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .diaryListContainer {
+        margin: 0 $base-distance * 4;
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    .diaryListContainer {
+        width: 389px;
+        margin: 0;
+
+        .newEntry {
+            width: 125px;
+        }
     }
 }

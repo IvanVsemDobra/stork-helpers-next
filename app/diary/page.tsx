@@ -14,6 +14,7 @@ export default function DiaryPage() {
   const [selectedEntry, setSelectedEntry] = useState<DiaryEntry | null>(null)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const API_BASE = process.env.NEXT_PUBLIC_API_URL
+  const checkIsDesktop = () => typeof window !== 'undefined' && window.innerWidth >= 1440
   const fetchEntries = useCallback(async () => {
     try {
       const { data } = await axios.get<DiaryEntry[]>(`${API_BASE}/api/diaries/me`, {
@@ -22,8 +23,10 @@ export default function DiaryPage() {
       setEntries(data)
 
       if (selectedEntry) {
-        const updated = data.find(e => e._id === selectedEntry._id)
-        if (updated) setSelectedEntry(updated)
+        const updated = data.find((e: DiaryEntry) => e._id === selectedEntry._id)
+        setSelectedEntry(updated || (checkIsDesktop() ? data[0] : null))
+      } else if (checkIsDesktop() && data.length > 0) {
+        setSelectedEntry(data[0])
       }
     } catch (e: unknown) {
       console.error('Помилка завантаження списку:', e)
@@ -41,8 +44,15 @@ export default function DiaryPage() {
         ])
 
         if (!isIgnore) {
-          setAllEmotions(emotionsRes.data)
-          setEntries(entriesRes.data)
+          const emotions = emotionsRes.data
+          const data = entriesRes.data
+
+          setAllEmotions(emotions)
+          setEntries(data)
+
+          if (checkIsDesktop() && data.length > 0 && !selectedEntry) {
+            setSelectedEntry(data[0])
+          }
         }
       } catch (e: unknown) {
         console.error('Помилка при ініціалізації даних:', e)
@@ -50,11 +60,10 @@ export default function DiaryPage() {
     }
 
     initData()
-
     return () => {
       isIgnore = true
     }
-  }, [API_BASE])
+  }, [API_BASE, selectedEntry])
 
   return (
     <div className={styles.containersGroup}>
@@ -75,7 +84,7 @@ export default function DiaryPage() {
             setSelectedEntry(null)
             fetchEntries()
           }}
-          onEditTrigger={entry => {
+          onEditTrigger={(entry: DiaryEntry) => {
             setSelectedEntry(entry)
             setIsEditModalOpen(true)
           }}

@@ -4,13 +4,15 @@ $base-distance: 8px;
     display: flex;
     flex-direction: column;
     background-color: #FFF4F6;
-    border-radius: 32px;
-    padding: 24px;
-    margin: 32px auto;
+    border-radius: $base-distance * 4;
+    padding: $base-distance * 3 $base-distance * 3 112px $base-distance * 3;
+    margin: 0 auto;
+    gap: $base-distance * 3;
+    height: 100%;
 
     .header {
         display: flex;
-        gap: 16px;
+        gap: $base-distance * 2;
         align-items: center;
 
         .title {
@@ -30,20 +32,18 @@ $base-distance: 8px;
             color: #4C4C4C;
             transition: color 0.2s ease;
 
-            /* Стан при наведенні */
             &:hover {
                 color: #ffffff;
             }
 
-            /* Стан при натисканні */
             &:active {
                 color: #B2B2B2;
             }
 
             .buttonIcon {
-                font-size: 24px;
-                width: 24px;
-                height: 24px;
+                font-size: $base-distance * 3;
+                width: $base-distance * 3;
+                height: $base-distance * 3;
                 display: block;
                 color: inherit;
             }
@@ -52,7 +52,7 @@ $base-distance: 8px;
 
     .middleContainer {
         display: flex;
-        gap: 16px;
+        gap: $base-distance * 2;
         align-items: center;
 
         .date {
@@ -88,7 +88,7 @@ $base-distance: 8px;
     .emotionsList {
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: $base-distance * 2;
 
         .mainText {
             white-space: pre-wrap;
@@ -101,7 +101,7 @@ $base-distance: 8px;
         .emotions {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: $base-distance;
 
             .emotionBadge {
                 background-color: #0000000D;
@@ -112,5 +112,18 @@ $base-distance: 8px;
                 font-size: 14px;
             }
         }
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .detailsContainer {
+        margin: 0 $base-distance * 4 0 0;
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    .detailsContainer {
+        width: 643px;
+        margin: 0;
     }
 }

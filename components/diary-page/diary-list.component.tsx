@@ -30,51 +30,53 @@ export const DiaryList: React.FC<DiaryListProps> = ({
 
   return (
     <div className={styles.diaryListContainer}>
-      <div className={styles.topContainer}>
-        <h3 className={styles.title}>Ваші записи</h3>
-        <button className={styles.addEntryButton} onClick={() => setIsModalOpen(true)}>
-          <span>Новий запис</span>
-          <svg width="24" height="24">
-            <use href="/sprite.svg#icon-add_circle" />
-          </svg>
-        </button>
-      </div>
+      <div className={styles.firstColumn}>
+        <div className={styles.topContainer}>
+          <h3 className={styles.title}>Ваші записи</h3>
+          <button className={styles.addEntryButton} onClick={() => setIsModalOpen(true)}>
+            <span className={styles.newEntry}>Новий запис</span>
+            <svg width="24" height="24">
+              <use href="/sprite.svg#icon-add_circle" />
+            </svg>
+          </button>
+        </div>
 
-      <div className={styles.listContainer}>
-        {entries.length === 0 ? (
-          <p className={styles.emptyText}>Порожньо</p>
-        ) : (
-          entries.map(entry => (
-            <div
-              key={entry._id}
-              className={styles.entryCard}
-              onClick={() => handleEntryClick(entry)}
-            >
-              <div className={styles.entryHeader}>
-                <h4 className={styles.entryTitle}>{entry.title}</h4>
-                <span className={styles.entryDate}>
-                  {new Date(entry.date)
-                    .toLocaleDateString('uk-UA', {
-                      day: 'numeric',
-                      month: 'long',
-                      year: 'numeric',
-                    })
-                    .replace(/\s*р\.?$/, '')}
-                </span>
-              </div>
-
-              {entry.emotions.length > 0 && (
-                <div className={styles.emotionsWrapper}>
-                  {entry.emotions.map(id => (
-                    <span key={id} className={styles.emotionTag}>
-                      {getEmotionTitle(id)}
-                    </span>
-                  ))}
+        <div className={styles.listContainer}>
+          {entries.length === 0 ? (
+            <p className={styles.emptyText}>Порожньо</p>
+          ) : (
+            entries.map(entry => (
+              <div
+                key={entry._id}
+                className={styles.entryCard}
+                onClick={() => handleEntryClick(entry)}
+              >
+                <div className={styles.entryHeader}>
+                  <h4 className={styles.entryTitle}>{entry.title}</h4>
+                  <span className={styles.entryDate}>
+                    {new Date(entry.date)
+                      .toLocaleDateString('uk-UA', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                      })
+                      .replace(/\s*р\.?$/, '')}
+                  </span>
                 </div>
-              )}
-            </div>
-          ))
-        )}
+
+                {entry.emotions.length > 0 && (
+                  <div className={styles.emotionsWrapper}>
+                    {entry.emotions.map(id => (
+                      <span key={id} className={styles.emotionTag}>
+                        {getEmotionTitle(id)}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))
+          )}
+        </div>
       </div>
 
       <AddDiaryEntryModal

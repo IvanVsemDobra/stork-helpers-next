@@ -2,22 +2,29 @@
 
 import React, { useEffect } from 'react'
 import { CloseOutlined } from '@ant-design/icons'
-import { useLogoutRedirect } from '@/hooks/useLogoutRedirect'
 import styles from './confirmation-modal.module.scss'
 
 interface ConfirmationModalProps {
+  isOpen: boolean
+  title: string
+  description?: string
+  confirmText?: string
+  cancelText?: string
   onConfirm: () => void
   onCancel: () => void
-  isOpen?: boolean
+  variant?: 'danger' | 'primary'
 }
 
 export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
+  isOpen,
+  title,
+  description,
+  confirmText = 'Так',
+  cancelText = 'Ні',
   onConfirm,
   onCancel,
-  isOpen = true,
+  variant = 'primary',
 }) => {
-  const { handleConfirmClick } = useLogoutRedirect(onConfirm)
-
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onCancel()
@@ -34,16 +41,22 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
         <button className={styles.closeBtn} onClick={onCancel}>
           <CloseOutlined />
         </button>
-        <h2 className={styles.title}>Ви точно хочете вийти?</h2>
+
+        <h2 className={styles.title}>{title}</h2>
+        {description && <p className={styles.description}>{description}</p>}
+
         <div className={styles.actions}>
           <button className={`${styles.btn} ${styles.cancel}`} onClick={onCancel}>
-            Ні
+            {cancelText}
           </button>
-          <button className={`${styles.btn} ${styles.confirm}`} onClick={handleConfirmClick}>
-            Так
+          <button
+            className={`${styles.btn} ${styles.confirm} ${styles[variant]}`}
+            onClick={onConfirm}
+          >
+            {confirmText}
           </button>
         </div>
       </div>
     </div>
-  );
+  )
 }
