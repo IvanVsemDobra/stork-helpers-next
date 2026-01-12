@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import axios from 'axios'
+import { DiaryService } from '@/services/diary.service'
 import { DiaryEntryDetails } from '@/components/diary-page/diary-entry-details.component'
 import { DiaryEntry, Emotion } from '@/interfaces/diary'
 import styles from './styles.module.scss'
@@ -16,28 +17,30 @@ export default function DiaryEntryPage() {
   const [allEmotions, setAllEmotions] = useState<Emotion[]>([])
   const [loading, setLoading] = useState(true)
 
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true)
-        const [emotionsRes, entriesRes] = await Promise.all([
-          axios.get<Emotion[]>(`${API_BASE}/emotions/emotions`, { withCredentials: true }),
-          axios.get<DiaryEntry[]>(`${API_BASE}/diaries/me`, { withCredentials: true }),
+        const [emotions, entries] = await Promise.all([
+          DiaryService.getEmotions(),
+          DiaryService.getEntries(),
         ])
 
-        setAllEmotions(emotionsRes.data)
+        setAllEmotions(emotions)
 
-        const foundEntry = entriesRes.data.find((e: DiaryEntry) => e._id === entryId)
+        const foundEntry = entries.find((e: DiaryEntry) => e._id === entryId)
 
         if (foundEntry) {
           setEntry(foundEntry)
         } else {
           router.push('/diary')
         }
-      } catch (error) {
-        console.error('Помилка при завантаженні даних запису:', error)
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          console.error('Помилка завантаження даних:', error.response?.status)
+        } else {
+          console.error('Невідома помилка:', error)
+        }
       } finally {
         setLoading(false)
       }
@@ -46,7 +49,7 @@ export default function DiaryEntryPage() {
     if (entryId) {
       fetchData()
     }
-  }, [entryId, API_BASE, router])
+  }, [entryId, router])
 
   if (loading) {
     return <div className={styles.loader}>Завантаження...</div>
@@ -63,7 +66,7 @@ export default function DiaryEntryPage() {
           router.push('/diary')
         }}
         onEditTrigger={(entryToEdit: DiaryEntry) => {
-          console.log('Редагування:', entryToEdit)
+          console.log('Редагування запису:', entryToEdit._id)
         }}
       />
     </div>

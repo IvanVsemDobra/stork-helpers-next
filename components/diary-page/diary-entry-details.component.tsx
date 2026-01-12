@@ -5,6 +5,7 @@ import axios from 'axios'
 import { DiaryEntry, Emotion } from '../../interfaces/diary'
 import { FormOutlined } from '@ant-design/icons'
 import { ConfirmationModal } from '../confirmation-modal/confirmation-modal.component'
+import { DiaryService } from '@/services/diary.service'
 import styles from './diary-entry-details.module.scss'
 
 interface DiaryEntryDetailsProps {
@@ -24,19 +25,20 @@ export const DiaryEntryDetails: React.FC<DiaryEntryDetailsProps> = ({
 
   if (!entry) return null
 
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL
 
   const getEmotionTitle = (id: string) =>
     allEmotions.find((e: Emotion) => e._id === id)?.title || '...'
+
   const handleDeleteConfirm = async () => {
     try {
-      await axios.delete(`${API_BASE}/api/diaries/me/${entry._id}`, {
-        withCredentials: true,
-      })
+      await DiaryService.deleteEntry(entry._id)
+
       setIsDeleteModalOpen(false)
       onDeleteSuccess()
     } catch (error: unknown) {
-      console.error('Помилка при видаленні:', error)
+      if (axios.isAxiosError(error)) {
+        console.error('Помилка при видаленні:', error.response?.status)
+      }
       alert('Не вдалося видалити запис.')
     }
   }
@@ -70,10 +72,10 @@ export const DiaryEntryDetails: React.FC<DiaryEntryDetailsProps> = ({
           </button>
         </div>
 
-        {entry.emotions.length > 0 && (
-          <div className={styles.emotionsList}>
-            <p className={styles.mainText}>{entry.description}</p>
+        <div className={styles.content}>
+          <p className={styles.mainText}>{entry.description}</p>
 
+          {entry.emotions.length > 0 && (
             <div className={styles.emotions}>
               {entry.emotions.map((id: string) => (
                 <span key={id} className={styles.emotionBadge}>
@@ -81,9 +83,10 @@ export const DiaryEntryDetails: React.FC<DiaryEntryDetailsProps> = ({
                 </span>
               ))}
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
+
       <ConfirmationModal
         isOpen={isDeleteModalOpen}
         title="Видалити цей запис?"

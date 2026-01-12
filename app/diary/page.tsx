@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
-import { api } from '@/app/api/client'
+import { DiaryService } from '@/services/diary.service'
 import { DiaryList } from '@/components/diary-page/diary-list.component'
 import { DiaryEntryDetails } from '@/components/diary-page/diary-entry-details.component'
 import { AddDiaryEntryModal } from '@/components/add-diary-entry-modal/add-diary-entry-modal'
@@ -14,10 +14,12 @@ export default function DiaryPage() {
   const [allEmotions, setAllEmotions] = useState<Emotion[]>([])
   const [selectedEntry, setSelectedEntry] = useState<DiaryEntry | null>(null)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+
   const checkIsDesktop = () => typeof window !== 'undefined' && window.innerWidth >= 1440
+
   const fetchEntries = useCallback(async () => {
     try {
-      const { data } = await api.get<DiaryEntry[]>('/diaries/me')
+      const data = await DiaryService.getEntries()
       setEntries(data)
 
       if (selectedEntry) {
@@ -38,17 +40,17 @@ export default function DiaryPage() {
 
     async function initData() {
       try {
-        const [emotionsRes, entriesRes] = await Promise.all([
-          api.get<Emotion[]>('/emotions/emotions'),
-          api.get<DiaryEntry[]>('/diaries/me'),
+        const [emotions, entries] = await Promise.all([
+          DiaryService.getEmotions(),
+          DiaryService.getEntries(),
         ])
 
         if (!isIgnore) {
-          setAllEmotions(emotionsRes.data)
-          setEntries(entriesRes.data)
+          setAllEmotions(emotions)
+          setEntries(entries)
 
-          if (checkIsDesktop() && entriesRes.data.length > 0 && !selectedEntry) {
-            setSelectedEntry(entriesRes.data[0])
+          if (checkIsDesktop() && entries.length > 0 && !selectedEntry) {
+            setSelectedEntry(entries[0])
           }
         }
       } catch (e: unknown) {
