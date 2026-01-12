@@ -13,7 +13,8 @@ export const login = async (creds: UserLogin) => {
 }
 
 export const logout = async () => {
-    await api.post('/auth/logout')
+    // Logout is handled client-side only
+    // No backend endpoint needed
 }
 
 export const AuthService = {
