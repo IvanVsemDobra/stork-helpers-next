@@ -38,7 +38,7 @@ export default function AddDiaryEntryForm({
   useEffect(() => {
     const fetchEmotions = async () => {
       try {
-        const { data } = await axios.get<Emotion[]>(`${API_BASE}/api/emotions`)
+        const { data } = await axios.get<Emotion[]>(`${API_BASE}/emotions/emotions`)
         setAvailableEmotions(data)
       } catch (error) {
         console.error('Помилка завантаження емоцій:', error)
@@ -60,11 +60,11 @@ export default function AddDiaryEntryForm({
   const handleSubmit = async (values: FormValues) => {
     try {
       if (isEdit && initialData) {
-        await axios.patch(`${API_BASE}/api/diaries/me/${initialData._id}`, values, {
+        await axios.patch(`${API_BASE}/diaries/me/${initialData._id}`, values, {
           withCredentials: true,
         })
       } else {
-        await axios.post(`${API_BASE}/api/diaries/me`, values, {
+        await axios.post(`${API_BASE}/diaries/me`, values, {
           withCredentials: true,
         })
       }

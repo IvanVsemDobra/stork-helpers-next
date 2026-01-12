@@ -23,8 +23,8 @@ export default function DiaryEntryPage() {
       try {
         setLoading(true)
         const [emotionsRes, entriesRes] = await Promise.all([
-          axios.get<Emotion[]>(`${API_BASE}/api/emotions`, { withCredentials: true }),
-          axios.get<DiaryEntry[]>(`${API_BASE}/api/diaries/me`, { withCredentials: true }),
+          axios.get<Emotion[]>(`${API_BASE}/emotions/emotions`, { withCredentials: true }),
+          axios.get<DiaryEntry[]>(`${API_BASE}/diaries/me`, { withCredentials: true }),
         ])
 
         setAllEmotions(emotionsRes.data)

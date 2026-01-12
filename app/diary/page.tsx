@@ -17,7 +17,7 @@ export default function DiaryPage() {
   const checkIsDesktop = () => typeof window !== 'undefined' && window.innerWidth >= 1440
   const fetchEntries = useCallback(async () => {
     try {
-      const { data } = await axios.get<DiaryEntry[]>(`${API_BASE}/api/diaries/me`, {
+      const { data } = await axios.get<DiaryEntry[]>(`${API_BASE}/diaries/me`, {
         withCredentials: true,
       })
       setEntries(data)
@@ -39,8 +39,8 @@ export default function DiaryPage() {
     async function initData() {
       try {
         const [emotionsRes, entriesRes] = await Promise.all([
-          axios.get<Emotion[]>(`${API_BASE}/api/emotions`, { withCredentials: true }),
-          axios.get<DiaryEntry[]>(`${API_BASE}/api/diaries/me`, { withCredentials: true }),
+          axios.get<Emotion[]>(`${API_BASE}/emotions/emotions`, { withCredentials: true }),
+          axios.get<DiaryEntry[]>(`${API_BASE}/diaries/me`, { withCredentials: true }),
         ])
 
         if (!isIgnore) {
