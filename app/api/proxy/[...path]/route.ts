@@ -1,80 +1,70 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { api } from '@/services/api'
-import { isAxiosError } from 'axios'
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { path: string[] } }
-) {
-  return proxyRequest(req, params.path)
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL!;
+
+type ProxyContext = {
+  params: Promise<{
+    path: string[];
+  }>;
+};
+
+export async function GET(req: NextRequest, ctx: ProxyContext) {
+  const { path } = await ctx.params;
+  return proxy(req, path);
 }
 
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { path: string[] } }
-) {
-  return proxyRequest(req, params.path)
+export async function POST(req: NextRequest, ctx: ProxyContext) {
+  const { path } = await ctx.params;
+  return proxy(req, path);
 }
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { path: string[] } }
-) {
-  return proxyRequest(req, params.path)
+export async function PUT(req: NextRequest, ctx: ProxyContext) {
+  const { path } = await ctx.params;
+  return proxy(req, path);
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { path: string[] } }
-) {
-  return proxyRequest(req, params.path)
+export async function DELETE(req: NextRequest, ctx: ProxyContext) {
+  const { path } = await ctx.params;
+  return proxy(req, path);
 }
 
 // --------------------
 
-async function proxyRequest(req: NextRequest, path: string[]) {
-  try {
-    const url = '/' + path.join('/')
-
-    const body =
-      req.method === 'GET' || req.method === 'DELETE'
-        ? undefined
-        : await req.json()
-
-    const apiRes = await api.request({
-      url,
-      method: req.method,
-      data: body,
-      headers: {
-        cookie: req.headers.get('cookie') || '',
-      },
-    })
-
-    const res = NextResponse.json(apiRes.data, {
-      status: apiRes.status,
-    })
-
-    // прокидуємо set-cookie (refresh flow)
-    const setCookie = apiRes.headers['set-cookie']
-    if (setCookie) {
-      const cookies = Array.isArray(setCookie) ? setCookie : [setCookie]
-      cookies.forEach(cookie =>
-        res.headers.append('Set-Cookie', cookie)
-      )
-    }
-
-    return res
-  } catch (error) {
-    if (isAxiosError(error)) {
-      return NextResponse.json(
-        { error: error.response?.data?.error ?? error.message },
-        { status: error.response?.status ?? 500 }
-      )
-    }
-
+async function proxy(req: NextRequest, path: string[]) {
+  if (!path?.length) {
     return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
-    )
+      { message: 'Invalid proxy path' },
+      { status: 400 }
+    );
   }
+
+  const url = `${BACKEND_URL}/${path.join('/')}`;
+
+  const body =
+    req.method === 'GET' || req.method === 'DELETE'
+      ? undefined
+      : await req.text();
+
+  const backendRes = await fetch(url, {
+    method: req.method,
+    body,
+    headers: {
+      'Content-Type': 'application/json',
+      cookie: req.headers.get('cookie') || '',
+    },
+    credentials: 'include',
+  });
+
+  const resBody = await backendRes.text();
+
+  const res = new NextResponse(resBody, {
+    status: backendRes.status,
+  });
+
+  const setCookie = backendRes.headers.get('set-cookie');
+  if (setCookie) {
+    res.headers.append('set-cookie', setCookie);
+  }
+
+  return res;
 }
