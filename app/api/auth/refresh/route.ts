@@ -3,9 +3,17 @@ import { api } from '../../../../services/api'
 import { parse } from 'cookie'
 import { isAxiosError } from 'axios'
 
-export async function POST() {
+export async function POST(req: Request): Promise<NextResponse> {
   try {
-    const apiRes = await api.post('/auth/refresh')
+    const apiRes = await api.post(
+      '/auth/refresh',
+      {},
+      {
+        headers: {
+          cookie: req.headers.get('cookie') || '',
+        },
+      }
+    )
 
     const res = NextResponse.json(apiRes.data, { status: apiRes.status })
 
@@ -43,6 +51,9 @@ export async function POST() {
       )
     }
 
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    )
   }
 }

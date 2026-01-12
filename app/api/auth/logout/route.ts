@@ -4,9 +4,15 @@ import { isAxiosError } from 'axios'
 
 export async function POST(req: Request) {
   try {
-    await api.post('/auth/logout', {
-      headers: { cookie: req.headers.get('cookie') || '' },
-    })
+    await api.post(
+  '/auth/logout',
+  {},
+  {
+    headers: {
+      cookie: req.headers.get('cookie') || '',
+    },
+  }
+)
 
     const res = NextResponse.json({ message: 'Logged out successfully' })
 
