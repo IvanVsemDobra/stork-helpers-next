@@ -2,29 +2,33 @@
 
 import React, { useEffect } from 'react'
 import { CloseOutlined } from '@ant-design/icons'
-import styles from './add-diary-entry-modal.module.scss'
+import styles from './AddDiaryEntryModal.module.css'
 import AddDiaryEntryForm from './AddDiaryEntryForm'
-import { DiaryEntry } from '@/interfaces/diary'
 
 interface AddDiaryEntryModalProps {
-  isOpen: boolean
+  isOpen?: boolean
   onClose: () => void
-  onSubmitSuccess: () => void
   isEdit?: boolean
-  initialData?: DiaryEntry | null
+  onSubmitSuccess: () => void
+  initialData?: {
+    title: string
+    emotions: string[]
+    message: string
+  }
 }
 
 export const AddDiaryEntryModal: React.FC<AddDiaryEntryModalProps> = ({
-  isOpen,
+  isOpen = true,
   onClose,
   onSubmitSuccess,
   isEdit = false,
-  initialData = null,
+  initialData,
 }) => {
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose()
     }
+
     if (isOpen) document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [isOpen, onClose])
@@ -34,14 +38,12 @@ export const AddDiaryEntryModal: React.FC<AddDiaryEntryModalProps> = ({
   return (
     <div className={styles.backdrop} onClick={onClose}>
       <div className={styles.content} onClick={e => e.stopPropagation()}>
-        <button className={styles.closeBtn} onClick={onClose} aria-label="Закрити">
+        <button className={styles.closeBtn} onClick={onClose}>
           <CloseOutlined />
         </button>
 
         <h2 className={styles.title}>{isEdit ? 'Редагувати запис' : 'Новий запис'}</h2>
-
         <AddDiaryEntryForm
-          isEdit={isEdit}
           initialData={initialData}
           onSubmitSuccess={onSubmitSuccess}
           onClose={onClose}
