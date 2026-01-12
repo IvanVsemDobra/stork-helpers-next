@@ -1,21 +1,17 @@
 'use client'
 
-import axios from 'axios'
+import React, { useEffect, useState, useId } from 'react'
 import { Field, Form, Formik, ErrorMessage } from 'formik'
-import { useEffect, useId, useState } from 'react'
 import * as Yup from 'yup'
+import axios from 'axios'
+import { api } from '@/app/api/client'
+import { Emotion, DiaryEntry } from '@/interfaces/diary'
 import styles from './AddDiaryEntryForm.module.css'
 
-interface Emotion {
-  _id: string
+interface FormValues {
   title: string
-}
-
-interface DiaryEntry {
-  _id: string
-  title: string
-  emotions: (string | Emotion)[]
-  message: string
+  emotions: string[]
+  description: string
 }
 
 interface AddDiaryEntryFormProps {
@@ -25,20 +21,10 @@ interface AddDiaryEntryFormProps {
   onClose: () => void
 }
 
-interface FormValues {
-  title: string
-  emotions: string[]
-  message: string
-}
-
 const validationSchema = Yup.object({
-  title: Yup.string()
-    .min(2, 'Має бути щонайменше 2 символи')
-    .required('Заголовок обовʼязковий'),
-  emotions: Yup.array()
-    .min(1, 'Виберіть хоча б одну емоцію')
-    .required(),
-  message: Yup.string().required('Поле обовʼязкове'),
+  title: Yup.string().min(2, 'Має бути щонайменше 2 символи').required('Заголовок обовʼязковий'),
+  emotions: Yup.array().min(1, 'Виберіть хоча б одну емоцію').required('Оберіть емоцію'),
+  description: Yup.string().min(5, 'Опишіть ваші думки детальніше').required('Поле обовʼязкове'),
 })
 
 export default function AddDiaryEntryForm({
@@ -48,60 +34,49 @@ export default function AddDiaryEntryForm({
   onClose,
 }: AddDiaryEntryFormProps) {
   const fieldId = useId()
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL
-
   const [availableEmotions, setAvailableEmotions] = useState<Emotion[]>([])
 
   useEffect(() => {
     const fetchEmotions = async () => {
       try {
-        const { data } = await axios.get<Emotion[]>(
-          `${API_BASE}/emotions`,
-          { withCredentials: true }
-        )
+        const { data } = await api.get<Emotion[]>('/emotions/emotions')
         setAvailableEmotions(data)
-      } catch (error) {
-        console.error('Помилка завантаження емоцій', error)
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          console.error('Помилка завантаження емоцій:', error.response?.status)
+        }
       }
     }
-
     fetchEmotions()
-  }, [API_BASE])
+  }, [])
 
   const initialValues: FormValues = initialData
     ? {
         title: initialData.title,
-        emotions: initialData.emotions.map(e =>
-          typeof e === 'string' ? e : e._id
+        emotions: initialData.emotions.map((e: string | unknown) =>
+          typeof e === 'string' ? e : (e as Emotion)._id
         ),
-        message: initialData.message,
+        description: initialData.description || '',
       }
     : {
         title: '',
         emotions: [],
-        message: '',
+        description: '',
       }
 
   const handleSubmit = async (values: FormValues) => {
     try {
       if (isEdit && initialData) {
-        await axios.patch(
-          `${API_BASE}/diaries/me/${initialData._id}`,
-          values,
-          { withCredentials: true }
-        )
+        await api.patch(`/diaries/me/${initialData._id}`, values)
       } else {
-        await axios.post(
-          `${API_BASE}/diaries/me`,
-          values,
-          { withCredentials: true }
-        )
+        await api.post('/diaries/me', values)
       }
-
       onSubmitSuccess()
       onClose()
-    } catch (error) {
-      alert('Помилка збереження запису')
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        alert(error.response?.status === 401 ? 'Авторизуйтесь знову' : 'Помилка збереження')
+      }
     }
   }
 
@@ -109,50 +84,55 @@ export default function AddDiaryEntryForm({
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      enableReinitialize
       onSubmit={handleSubmit}
+      enableReinitialize
     >
-      <Form className={styles.form}>
-        <div className={styles.fieldGroup}>
-          <label htmlFor={`${fieldId}-title`} className={styles.label}>
-            Заголовок
-          </label>
-          <Field id={`${fieldId}-title`} name="title" className={styles.input} />
-          <ErrorMessage name="title" component="div" className={styles.errorMessage} />
-        </div>
-
-        <div className={styles.fieldGroup}>
-          <label className={styles.label}>Емоції</label>
-          <div className={styles.checkboxGroup}>
-            {availableEmotions.map(e => (
-              <label key={e._id} className={styles.checkboxItem}>
-                <Field type="checkbox" name="emotions" value={e._id} />
-                {e.title}
-              </label>
-            ))}
+      {({ isSubmitting }) => (
+        <Form className={styles.form}>
+          <div className={styles.fieldGroup}>
+            <label htmlFor={`${fieldId}-title`} className={styles.label}>
+              Заголовок
+            </label>
+            <Field id={`${fieldId}-title`} name="title" className={styles.input} />
+            <ErrorMessage name="title" component="div" className={styles.errorMessage} />
           </div>
-          <ErrorMessage name="emotions" component="div" className={styles.errorMessage} />
-        </div>
 
-        <div className={styles.fieldGroup}>
-          <label htmlFor={`${fieldId}-message`} className={styles.label}>
-            Запис
-          </label>
-          <Field
-            as="textarea"
-            id={`${fieldId}-message`}
-            name="message"
-            className={styles.input}
-          />
-          <ErrorMessage name="message" component="div" className={styles.errorMessage} />
-        </div>
+          <div className={styles.fieldGroup}>
+            <label className={styles.label}>Емоції</label>
+            <div className={styles.checkboxGroup}>
+              {availableEmotions.map(e => (
+                <label key={e._id} className={styles.checkboxItem}>
+                  <Field type="checkbox" name="emotions" value={e._id} />
+                  <span>{e.title}</span>
+                </label>
+              ))}
+            </div>
+            <ErrorMessage name="emotions" component="div" className={styles.errorMessage} />
+          </div>
 
-        <div className={styles.buttonGroup}>
-          <button type="submit" className={styles.button}>
-            Зберегти
-          </button>
-        </div>
-      </Form>
+          <div className={styles.fieldGroup}>
+            <label htmlFor={`${fieldId}-desc`} className={styles.label}>
+              Текст запису
+            </label>
+            <Field
+              as="textarea"
+              id={`${fieldId}-desc`}
+              name="description"
+              className={styles.textarea}
+            />
+            <ErrorMessage name="description" component="div" className={styles.errorMessage} />
+          </div>
+
+          <div className={styles.buttonGroup}>
+            <button type="button" onClick={onClose} className={styles.buttonSecondary}>
+              Скасувати
+            </button>
+            <button type="submit" disabled={isSubmitting} className={styles.buttonPrimary}>
+              {isSubmitting ? 'Збереження...' : isEdit ? 'Оновити' : 'Зберегти'}
+            </button>
+          </div>
+        </Form>
+      )}
     </Formik>
   )
 }

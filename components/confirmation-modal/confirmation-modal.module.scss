@@ -35,6 +35,14 @@ $base-distance: 8px;
                     stroke: currentColor;
                     stroke-width: 48px;
                 }
+            
+            &:hover {
+                color: #B2B2B2;
+            }
+            
+            &:active {
+                color: #ffffff;
+            }
         }
 
         .title {
@@ -59,16 +67,43 @@ $base-distance: 8px;
                 cursor: pointer;
                 font-weight: 500;
                 font-size: 14px;
+                transition: all 0.2s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0 $base-distance * 3;
             }
 
             .cancel {
                 background-color: #FFDAE0;
-                border-bottom: $base-distance * 0.5 solid var(--Color-Scheme-Accent, #FFCBD3)
+                border-bottom: 4px solid #FFCBD3;
+            
+                &:hover {
+                    background-color: #ffcbd3;
+                    border-bottom-color: #f8b1bc;
+                }
+            
+                    &:active {
+                    background-color: #B2B2B2;
+                    border-bottom-color: #8c8c8c;
+                    transform: translateY(2px);
+                }
             }
             
             .confirm {
                 background-color: #0000000D;
-                border-bottom: $base-distance * 0.5 solid var(--Opacity-Neutral-Darkest-15, #00000026)
+                border-bottom: $base-distance * 0.5 solid #B2B2B2;
+
+                &:hover {
+                    background-color: #ffcbd3;
+                    border-bottom-color: #f8b1bc;
+                }
+                
+                &:active {
+                    background-color: #B2B2B2;
+                    border-bottom-color: #8c8c8c;
+                    transform: translateY(2px);
+                }
             }
         }
     }
