@@ -1,19 +1,11 @@
 import { create } from 'zustand'
+import type { User } from '../types/user'
 
-export type User = {
-  id: string
-  name: string
-  email: string
-  avatar?: string
-  theme?: 'girl' | 'boy' | 'neutral'
-  dueDate?: string
-  hasCompletedOnboarding: boolean
-}
+export type { User } from '../types/user' // ← SAFE
 
 export interface AuthState {
   user: User | null
   isAuthenticated: boolean
-
   setUser: (user: User) => void
   clearAuth: () => void
 }
