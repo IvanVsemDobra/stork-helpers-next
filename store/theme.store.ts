@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 export type ThemeType = 'boy' | 'girl' | 'neutral'
 
@@ -7,7 +8,14 @@ interface ThemeState {
   setTheme: (theme: ThemeType) => void
 }
 
-export const useThemeStore = create<ThemeState>(set => ({
-  theme: 'neutral',
-  setTheme: theme => set({ theme }),
-}))
+export const useThemeStore = create<ThemeState>()(
+  persist(
+    set => ({
+      theme: 'neutral',
+      setTheme: theme => set({ theme }),
+    }),
+    {
+      name: 'theme-storage', // унікальне ім'я для localStorage
+    }
+  )
+)
