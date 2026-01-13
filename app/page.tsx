@@ -2,6 +2,7 @@ import { MomTipCard } from '@/components/MomTipCard/mom-tip-card'
 import css from './page.module.css'
 import { getFirstWeekInfo, getMyDayWeekInfo } from '@/services/server/weeks.server'
 import { BabyTodayCard } from '@/components/BabyTodayCard/baby-today-card'
+import { FeelingCheckCard } from '@/components/FeelingCheckCard/FeelingCheckCard'
 // Містить в собі компоненти:
 // GreetingBlock,
 // StatusBlock,
@@ -30,18 +31,20 @@ export default async function DashboardPage() {
       {/* в компонентах огортайте розмітку в <section></section>, а при 
       додаванні компонентів сюди теги <section></section> прибирайте */}
       <section>GreetingBlock</section>
-      <section>StatusBlock</section>      
-        <BabyTodayCard
-          image={weekData.image}
-          imageAlt={weekData.imageAlt}
-          babySize={weekData.babySize}
-          babyWeight={weekData.babyWeight}
-          babyActivity={weekData.babyActivity}
-          babyDevelopment={weekData.babyDevelopment}
-        />
-        <MomTipCard tipIndex={tipIndex} momDailyTips={weekData.momDailyTips} />
+      <section>StatusBlock</section>
+      <BabyTodayCard
+        image={weekData.image}
+        imageAlt={weekData.imageAlt}
+        babySize={weekData.babySize}
+        babyWeight={weekData.babyWeight}
+        babyActivity={weekData.babyActivity}
+        babyDevelopment={weekData.babyDevelopment}
+      />
+      <MomTipCard tipIndex={tipIndex} momDailyTips={weekData.momDailyTips} />
       <section>TasksReminderCard</section>
-      <section>FeelingCheckCard</section>
+      <section>
+        <FeelingCheckCard />
+      </section>
     </div>
   )
 }
