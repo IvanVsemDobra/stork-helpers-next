@@ -6,7 +6,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 
-import { updateProfile, uploadAvatar } from '@/services/profile.service'
+import { updateProfile, updateUserAvatar } from '@/services/users.service'
 import { useAuthStore } from '@/store/auth.store'
 
 import OnboardingAvatar from '@/components/OnboardingAvatar/OnboardingAvatar'
@@ -33,7 +33,7 @@ export default function OnboardingForm() {
 
   const mutation = useMutation({
     mutationFn: async (values: OnboardingValues) => {
-      if (values.avatar) await uploadAvatar(values.avatar)
+      if (values.avatar) await updateUserAvatar(values.avatar)
       return updateProfile({
         name: values.name,
         theme: values.theme,

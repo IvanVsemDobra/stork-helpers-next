@@ -1,109 +1,145 @@
-.container {
-  background-color: var(--color-bg-card);
-  border-radius: 24px;
-  padding: 32px;
-  border: 1px solid var(--color-border-default);
-  max-width: 335px;
-  margin: 0 auto 40px;
+.formLayout {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 32px;
+
+  width: 100%;
+
+  max-width: 580px;
 }
 
-@media (min-width: 768px) {
-  .container {
-    max-width: 704px;
-  }
-}
-@media (min-width: 1440px) {
-  .container {
-    max-width: 644px;
-  }
-}
+.fieldsStack {
+  display: flex;
 
-.form {
-  display: grid;
+  flex-direction: column;
+
   gap: 24px;
 }
-.fieldGroup {
+
+.inputWrapper {
   display: flex;
+
   flex-direction: column;
+
   gap: 8px;
 }
 
 .label {
-  font-family: var(--second-family);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 16px;
+
   color: var(--color-text-primary);
+
+  font-weight: 400;
 }
 
-.input,
-.select {
-  padding: 14px 16px;
-  border-radius: 12px;
+.textInput,
+.selectInput {
+  padding: 12px 16px;
+
+  border-radius: 8px;
+
   border: 1px solid var(--color-border-default);
-  background-color: var(--opacity-neutral-darkest-5);
-  outline: none;
-  transition: all 0.2s ease;
+
+  background-color: var(--color-bg-primary);
+
   color: var(--color-text-primary);
-  width: 100%;
+
+  font-size: 16px;
+
+  outline: none;
+
+  transition: border-color 0.2s;
 }
 
-.input:focus {
+.textInput:focus,
+.selectInput:focus {
   border-color: var(--theme-main);
-  background-color: #fff;
 }
 
-.inputError {
-  border-color: var(--color-danger) !important;
-  background-color: rgba(198, 0, 0, 0.05);
-}
+.gridRow {
+  display: grid;
 
-.readOnlyInput {
-  opacity: 0.6;
-  cursor: not-allowed;
-  background-color: var(--opacity-neutral-darkest-10);
-}
+  grid-template-columns: 1fr 1fr;
 
-.errorText {
-  color: var(--color-danger);
-  font-size: 12px;
-  font-weight: 500;
-  margin-top: 4px;
+  gap: 24px;
 }
 
 .actions {
   display: flex;
+
+  justify-content: flex-end;
+
   gap: 16px;
-  margin-top: 10px;
+
+  padding-top: 24px;
 }
 
-.saveBtn,
-.cancelBtn {
-  flex: 1;
-  padding: 14px;
+.primaryBtn,
+.secondaryBtn {
+  padding: 12px 28px;
+
   border-radius: 100px;
-  font-weight: 700;
+
+  font-weight: 600;
+
   cursor: pointer;
+
   border: none;
-  transition: transform 0.1s, opacity 0.2s;
+
+  font-size: 16px;
+
+  transition: opacity 0.2s, background-color 0.2s;
 }
 
-.saveBtn {
+.primaryBtn {
   background-color: var(--theme-main);
-  color: white;
+
+  color: #ffffff;
 }
 
-.cancelBtn {
-  background-color: var(--opacity-neutral-darkest-10);
+.primaryBtn:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+.secondaryBtn {
+  background-color: transparent;
+
+  border: 1px solid var(--color-border-default);
+
   color: var(--color-text-primary);
 }
 
-.saveBtn:active,
-.cancelBtn:active {
-  transform: scale(0.97);
+.secondaryBtn:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
 }
 
-.saveBtn:disabled,
-.cancelBtn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.error {
+  color: var(--color-danger);
+
+  font-size: 12px;
+
+  margin-top: -4px;
+}
+
+/* Адаптація під мобільні */
+
+@media (max-width: 600px) {
+  .gridRow {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    width: 100%;
+  }
 }
