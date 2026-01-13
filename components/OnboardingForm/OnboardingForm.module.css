@@ -1,0 +1,22 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-family: var(--font-family-base); 
+}
+
+.submit {
+  padding: 12px 24px;
+  background-color: var(--color-accent-primary);
+  color: var(--color-white);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: var(--font-family-accent); 
+  font-weight: 700;
+}
+
+.submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

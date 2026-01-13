@@ -1,27 +1,47 @@
-import styles from './page.module.css'
-import Link from 'next/link'
+import { MomTipCard } from '@/components/MomTipCard/mom-tip-card'
+import css from './page.module.css'
+import { getFirstWeekInfo, getMyDayWeekInfo } from '@/services/server/weeks.server'
+import { BabyTodayCard } from '@/components/BabyTodayCard/baby-today-card'
+// Містить в собі компоненти:
+// GreetingBlock,
+// StatusBlock,
+// BabyTodayCard,       +
+// MomTipCard,          +
+// TasksReminderCard,
+// FeelingCheckCard,
 
-export default function Home() {
+// Загальна поведінка блоків на сторінці:
+// Десктоп:
+// Всі блоки-компоненти на цій сторінці повинні мати статичну (фіксовану) висоту згідно з макетом. У разі, якщо внутрішній контент перевищує висоту блоку, всередині блоку повинен з'являтись вертикальний скрол.
+// Планшет та мобілка:
+// Висота блоків динамічно змінюється відповідно до кількості контенту.
+
+export default async function DashboardPage() {
+  let weekData
+  try {
+    weekData = await getMyDayWeekInfo()
+  } catch {
+    weekData = await getFirstWeekInfo()
+  }
+  const tipIndex = 6 - (weekData.daysToMeeting % 7)
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <div className={styles.intro}>
-          <h1>Мій день</h1>
-          <p>
-            Застосунок для підтримки під час вагітності: відстежуйте завдання, емоції та щоденні
-            нотатки.
-          </p>
-        </div>
-
-        <div className={styles.ctas}>
-          <Link href="/auth/login" className={styles.primary}>
-            Увійти
-          </Link>
-          <Link href="/auth/register" className={styles.secondary}>
-            Створити акаунт
-          </Link>
-        </div>
-      </main>
+    <div className={css.container}>
+      {/* в компонентах огортайте розмітку в <section></section>, а при 
+      додаванні компонентів сюди теги <section></section> прибирайте */}
+      <section>GreetingBlock</section>
+      <section>StatusBlock</section>      
+        <BabyTodayCard
+          image={weekData.image}
+          imageAlt={weekData.imageAlt}
+          babySize={weekData.babySize}
+          babyWeight={weekData.babyWeight}
+          babyActivity={weekData.babyActivity}
+          babyDevelopment={weekData.babyDevelopment}
+        />
+        <MomTipCard tipIndex={tipIndex} momDailyTips={weekData.momDailyTips} />
+      <section>TasksReminderCard</section>
+      <section>FeelingCheckCard</section>
     </div>
   )
 }
