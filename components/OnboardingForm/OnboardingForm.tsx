@@ -8,6 +8,7 @@ import toast from 'react-hot-toast'
 
 import { updateProfile, updateUserAvatar } from '@/services/users.service'
 import { useAuthStore } from '@/store/auth.store'
+import { useThemeStore } from '@/store/theme.store'
 
 import OnboardingAvatar from '@/components/OnboardingAvatar/OnboardingAvatar'
 import OnboardingCustomDate from '@/components/OnboardingCustomDate/OnboardingCustomDate'
@@ -30,6 +31,7 @@ const schema = Yup.object({
 export default function OnboardingForm() {
   const router = useRouter()
   const { user, setUser } = useAuthStore()
+  const setTheme = useThemeStore(state => state.setTheme)
 
   const mutation = useMutation({
     mutationFn: async (values: OnboardingValues) => {
@@ -42,6 +44,7 @@ export default function OnboardingForm() {
     },
     onSuccess: user => {
       setUser(user)
+      setTheme(user.theme ?? 'neutral')
       toast.success('Онбординг завершено')
       router.push('/diary')
     },
