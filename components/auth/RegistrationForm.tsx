@@ -3,6 +3,7 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 import { register } from '@/services/auth.service'
 import { useAuthStore } from '@/store/auth.store'
@@ -55,80 +56,93 @@ export const RegistrationForm = () => {
       }}
     >
       {({ isSubmitting, isValid }) => (
-        <div className={css.auth_wraper}>
-          <Form>
-            <div className={css.auth_logo}>
-              <AppLogo className={css.auth_logo_img} />
-            </div>
-            <div className={css.auth_container}>
-              <h1 className={css.auth_title}>Реєстрація</h1>
-              <div className={css.auth_wrap_input}>
-                <div className={css.auth_field}>
-                  <label htmlFor="name" className={css.auth_label}>
-                    Імʼя<span className={css.auth_required}>*</span>{' '}
-                  </label>
-                  <Field
-                    className={css.auth_input}
-                    name="name"
-                    maxLength={32}
-                    type="text"
-                    placeholder="Ваше імʼя"
-                  ></Field>
-                  <ErrorMessage name="name">
-                    {msg => <div className={css.ui_error}>{msg}</div>}
-                  </ErrorMessage>
-                </div>
-
-                <div className={css.auth_field}>
-                  <label htmlFor="email" className={css.auth_label}>
-                    Пошта<span className={css.auth_required}>*</span>{' '}
-                  </label>
-                  <Field
-                    className={css.auth_input}
-                    name="email"
-                    maxLength={64}
-                    type="email"
-                    placeholder="Пошта"
-                  ></Field>
-                  <ErrorMessage name="email">
-                    {msg => <div className={css.ui_error}>{msg}</div>}
-                  </ErrorMessage>
-                </div>
-
-                <div className={css.auth_field}>
-                  <label htmlFor="password" className={css.auth_label}>
-                    Пароль<span className={css.auth_required}>*</span>{' '}
-                  </label>
-                  <Field
-                    className={css.auth_input}
-                    name="password"
-                    maxLength={128}
-                    type="password"
-                    placeholder="Пароль"
-                  ></Field>
-                  <ErrorMessage name="password">
-                    {msg => <div className={css.ui_error}>{msg}</div>}
-                  </ErrorMessage>
-                </div>
-
-                <button
-                  className={css.auth_button}
-                  type="submit"
-                  disabled={isSubmitting || !isValid}
-                >
-                  Зареєструватися
-                </button>
-              </div>
-
-              <div className={css.auth_text}>
-                Ви вже маєте акаунт?
-                <Link className={css.auth_text_link} href="/auth/login">
-                  Увійти
+        <div className={css.auth_wrapper}>
+          <div className={css.auth_form}>
+            <Form>
+              <div className={css.auth_logo}>
+                <Link href="/" aria-label="Перейти на мій день">
+                  <AppLogo className={css.auth_logo_img} />
                 </Link>
               </div>
-            </div>
-          </Form>
-          <div className={css.auth_image} />
+              <div className={css.auth_container}>
+                <h1 className={css.auth_title}>Реєстрація</h1>
+                <div className={css.auth_wrap_input}>
+                  <div className={css.auth_field}>
+                    <label htmlFor="name" className={css.auth_label}>
+                      Імʼя<span className={css.auth_required}>*</span>{' '}
+                    </label>
+                    <Field
+                      className={css.auth_input}
+                      name="name"
+                      maxLength={32}
+                      type="text"
+                      placeholder="Ваше імʼя"
+                    ></Field>
+                    <ErrorMessage name="name">
+                      {msg => <div className={css.ui_error}>{msg}</div>}
+                    </ErrorMessage>
+                  </div>
+
+                  <div className={css.auth_field}>
+                    <label htmlFor="email" className={css.auth_label}>
+                      Пошта<span className={css.auth_required}>*</span>{' '}
+                    </label>
+                    <Field
+                      className={css.auth_input}
+                      name="email"
+                      maxLength={64}
+                      type="email"
+                      placeholder="Пошта"
+                    ></Field>
+                    <ErrorMessage name="email">
+                      {msg => <div className={css.ui_error}>{msg}</div>}
+                    </ErrorMessage>
+                  </div>
+
+                  <div className={css.auth_field}>
+                    <label htmlFor="password" className={css.auth_label}>
+                      Пароль<span className={css.auth_required}>*</span>{' '}
+                    </label>
+                    <Field
+                      className={css.auth_input}
+                      name="password"
+                      maxLength={128}
+                      type="password"
+                      placeholder="Пароль"
+                    ></Field>
+                    <ErrorMessage name="password">
+                      {msg => <div className={css.ui_error}>{msg}</div>}
+                    </ErrorMessage>
+                  </div>
+
+                  <button
+                    className={css.auth_button}
+                    type="submit"
+                    disabled={isSubmitting || !isValid}
+                  >
+                    Зареєструватися
+                  </button>
+                </div>
+
+                <div className={css.auth_text}>
+                  Ви вже маєте акаунт?
+                  <Link className={css.auth_text_link} href="/auth/login">
+                    Увійти
+                  </Link>
+                </div>
+              </div>
+            </Form>
+          </div>
+          <div className={css.auth_image}>
+            <Image
+              src="/images/twoStorksInTheNest/two_storks_in_the_nest.jpg"
+              alt="Білі лелеки в гнізді"
+              fill
+              priority
+              sizes="50vw"
+              style={{ objectFit: 'contain', objectPosition: 'center' }}
+            />
+          </div>
         </div>
       )}
     </Formik>

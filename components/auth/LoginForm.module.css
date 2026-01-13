@@ -7,6 +7,8 @@
 }
 
 .auth_logo_img {
+  display: inline-flex;
+  cursor: pointer;
   width: 105px;
   height: 45px;
 }
@@ -38,6 +40,11 @@
   flex-direction: column;
   gap: 16px;
   align-items: center;
+}
+.auth_field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .auth_input {
@@ -130,10 +137,15 @@
   .auth_logo {
     left: 40px;
   }
-  .auth_wraper {
+  .auth_wrapper {
+    display: flex;
     min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    width: 100vw;
+  }
+
+  .auth_form {
+    flex: 1;
+    background: #fff;
   }
   .auth_input {
     height: 40px;
@@ -159,9 +171,9 @@
 
   .auth_image {
     display: block;
-    background-image: url('/images/eggsInTheNest/eggs_in_the_nest.jpg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
+    position: relative;
+    flex: 1;
+    height: 100vh;
+    overflow: hidden;
   }
 }
