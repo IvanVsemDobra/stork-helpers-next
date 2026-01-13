@@ -1,3 +1,4 @@
+import TasksList from '@/components/tasks/TasksList'
 import css from './page.module.css'
 // Містить в собі компоненти:
 // GreetingBlock,
@@ -20,7 +21,8 @@ export default function DashboardPage() {
       <section>StatusBlock</section>
       <section>BabyTodayCard</section>
       <section>MomTipCard</section>
-      <section>TasksReminderCard</section>
+      <aside className={css.tasksSidebar}>
+        <TasksList isAuthenticated={true} /> </aside>
       <section>FeelingCheckCard</section>
     </div>
   )
