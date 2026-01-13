@@ -31,10 +31,19 @@ $base-distance: 8px;
             border: none;
             font-size: 13.5px;
             padding: 5.5px;
+
             svg {
-                    stroke: currentColor;
-                    stroke-width: 48px;
-                }
+                stroke: currentColor;
+                stroke-width: 48px;
+            }
+
+            &:hover {
+                color: #B2B2B2;
+            }
+
+            &:active {
+                color: #ffffff;
+            }
         }
 
         .title {
@@ -59,16 +68,44 @@ $base-distance: 8px;
                 cursor: pointer;
                 font-weight: 500;
                 font-size: 14px;
+                transition: all 0.2s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0 $base-distance * 3;
             }
 
             .cancel {
-                background-color: #FFDAE0;
-                border-bottom: $base-distance * 0.5 solid var(--Color-Scheme-Accent, #FFCBD3)
+                background: var(--color-scheme-foreground-alt);
+                color: #333;
+                border-bottom: 4px solid var(--color-scheme-accent);
+
+                &:hover,
+                &:focus-visible {
+                    background: var(--color-scheme-foreground);
+                }
+
+                &:active {
+                    transform: translateY(1px);
+                    border-bottom-width: 2px;
+                }
             }
-            
+
             .confirm {
-                background-color: #0000000D;
-                border-bottom: $base-distance * 0.5 solid var(--Opacity-Neutral-Darkest-15, #00000026)
+                background: var(--opacity-neutral-darkest-5);
+                color: #333;
+                border: none;
+                border-bottom: 4px solid var(--opacity-neutral-darkest-15);
+
+                &:hover,
+                &:focus-visible {
+                    background: var(--color-scheme-background);
+                }
+
+                &:active {
+                    transform: translateY(1px);
+                    border-bottom-width: 2px;
+                }
             }
         }
     }
