@@ -8,9 +8,16 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'ftp.goit.study',
-        pathname: '/img/**',
       },
     ],
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api-proxy/:path*',
+        destination: 'https://stork-helpers-api.onrender.com/api/:path*',
+      },
+    ];
   },
 };
 

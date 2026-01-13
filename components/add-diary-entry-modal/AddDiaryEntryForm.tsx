@@ -52,17 +52,17 @@ export default function AddDiaryEntryForm({
 
   const initialValues: FormValues = initialData
     ? {
-        title: initialData.title,
-        emotions: initialData.emotions.map((e: string | unknown) =>
-          typeof e === 'string' ? e : (e as Emotion)._id
-        ),
-        description: initialData.description || '',
-      }
+      title: initialData.title,
+      emotions: initialData.emotions.map((e: string | unknown) =>
+        typeof e === 'string' ? e : (e as Emotion)._id
+      ),
+      description: initialData.description || '',
+    }
     : {
-        title: '',
-        emotions: [],
-        description: '',
-      }
+      title: '',
+      emotions: [],
+      description: '',
+    }
 
   const handleSubmit = async (values: FormValues) => {
     try {
