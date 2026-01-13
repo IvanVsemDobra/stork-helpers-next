@@ -1,7 +1,7 @@
 import { Layout } from '@/components/layout/Layout'
 import type { Metadata } from 'next'
 import { Lato, Comfortaa } from 'next/font/google'
-// import './globals.css'
+import './globals.css'
 import { Providers } from './providers'
 // import { Toaster } from 'react-hot-toast'
 
@@ -18,8 +18,8 @@ const comfortaa = Comfortaa({
 })
 
 export const metadata: Metadata = {
-  title: 'Pregnancy App',
-  description: 'Pregnancy helper application',
+  title: 'Leleka',
+  description: 'Pregnancy tracking application',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -27,14 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="uk" suppressHydrationWarning>
       <body className={`${lato.variable} ${comfortaa.variable}`}>
         <Providers>
-          <Layout>
-            <div>
-              Початок лейауту: Загальний макет для сторінок. Складається з компонентів: Header,
-              Breadcrumbs, SideBar та рендерить дочірні компоненти (children).
-            </div>
-            {children}
-            Кінець лейауту
-          </Layout>
+          <Layout>{children}</Layout>
         </Providers>
       </body>
     </html>
