@@ -29,6 +29,7 @@
 }
 
 .feelingcheck_button {
+  border: none;
   border-bottom: 4px solid var(--color-scheme-accent);
   border-radius: 100px;
   padding: 10px 24px;
@@ -40,4 +41,34 @@
   font-size: 14px;
   line-height: 160%;
   color: var(--color-scheme-text);
+}
+
+/* tablet */
+@media (min-width: 768px) {
+  .feelingcheck_section {
+    width: 704px;
+  }
+}
+
+/* desktop */
+@media (min-width: 1280px) {
+  .feelingcheck_section {
+    width: 390px;
+    height: 210px;
+  }
+
+  .feelingcheck_title {
+    font-size: 24px;
+  }
+
+  .feelingcheck_recommendation {
+    font-size: 16px;
+  }
+
+  .feelingcheck_button {
+    border: none;
+    width: 250px;
+    height: 46px;
+    font-size: 16px;
+  }
 }
