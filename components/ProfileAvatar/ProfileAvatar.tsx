@@ -1,36 +1,30 @@
 'use client'
 
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import Image from 'next/image'
 import { toast } from 'react-hot-toast'
-import type { User } from '@/types/user'
 import { updateUserAvatar } from '@/services/users.service'
 import { useAuthStore } from '@/store/auth.store'
+import { Loader } from '@/components/Loader/Loader'
 import styles from './ProfileAvatar.module.css'
 
 export default function ProfileAvatar() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { user, setUser } = useAuthStore()
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [localPreview, setLocalPreview] = useState<string | null>(null)
 
-  // Очищення URL після демонтажу для запобігання витоку пам'яті
-  useEffect(() => {
-    return () => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl)
-    }
-  }, [previewUrl])
-
-  const mutation = useMutation<User, Error, File>({
-    mutationFn: updateUserAvatar,
-    onSuccess: (updatedUser: User) => {
-      setUser(updatedUser) // Zustand store оновлення
-      setPreviewUrl(null)
+  const mutation = useMutation({
+    mutationFn: (file: File) => updateUserAvatar(file),
+    onSuccess: updatedUser => {
+      setUser(updatedUser)
       toast.success('Фото оновлено')
+      // Не видаляємо localPreview миттєво, даємо браузеру час підтягнути нове фото з URL
+      setTimeout(() => setLocalPreview(null), 1000)
     },
-    onError: (err: Error) => {
-      setPreviewUrl(null)
-      toast.error(err.message || 'Помилка завантаження')
+    onError: () => {
+      setLocalPreview(null)
+      toast.error('Не вдалося завантажити фото')
     },
   })
 
@@ -38,8 +32,10 @@ export default function ProfileAvatar() {
     const file = e.target.files?.[0]
     if (!file) return
 
-    if (previewUrl) URL.revokeObjectURL(previewUrl)
-    setPreviewUrl(URL.createObjectURL(file))
+    // Створюємо тимчасовий URL для миттєвого відображення
+    const objectUrl = URL.createObjectURL(file)
+    setLocalPreview(objectUrl)
+
     mutation.mutate(file)
   }
 
@@ -50,13 +46,18 @@ export default function ProfileAvatar() {
       <div className={styles.imageWrapper}>
         <Image
           src={
-            previewUrl || user.avatar || '/images/unknownAvatarImage/unknown_avatar_Image@2x.jpg'
+            localPreview || user.avatar || '/images/unknownAvatarImage/unknown_avatar_Image@2x.jpg'
           }
           alt="Avatar"
           fill
-          sizes="132px"
+          unoptimized // Важливо для аватарів, що часто змінюються
           className={styles.avatarImg}
         />
+        {mutation.isPending && (
+          <div className={styles.loaderOverlay}>
+            <Loader variant="inline" />
+          </div>
+        )}
       </div>
 
       <div className={styles.userInfo}>
@@ -67,9 +68,9 @@ export default function ProfileAvatar() {
           type="button"
           className={styles.uploadBtn}
           onClick={() => fileInputRef.current?.click()}
-          disabled={mutation.isPending} // Виправлено: isPending замість isMutating
+          disabled={mutation.isPending}
         >
-          {mutation.isPending ? 'Завантаження...' : 'Завантажити нове фото'}
+          {mutation.isPending ? 'Збереження...' : 'Завантажити нове фото'}
         </button>
 
         <input ref={fileInputRef} type="file" hidden accept="image/*" onChange={handleFileChange} />
