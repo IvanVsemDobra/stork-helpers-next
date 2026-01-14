@@ -1,15 +1,16 @@
+import { GreetingBlock } from '@/components/GreetingBlock/GreetingBlock'
 import { MomTipCard } from '@/components/MomTipCard/mom-tip-card'
 import css from './page.module.css'
 import { getFirstWeekInfo, getMyDayWeekInfo } from '@/services/server/weeks.server'
 import { BabyTodayCard } from '@/components/BabyTodayCard/baby-today-card'
 import { FeelingCheckCard } from '@/components/FeelingCheckCard/FeelingCheckCard'
 // Містить в собі компоненти:
-// GreetingBlock,
-// StatusBlock,
-// BabyTodayCard,       +
-// MomTipCard,          +
-// TasksReminderCard,
-// FeelingCheckCard,
+// GreetingBlock      ✅
+// StatusBlock        (Ще не підключено)
+// BabyTodayCard      ✅
+// MomTipCard         ✅
+// TasksReminderCard  (Ще не підключено)
+// FeelingCheckCard   ✅
 
 // Загальна поведінка блоків на сторінці:
 // Десктоп:
@@ -30,7 +31,7 @@ export default async function DashboardPage() {
     <div className={css.container}>
       {/* в компонентах огортайте розмітку в <section></section>, а при 
       додаванні компонентів сюди теги <section></section> прибирайте */}
-      <section>GreetingBlock</section>
+      <GreetingBlock />
       <section>StatusBlock</section>
       <BabyTodayCard
         image={weekData.image}
