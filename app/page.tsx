@@ -1,21 +1,18 @@
-import TasksList from '@/components/tasks/TasksList'
+import { GreetingBlock } from '@/components/GreetingBlock/GreetingBlock'
+import { MomTipCard } from '@/components/MomTipCard/mom-tip-card'
 import css from './page.module.css'
 import { getFirstWeekInfo, getMyDayWeekInfo } from '@/services/server/weeks.server'
 import { BabyTodayCard } from '@/components/BabyTodayCard/baby-today-card'
 import { FeelingCheckCard } from '@/components/FeelingCheckCard/FeelingCheckCard'
+import TasksList from '@/components/tasks/TasksList'
+
 // Містить в собі компоненти:
 // GreetingBlock      ✅
 // StatusBlock        (Ще не підключено)
 // BabyTodayCard      ✅
 // MomTipCard         ✅
-// TasksReminderCard  (Ще не підключено)
+// TasksReminderCard  ✅ (Підключено через TasksList)
 // FeelingCheckCard   ✅
-
-// Загальна поведінка блоків на сторінці:
-// Десктоп:
-// Всі блоки-компоненти на цій сторінці повинні мати статичну (фіксовану) висоту згідно з макетом. У разі, якщо внутрішній контент перевищує висоту блоку, всередині блоку повинен з'являтись вертикальний скрол.
-// Планшет та мобілка:
-// Висота блоків динамічно змінюється відповідно до кількості контенту.
 
 export default async function DashboardPage() {
   let weekData
@@ -28,15 +25,28 @@ export default async function DashboardPage() {
 
   return (
     <div className={css.container}>
-      {/* в компонентах огортайте розмітку в <section></section>, а при 
-      додаванні компонентів сюди теги <section></section> прибирайте */}
       <GreetingBlock />
+
       <section>StatusBlock</section>
-      <section>BabyTodayCard</section>
-      <section>MomTipCard</section>
+
+      <BabyTodayCard
+        image={weekData.image}
+        imageAlt={weekData.imageAlt}
+        babySize={weekData.babySize}
+        babyWeight={weekData.babyWeight}
+        babyActivity={weekData.babyActivity}
+        babyDevelopment={weekData.babyDevelopment}
+      />
+
+      <MomTipCard tipIndex={tipIndex} momDailyTips={weekData.momDailyTips} />
+
       <aside className={css.tasksSidebar}>
-        <TasksList isAuthenticated={true} /> </aside>
-      <section>FeelingCheckCard</section>
+        <TasksList isAuthenticated={true} />
+      </aside>
+
+      <section>
+        <FeelingCheckCard />
+      </section>
     </div>
   )
 }
