@@ -22,4 +22,13 @@
     margin-inline: auto;
     gap: 32px;
   }
+
+  /* tasks-block */
+  .tasksSidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
 }
+
+

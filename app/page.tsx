@@ -1,5 +1,4 @@
-import { GreetingBlock } from '@/components/GreetingBlock/GreetingBlock'
-import { MomTipCard } from '@/components/MomTipCard/mom-tip-card'
+import TasksList from '@/components/tasks/TasksList'
 import css from './page.module.css'
 import { getFirstWeekInfo, getMyDayWeekInfo } from '@/services/server/weeks.server'
 import { BabyTodayCard } from '@/components/BabyTodayCard/baby-today-card'
@@ -33,19 +32,11 @@ export default async function DashboardPage() {
       додаванні компонентів сюди теги <section></section> прибирайте */}
       <GreetingBlock />
       <section>StatusBlock</section>
-      <BabyTodayCard
-        image={weekData.image}
-        imageAlt={weekData.imageAlt}
-        babySize={weekData.babySize}
-        babyWeight={weekData.babyWeight}
-        babyActivity={weekData.babyActivity}
-        babyDevelopment={weekData.babyDevelopment}
-      />
-      <MomTipCard tipIndex={tipIndex} momDailyTips={weekData.momDailyTips} />
-      <section>TasksReminderCard</section>
-      <section>
-        <FeelingCheckCard />
-      </section>
+      <section>BabyTodayCard</section>
+      <section>MomTipCard</section>
+      <aside className={css.tasksSidebar}>
+        <TasksList isAuthenticated={true} /> </aside>
+      <section>FeelingCheckCard</section>
     </div>
   )
 }
