@@ -1,146 +1,133 @@
 'use client'
 
-import { Formik, Form, Field, ErrorMessage, FieldProps } from 'formik'
+import { Formik, Form, Field, useFormikContext } from 'formik'
 import * as Yup from 'yup'
 import { useMutation } from '@tanstack/react-query'
-import toast from 'react-hot-toast'
-import { updateProfile } from '@/services/profile.service'
+import toast, { Toaster } from 'react-hot-toast'
+import { useEffect } from 'react'
+
+import { updateUser } from '@/services/users.service'
 import { useAuthStore } from '@/store/auth.store'
+import { useThemeStore } from '@/store/theme.store'
+import { Loader } from '@/components/Loader/Loader'
+
 import styles from './ProfileEditForm.module.css'
 
+interface ProfileFormValues {
+  name: string
+  email: string
+  theme: 'boy' | 'girl' | 'neutral'
+  dueDate: string
+}
+
+const validationSchema = Yup.object({
+  name: Yup.string().min(2, 'Занадто коротке').required('Обовʼязкове'),
+  theme: Yup.string().oneOf(['boy', 'girl', 'neutral']).required(),
+  dueDate: Yup.string().required('Оберіть дату'),
+})
+
+function ThemeWatcher() {
+  const { values } = useFormikContext<ProfileFormValues>()
+  const setTheme = useThemeStore(state => state.setTheme)
+
+  useEffect(() => {
+    setTheme(values.theme)
+    document.documentElement.setAttribute('data-theme', values.theme)
+  }, [values.theme, setTheme])
+
+  return null
+}
+
 export default function ProfileEditForm() {
-  const { user, setUser } = useAuthStore()
+  const user = useAuthStore(state => state.user)
+  const setUser = useAuthStore(state => state.setUser)
+  const setTheme = useThemeStore(state => state.setTheme)
 
   const mutation = useMutation({
-    mutationFn: updateProfile,
-    onSuccess: updatedUser => {
-      setUser(updatedUser)
-      toast.success('Дані успішно оновлено')
+    mutationFn: (values: ProfileFormValues) => updateUser(values),
+    onSuccess: data => {
+      setUser(data)
+      const newTheme = (data.theme as ProfileFormValues['theme']) || 'neutral'
+      setTheme(newTheme)
+      toast.success('Зміни збережено')
     },
-
-    onError: (error: Error) => {
-      toast.error(error.message || 'Помилка збереження')
-    },
+    onError: (err: Error) => toast.error(err.message),
   })
 
   if (!user) return null
 
+  // Обмеження 40 тижнів
   const today = new Date().toISOString().split('T')[0]
-  const maxDateObj = new Date()
-  maxDateObj.setMonth(maxDateObj.getMonth() + 10)
-  const maxDate = maxDateObj.toISOString().split('T')[0]
-
-  const validationSchema = Yup.object({
-    name: Yup.string().min(2, 'Занадто коротке').required("Ім'я обов'язкове"),
-    email: Yup.string().email('Некоректний email').required("Email обов'язковий"),
-    theme: Yup.string().oneOf(['boy', 'girl', 'neutral']).required('Оберіть стать'),
-    dueDate: Yup.date().required('Оберіть дату'),
-  })
+  const maxDate = new Date()
+  maxDate.setDate(maxDate.getDate() + 280)
+  const maxDateStr = maxDate.toISOString().split('T')[0]
 
   return (
-    <div className={styles.container}>
-      <Formik
+    <>
+      <Toaster position="top-right" />
+      <Formik<ProfileFormValues>
         enableReinitialize
         initialValues={{
           name: user.name || '',
           email: user.email || '',
-          theme: user.theme || 'neutral',
+          theme: (user.theme as ProfileFormValues['theme']) || 'neutral',
           dueDate: user.dueDate ? new Date(user.dueDate).toISOString().split('T')[0] : '',
         }}
         validationSchema={validationSchema}
         onSubmit={values => mutation.mutate(values)}
       >
-        {({ resetForm, isSubmitting, dirty, errors, touched }) => (
-          <Form className={styles.form} noValidate>
-            {/* Поле: Ім'я */}
-            <div className={styles.fieldGroup}>
-              <label className={styles.label}>Імʼя</label>
-              <Field name="name">
-                {({ field }: FieldProps) => (
-                  <input
-                    {...field}
-                    className={`${styles.input} ${
-                      errors.name && touched.name ? styles.inputError : ''
-                    }`}
-                    placeholder="Ваше ім'я"
-                  />
-                )}
-              </Field>
-              <ErrorMessage name="name" component="div" className={styles.errorText} />
-            </div>
+        {({ dirty, resetForm }) => (
+          <Form className={styles.formLayout} noValidate>
+            <ThemeWatcher />
+            <div className={styles.fieldsStack}>
+              <div className={styles.inputWrapper}>
+                <label className={styles.label}>Імʼя</label>
+                <Field name="name" className={styles.textInput} />
+              </div>
 
-            {/* Поле: Email */}
-            <div className={styles.fieldGroup}>
-              <label className={styles.label}>Пошта (не редагується)</label>
-              <Field name="email">
-                {({ field }: FieldProps) => (
-                  <input
-                    {...field}
-                    type="email"
-                    className={`${styles.input} ${styles.readOnlyInput}`}
-                    readOnly
-                  />
-                )}
-              </Field>
-            </div>
+              <div className={styles.inputWrapper}>
+                <label className={styles.label}>Пошта</label>
+                <Field name="email" type="email" className={styles.textInput} disabled />
+              </div>
 
-            {/* Поле: Стать */}
-            <div className={styles.fieldGroup}>
-              <label className={styles.label}>Стать дитини</label>
-              <Field
-                as="select"
-                name="theme"
-                className={`${styles.select} ${
-                  errors.theme && touched.theme ? styles.inputError : ''
-                }`}
-              >
-                <option value="neutral">Ще не знаємо</option>
-                <option value="boy">Хлопчик</option>
-                <option value="girl">Дівчинка</option>
-              </Field>
-              <ErrorMessage name="theme" component="div" className={styles.errorText} />
-            </div>
+              <div className={styles.gridRow}>
+                <div className={styles.inputWrapper}>
+                  <label className={styles.label}>Стать дитини</label>
+                  <Field as="select" name="theme" className={styles.selectInput}>
+                    <option value="neutral">Ще не знаю</option>
+                    <option value="boy">Хлопчик</option>
+                    <option value="girl">Дівчинка</option>
+                  </Field>
+                </div>
 
-            {/* Поле: Дата */}
-            <div className={styles.fieldGroup}>
-              <label className={styles.label}>Планова дата пологів</label>
-              <Field name="dueDate">
-                {({ field }: FieldProps) => (
-                  <input
-                    {...field}
+                <div className={styles.inputWrapper}>
+                  <label className={styles.label}>Дата пологів</label>
+                  <Field
+                    name="dueDate"
                     type="date"
                     min={today}
-                    max={maxDate}
-                    className={`${styles.input} ${
-                      errors.dueDate && touched.dueDate ? styles.inputError : ''
-                    }`}
+                    max={maxDateStr}
+                    className={styles.textInput}
                   />
-                )}
-              </Field>
-              <ErrorMessage name="dueDate" component="div" className={styles.errorText} />
+                </div>
+              </div>
             </div>
 
-            {/* Кнопки дії */}
             <div className={styles.actions}>
               <button
-                type="button"
-                className={styles.cancelBtn}
-                onClick={() => resetForm()}
-                disabled={!dirty || isSubmitting}
-              >
-                Відмінити
-              </button>
-              <button
                 type="submit"
-                className={styles.saveBtn}
-                disabled={!dirty || isSubmitting || mutation.isPending}
+                disabled={!dirty || mutation.isPending}
+                className={styles.primaryBtn}
               >
-                {mutation.isPending ? 'Збереження...' : 'Зберегти зміни'}
+                {mutation.isPending ? <Loader variant="inline" /> : 'Зберегти зміни'}
+              </button>
+              <button type="button" className={styles.secondaryBtn} onClick={() => resetForm()}>
+                Відмінити зміни
               </button>
             </div>
           </Form>
         )}
       </Formik>
-    </div>
+    </>
   )
 }

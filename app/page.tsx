@@ -1,12 +1,15 @@
 import TasksList from '@/components/tasks/TasksList'
 import css from './page.module.css'
+import { getFirstWeekInfo, getMyDayWeekInfo } from '@/services/server/weeks.server'
+import { BabyTodayCard } from '@/components/BabyTodayCard/baby-today-card'
+import { FeelingCheckCard } from '@/components/FeelingCheckCard/FeelingCheckCard'
 // Містить в собі компоненти:
-// GreetingBlock,
-// StatusBlock,
-// BabyTodayCard,
-// MomTipCard,
-// TasksReminderCard,
-// FeelingCheckCard,
+// GreetingBlock      ✅
+// StatusBlock        (Ще не підключено)
+// BabyTodayCard      ✅
+// MomTipCard         ✅
+// TasksReminderCard  (Ще не підключено)
+// FeelingCheckCard   ✅
 
 // Загальна поведінка блоків на сторінці:
 // Десктоп:
@@ -14,10 +17,20 @@ import css from './page.module.css'
 // Планшет та мобілка:
 // Висота блоків динамічно змінюється відповідно до кількості контенту.
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  let weekData
+  try {
+    weekData = await getMyDayWeekInfo()
+  } catch {
+    weekData = await getFirstWeekInfo()
+  }
+  const tipIndex = 6 - (weekData.daysToMeeting % 7)
+
   return (
     <div className={css.container}>
-      <section>GreetingBlock</section>
+      {/* в компонентах огортайте розмітку в <section></section>, а при 
+      додаванні компонентів сюди теги <section></section> прибирайте */}
+      <GreetingBlock />
       <section>StatusBlock</section>
       <section>BabyTodayCard</section>
       <section>MomTipCard</section>

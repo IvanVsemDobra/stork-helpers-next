@@ -1,0 +1,12 @@
+.containersGroup {
+    display: flex;
+    align-items: stretch;
+    gap: 32px;
+    justify-content: center;
+
+    .columnLeft,
+    .columnRight {
+        display: flex;
+        flex-direction: column;
+    }
+}

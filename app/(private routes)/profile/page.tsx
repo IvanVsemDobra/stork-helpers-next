@@ -7,12 +7,9 @@ import { useProtectedRoute } from '@/hooks/useProtectedRoute'
 
 export default function ProfilePage() {
   useProtectedRoute()
-
   const { user } = useAuthStore()
 
-  if (!user) {
-    return null
-  }
+  if (!user) return null
 
   return (
     <main>

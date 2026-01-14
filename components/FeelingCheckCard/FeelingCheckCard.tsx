@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { useAuthStore } from '@/store/auth.store'
-// import { AddDiaryEntryModal } from '@/components/diary/AddDiaryEntryModal'
+import { AddDiaryEntryModal } from '@/components/add-diary-entry-modal/AddDiaryEntryModal'
 
 import css from './FeelingCheckCard.module.css'
 
@@ -40,7 +40,13 @@ export const FeelingCheckCard = () => {
         Зробити запис у щоденник
       </button>
 
-      {/* {user && <AddDiaryEntryModal isOpen={isModalOpen} onClose={handleCloseModal} />} */}
+      {user && isModalOpen && (
+        <AddDiaryEntryModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onSubmitSuccess={handleCloseModal}
+        />
+      )}
     </section>
   )
 }
