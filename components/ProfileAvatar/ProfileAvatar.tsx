@@ -1,30 +1,29 @@
 'use client'
 
-import { useRef, useState } from 'react'
-import { useMutation } from '@tanstack/react-query'
-import Image from 'next/image'
-import { toast } from 'react-hot-toast'
-import { updateUserAvatar } from '@/services/users.service'
-import { useAuthStore } from '@/store/auth.store'
-import { Loader } from '@/components/Loader/Loader'
 import styles from './ProfileAvatar.module.css'
+import { useRef } from 'react'
+import toast from 'react-hot-toast'
+import Image from 'next/image'
+import { useAuthStore } from '@/store/auth.store'
+import { useMutation } from '@tanstack/react-query'
+import { updateUserAvatar } from '@/services/users.service'
+import type { User } from '@/types/user'
 
-export default function ProfileAvatar() {
-  const fileInputRef = useRef<HTMLInputElement>(null)
+const MAX_SIZE = 2 * 1024 * 1024
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
+
+export const ProfileAvatar = () => {
+  const inputRef = useRef<HTMLInputElement>(null)
   const { user, setUser } = useAuthStore()
-  const [localPreview, setLocalPreview] = useState<string | null>(null)
 
-  const mutation = useMutation({
-    mutationFn: (file: File) => updateUserAvatar(file),
+  const { mutate, isPending } = useMutation<User, Error, File>({
+    mutationFn: updateUserAvatar,
     onSuccess: updatedUser => {
       setUser(updatedUser)
-      toast.success('Фото оновлено')
-      // Не видаляємо localPreview миттєво, даємо браузеру час підтягнути нове фото з URL
-      setTimeout(() => setLocalPreview(null), 1000)
+      toast.success('Аватар оновлено')
     },
-    onError: () => {
-      setLocalPreview(null)
-      toast.error('Не вдалося завантажити фото')
+    onError: error => {
+      toast.error(error.message)
     },
   })
 
@@ -32,49 +31,54 @@ export default function ProfileAvatar() {
     const file = e.target.files?.[0]
     if (!file) return
 
-    // Створюємо тимчасовий URL для миттєвого відображення
-    const objectUrl = URL.createObjectURL(file)
-    setLocalPreview(objectUrl)
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      toast.error('Дозволені лише зображення (JPEG, PNG, WEBP)')
+      return
+    }
 
-    mutation.mutate(file)
+    if (file.size > MAX_SIZE) {
+      toast.error('Файл завеликий (макс. 2MB)')
+      return
+    }
+
+    mutate(file)
   }
 
-  if (!user) return null
-
   return (
-    <div className={styles.card}>
+    <div className={styles.wrapper}>
       <div className={styles.imageWrapper}>
         <Image
-          src={
-            localPreview || user.avatar || '/images/unknownAvatarImage/unknown_avatar_Image@2x.jpg'
-          }
+          src={user?.avatar || '/images/unknownAvatarImage/unknown_avatar_Image.jpg'}
           alt="Avatar"
-          fill
-          unoptimized // Важливо для аватарів, що часто змінюються
+          width={72}
+          height={72}
           className={styles.avatarImg}
+          priority
+          unoptimized // Важливо: дозволяє миттєво побачити нове фото після завантаження
         />
-        {mutation.isPending && (
-          <div className={styles.loaderOverlay}>
-            <Loader variant="inline" />
-          </div>
-        )}
       </div>
 
-      <div className={styles.userInfo}>
-        <h2 className={styles.name}>{user.name}</h2>
-        <p className={styles.email}>{user.email}</p>
+      <div className={styles.info}>
+        <p className={styles.name}>{user?.name || 'Гість'}</p>
+        <p className={styles.email}>{user?.email}</p>
 
         <button
-          type="button"
           className={styles.uploadBtn}
-          onClick={() => fileInputRef.current?.click()}
-          disabled={mutation.isPending}
+          onClick={() => inputRef.current?.click()}
+          disabled={isPending}
+          type="button"
         >
-          {mutation.isPending ? 'Збереження...' : 'Завантажити нове фото'}
+          {isPending ? 'Завантаження...' : 'Завантажити нове фото'}
         </button>
-
-        <input ref={fileInputRef} type="file" hidden accept="image/*" onChange={handleFileChange} />
       </div>
+
+      <input
+        ref={inputRef}
+        type="file"
+        hidden
+        onChange={handleFileChange}
+        accept="image/jpeg,image/png,image/webp"
+      />
     </div>
   )
 }

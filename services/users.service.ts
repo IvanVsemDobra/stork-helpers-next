@@ -8,7 +8,6 @@ interface ApiError {
 
 export const updateUser = async (data: Partial<User>): Promise<User> => {
   try {
-    // Відправляємо дані як є, бо форми вже працюють з полем theme
     const res = await api.patch<User>('/users/me', data)
     return res.data
   } catch (error) {
@@ -23,9 +22,7 @@ export const updateUserAvatar = async (file: File): Promise<User> => {
   formData.append('avatar', file)
 
   try {
-    const res = await api.patch<User>('/users/avatar', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    })
+    const res = await api.patch<User>('/users/avatar', formData)
     return res.data
   } catch (error) {
     const axiosError = error as AxiosError<ApiError>
