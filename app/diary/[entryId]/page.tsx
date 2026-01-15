@@ -3,10 +3,14 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import axios from 'axios'
+import { Spin } from 'antd'
+import { LoadingOutlined } from '@ant-design/icons'
 import { DiaryService } from '@/services/diary.service'
 import { DiaryEntryDetails } from '@/components/diary-page/diary-entry-details.component'
 import { DiaryEntry, Emotion } from '@/interfaces/diary'
-import styles from './styles.module.scss'
+import styles from './styles.module.css'
+
+const antIcon = <LoadingOutlined style={{ fontSize: 48, color: '#FEF1DB' }} spin />
 
 export default function DiaryEntryPage() {
   const params = useParams()
@@ -27,7 +31,6 @@ export default function DiaryEntryPage() {
         ])
 
         setAllEmotions(emotions)
-
         const foundEntry = entries.find((e: DiaryEntry) => e._id === entryId)
 
         if (foundEntry) {
@@ -35,24 +38,24 @@ export default function DiaryEntryPage() {
         } else {
           router.push('/diary')
         }
-      } catch (error: unknown) {
-        if (axios.isAxiosError(error)) {
-          console.error('Помилка завантаження даних:', error.response?.status)
-        } else {
-          console.error('Невідома помилка:', error)
+      } catch (err: unknown) {
+        if (axios.isAxiosError(err)) {
+          console.error('Помилка завантаження:', err.response?.status)
         }
       } finally {
         setLoading(false)
       }
     }
 
-    if (entryId) {
-      fetchData()
-    }
+    if (entryId) fetchData()
   }, [entryId, router])
 
   if (loading) {
-    return <div className={styles.loader}>Завантаження...</div>
+    return (
+      <div className={styles.loaderContainer}>
+        <Spin indicator={antIcon} tip="Завантажуємо запис..." />
+      </div>
+    )
   }
 
   if (!entry) return null
@@ -62,11 +65,9 @@ export default function DiaryEntryPage() {
       <DiaryEntryDetails
         entry={entry}
         allEmotions={allEmotions}
-        onDeleteSuccess={() => {
-          router.push('/diary')
-        }}
+        onDeleteSuccess={() => router.push('/diary')}
         onEditTrigger={(entryToEdit: DiaryEntry) => {
-          console.log('Редагування запису:', entryToEdit._id)
+          console.log('Edit:', entryToEdit._id)
         }}
       />
     </div>
