@@ -1,0 +1,17 @@
+.containersGroup {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+}
+
+.columnLeft,
+.columnRight {
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (min-width: 1440px) {
+    .containersGroup {
+        gap: 32px;
+    }
+}
