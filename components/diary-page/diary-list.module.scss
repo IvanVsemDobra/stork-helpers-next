@@ -1,143 +1,318 @@
+// $base-distance: 8px;
+
+// .diaryListContainer {
+//   display: flex;
+//   padding: $base-distance * 3 $base-distance * 2;
+//   background-color: #fff4f6;
+//   border-radius: $base-distance * 4;
+//   margin: 0 $base-distance * 2.5;
+//   height: 100%;
+
+//   .firstColumn {
+//     display: flex;
+//     flex-direction: column;
+//     gap: $base-distance * 2;
+//   }
+
+//   .topContainer {
+//     display: flex;
+//     justify-content: space-between;
+
+//     .title {
+//       margin: 0;
+//       font-family: 'Comfortaa', cursive;
+//       font-weight: 700;
+//     }
+
+//     .addEntryButton {
+//       display: flex;
+//       gap: $base-distance;
+//       background-color: #fff4f6;
+//       border: none;
+//       cursor: pointer;
+//       padding: 0;
+//       margin: 0;
+//       width: 114px;
+//       height: $base-distance * 3;
+//       align-items: center;
+//       font-family: 'Lato', sans-serif;
+//       font-weight: 500;
+//       flex-wrap: nowrap;
+//       color: var(--color-neutral-darker);
+//       transition: color 0.2s ease, background-color 0.2s ease;
+
+//       span {
+//         color: inherit;
+//       }
+
+//       svg {
+//         fill: currentColor;
+//       }
+
+//       &:hover {
+//         color: #ffffff;
+//       }
+
+//       &:active {
+//         color: #b2b2b2;
+//       }
+
+//       .newEntry {
+//         padding: 0;
+//         margin: 0;
+//       }
+
+//       .addCircle {
+//         width: $base-distance * 3;
+//         height: $base-distance * 3;
+//       }
+//     }
+//   }
+
+//   .listContainer {
+//     display: flex;
+//     flex-direction: column;
+//     gap: $base-distance * 2;
+
+//     .entryCard {
+//       display: flex;
+//       flex-direction: column;
+//       gap: $base-distance;
+//       background-color: #ffdae0;
+//       padding: $base-distance * 2;
+//       border-radius: $base-distance * 2;
+//       cursor: pointer;
+//       transition: background-color 0.2s ease;
+
+//       &:hover {
+//         background-color: #ffcbd3;
+//       }
+
+//       &:active {
+//         background-color: #b2b2b2;
+//       }
+
+//       .entryHeader {
+//         display: flex;
+//         justify-content: space-between;
+//         align-items: center;
+
+//         .entryTitle {
+//           padding: 0;
+//           margin: 0;
+//           font-family: 'Lato', sans-serif;
+//           font-weight: 600;
+//         }
+//       }
+
+//       .emotionsWrapper {
+//         display: flex;
+//         align-items: center;
+//         gap: $base-distance;
+//         flex-wrap: wrap;
+
+//         .emotionTag {
+//           background-color: #fff4f6;
+//           padding: 2px 12px;
+//           border-radius: 100px;
+//           font-family: 'Lato', sans-serif;
+//           font-weight: 400;
+//           font-size: 14px;
+//         }
+//       }
+//     }
+//   }
+// }
+
+// @media screen and (min-width: 768px) {
+//   .diaryListContainer {
+//     margin: 0 $base-distance * 4;
+//   }
+// }
+
+// @media screen and (min-width: 1440px) {
+//   .diaryListContainer {
+//     width: 389px;
+//     margin: 0;
+
+//     .newEntry {
+//       width: 125px;
+//     }
+//   }
+// }
+
 $base-distance: 8px;
 
 .diaryListContainer {
-    display: flex;
-    padding: $base-distance * 3 $base-distance * 2;
-    background-color: #FFF4F6;
-    border-radius: $base-distance * 4;
-    margin: 0 $base-distance * 2.5;
-    height: 100%;
+  display: flex;
 
-    .firstColumn {
-        display: flex;
-        flex-direction: column;
-        gap: $base-distance * 2;
+  width: 100%;
+  min-width: 0;
+
+  padding: $base-distance * 3 $base-distance * 2;
+  background-color: #fff4f6;
+  border-radius: $base-distance * 4;
+  margin: 0 $base-distance * 2.5;
+  height: 100%;
+
+  .firstColumn {
+    display: flex;
+    flex-direction: column;
+    gap: $base-distance * 2;
+
+    width: 100%;
+    min-width: 0;
+  }
+
+  .topContainer {
+    display: flex;
+    justify-content: space-between;
+
+    width: 100%;
+    min-width: 0;
+
+    .title {
+      margin: 0;
+      font-family: 'Comfortaa', cursive;
+      font-weight: 700;
+
+      min-width: 0;
     }
 
-    .topContainer {
+    .addEntryButton {
+      display: flex;
+      gap: $base-distance;
+      background-color: #fff4f6;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      margin: 0;
+      width: 114px;
+      height: $base-distance * 3;
+      align-items: center;
+      font-family: 'Lato', sans-serif;
+      font-weight: 500;
+      flex-wrap: nowrap;
+      color: var(--color-neutral-darker);
+      transition: color 0.2s ease, background-color 0.2s ease;
+
+      flex: 0 0 auto;
+
+      span {
+        color: inherit;
+      }
+
+      svg {
+        fill: currentColor;
+      }
+
+      &:hover {
+        color: #ffffff;
+      }
+
+      &:active {
+        color: #b2b2b2;
+      }
+
+      .newEntry {
+        padding: 0;
+        margin: 0;
+      }
+
+      .addCircle {
+        width: $base-distance * 3;
+        height: $base-distance * 3;
+      }
+    }
+  }
+
+  .listContainer {
+    display: flex;
+    flex-direction: column;
+    gap: $base-distance * 2;
+
+    width: 100%;
+    min-width: 0;
+
+    .entryCard {
+      display: flex;
+      flex-direction: column;
+      gap: $base-distance;
+      background-color: #ffdae0;
+      padding: $base-distance * 2;
+      border-radius: $base-distance * 2;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+
+      width: 100%;
+      min-width: 0;
+
+      &:hover {
+        background-color: #ffcbd3;
+      }
+
+      &:active {
+        background-color: #b2b2b2;
+      }
+
+      .entryHeader {
         display: flex;
         justify-content: space-between;
+        align-items: center;
 
-        .title {
-            margin: 0;
-            font-family: 'Comfortaa', cursive;
-            font-weight: 700;
+        width: 100%;
+        min-width: 0;
+
+        .entryTitle {
+          padding: 0;
+          margin: 0;
+          font-family: 'Lato', sans-serif;
+          font-weight: 600;
+
+          min-width: 0;
         }
+      }
 
-        .addEntryButton {
-            display: flex;
-            gap: $base-distance;
-            background-color: #FFF4F6;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            margin: 0;
-            width: 114px;
-            height: $base-distance * 3;
-            align-items: center;
-            font-family: 'Lato', sans-serif;
-            font-weight: 500;
-            flex-wrap: nowrap;
-            color: var(--color-neutral-darker); 
-            transition: color 0.2s ease, background-color 0.2s ease;
-
-            span {
-                color: inherit;
-            }
-
-            svg {
-                fill: currentColor;
-            }
-
-            &:hover {
-                color: #ffffff;
-            }
-
-            &:active {
-                color: #B2B2B2;
-            }
-
-        
-            .newEntry {
-                padding: 0;
-                margin: 0;
-            }
-        
-            .addCircle {
-                width: $base-distance * 3;
-                height: $base-distance * 3;
-            }
-        }
-    }
-
-    .listContainer {
+      .emotionsWrapper {
         display: flex;
-        flex-direction: column;
-        gap: $base-distance * 2;
+        align-items: center;
+        gap: $base-distance;
+        flex-wrap: wrap;
 
-        .entryCard {
-                display: flex;
-                flex-direction: column;
-                gap: $base-distance;
-                background-color: #FFDAE0;
-                padding: $base-distance * 2;
-                border-radius: $base-distance * 2;
-                cursor: pointer;
-                transition: background-color 0.2s ease;
+        width: 100%;
+        min-width: 0;
 
-                &:hover {
-                    background-color: #ffcbd3;
-                }
+        .emotionTag {
+          background-color: #fff4f6;
+          padding: 2px 12px;
+          border-radius: 100px;
+          font-family: 'Lato', sans-serif;
+          font-weight: 400;
+          font-size: 14px;
 
-                &:active {
-                    background-color: #B2B2B2;
-                }
-        
-                .entryHeader {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-        
-                    .entryTitle {
-                        padding: 0;
-                        margin: 0;
-                        font-family: 'Lato', sans-serif;
-                        font-weight: 600;
-                    }
-                }
-        
-                .emotionsWrapper {
-                    display: flex;
-                    align-items: center;
-                    gap: $base-distance;
-                    flex-wrap: wrap;
-        
-                    .emotionTag {
-                        background-color: #FFF4F6;
-                        padding: 2px 12px;
-                        border-radius: 100px;
-                        font-family: 'Lato', sans-serif;
-                        font-weight: 400;
-                        font-size: 14px;
-                    }
-                }
-            }
+          max-width: 100%;
+        }
+      }
     }
+  }
 }
 
 @media screen and (min-width: 768px) {
-    .diaryListContainer {
-        margin: 0 $base-distance * 4;
-    }
+  .diaryListContainer {
+    margin: 0 $base-distance * 4;
+  }
 }
 
 @media screen and (min-width: 1440px) {
-    .diaryListContainer {
-        width: 389px;
-        margin: 0;
+  .diaryListContainer {
+    width: 389px;
+    margin: 0;
 
-        .newEntry {
-            width: 125px;
-        }
+    flex: 0 0 389px;
+    min-width: 389px;
+
+    .newEntry {
+      width: 125px;
     }
+  }
 }

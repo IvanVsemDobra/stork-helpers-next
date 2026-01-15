@@ -3,6 +3,8 @@
 import React, { useEffect } from 'react'
 import { CloseOutlined } from '@ant-design/icons'
 import styles from './add-diary-entry-modal.module.scss'
+// import styles from './AddDiaryEntryModal.module.css'
+
 import AddDiaryEntryForm from './AddDiaryEntryForm'
 import { DiaryEntry } from '@/interfaces/diary'
 

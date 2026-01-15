@@ -1,4 +1,4 @@
-.form {
+/* .form {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -97,5 +97,267 @@
   .submitButton {
     width: 100%;
     height: 44px;
+  }
+} */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fieldGroupCategories {
+  position: relative;
+  z-index: 20;
+}
+
+.fieldGroupTextarea {
+  position: relative;
+  z-index: 1;
+}
+
+.label {
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  color: #000;
+}
+
+.input {
+  width: 100%;
+  height: 40px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background-color: #f5f5f5;
+  border: 2px solid transparent;
+  transition: 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #ffdae0;
+  background-color: #fff;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 160px;
+  padding: 12px;
+  border-radius: 12px;
+  background-color: #f5f5f5;
+  border: 2px solid transparent;
+  resize: none;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: #ffdae0;
+  background-color: #fff;
+}
+
+.errorMessage {
+  font-size: 14px;
+  color: #ff4444;
+}
+
+/* ---------------------------- */
+/* Dropdown control + panel     */
+/* ---------------------------- */
+
+.dropdownControl {
+  width: 100%;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-radius: 12px;
+  border: 1px var(--opacity-transparent);
+  background: var(--color-neutral-lightest);
+
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.dropdownControlOpen {
+  border-color: #ffdae0;
+  box-shadow: 0 0 0 3px rgba(255, 218, 224, 0.35);
+}
+
+.dropdownValue {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.dropdownPlaceholder {
+  color: #8f8f8f;
+  font-family: 'Lato', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chevronIcon {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  transform: rotate(90deg);
+  transition: transform 0.15s ease;
+}
+
+.chevronIconOpen {
+  transform: rotate(-90deg);
+}
+
+.dropdownPanel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(48px + 8px);
+  z-index: 999;
+
+  border-radius: 12px;
+  border: 1px solid #d9d9d9;
+  background: var(--color-neutral-lightest);
+
+  overflow: hidden;
+}
+
+/* Scroll area */
+.dropdownScroll {
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+/* ✅ scrollbar (Chrome/Safari) — як на макеті */
+.dropdownScroll::-webkit-scrollbar {
+  width: 12px;
+}
+
+.dropdownScroll::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 999px;
+}
+
+.dropdownScroll::-webkit-scrollbar-thumb {
+  background: #ffb8c6;
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+/* Firefox */
+.dropdownScroll {
+  scrollbar-width: thin;
+  scrollbar-color: #ffb8c6 rgba(0, 0, 0, 0.15);
+}
+
+/* Option row */
+.optionRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 12px;
+  cursor: pointer;
+}
+
+.optionRow:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.optionRowChecked {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+/* hide native checkbox */
+.nativeCheckbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ✅ checkbox like макет: сірий квадратик, а checked — SVG зі спрайта */
+.checkboxBox {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: #e9e9e9;
+  display: grid;
+  place-items: center;
+  flex: 0 0 28px;
+}
+
+.checkboxIcon {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+
+.optionText {
+  font-family: var(--font-family);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-scheme-text);
+}
+
+/* Buttons */
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.buttonSecondary {
+  height: 46px;
+  padding: 0 24px;
+  border-radius: 100px;
+  border: 1px solid #d9d9d9;
+  background: #fff;
+  cursor: pointer;
+}
+
+.buttonPrimary {
+  width: 268px;
+  height: 46px;
+  background: #ffdae0;
+  border-radius: 100px;
+  border: none;
+  border-bottom: 4px solid #ffcbd3;
+  cursor: pointer;
+}
+
+.buttonPrimary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive widths */
+@media screen and (min-width: 768px) and (max-width: 1439px) {
+  .input,
+  .dropdownControl,
+  .textarea {
+    width: 640px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .input,
+  .dropdownControl,
+  .textarea {
+    width: 100%;
+  }
+
+  .buttonPrimary {
+    width: 100%;
   }
 }
