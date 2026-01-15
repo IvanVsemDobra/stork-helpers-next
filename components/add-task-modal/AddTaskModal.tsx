@@ -6,6 +6,7 @@ import { CloseOutlined } from '@ant-design/icons'
 interface AddTaskModalProps {
   isOpen: boolean
   onClose: () => void
+  onTaskSaved: () => void
   taskToEdit?: {
     id: string
     title: string
