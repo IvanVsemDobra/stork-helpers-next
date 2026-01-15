@@ -7,7 +7,7 @@ import { DiaryList } from '@/components/diary-page/diary-list.component'
 import { DiaryEntryDetails } from '@/components/diary-page/diary-entry-details.component'
 import { AddDiaryEntryModal } from '@/components/add-diary-entry-modal/add-diary-entry-modal'
 import { DiaryEntry, Emotion } from '@/interfaces/diary'
-import styles from './styles.module.scss'
+import styles from './styles.module.css'
 
 export default function DiaryPage() {
   const [entries, setEntries] = useState<DiaryEntry[]>([])

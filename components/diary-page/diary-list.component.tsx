@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { DiaryEntry, DiaryListProps } from '../../interfaces/diary'
 import { AddDiaryEntryModal } from '../add-diary-entry-modal/add-diary-entry-modal'
-import styles from './diary-list.module.scss'
+import styles from './diary-list.module.css'
 
 export const DiaryList: React.FC<DiaryListProps> = ({
   entries,
