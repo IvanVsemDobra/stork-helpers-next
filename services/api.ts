@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios from 'axios'
 
-const isServer = typeof window === 'undefined';
-const BASE_URL = isServer 
-  ? (process.env.NEXT_PUBLIC_API_URL || 'https://stork-helpers-api.onrender.com/api')
-  : '/api';
+const isServer = typeof window === 'undefined'
+const BASE_URL = isServer
+  ? process.env.NEXT_PUBLIC_API_URL || 'https://stork-helpers-api.onrender.com/api'
+  : '/api'
 
 export const api = axios.create({
   baseURL: BASE_URL,
@@ -11,4 +11,4 @@ export const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-});
+})

@@ -21,7 +21,6 @@ export const ProfileEditForm = () => {
   const { setTheme } = useThemeStore()
   const initialEmail = user?.email
 
-  // Обмеження дати (сьогодні + 280 днів)
   const today = new Date().toISOString().split('T')[0]
   const maxDate = new Date()
   maxDate.setDate(maxDate.getDate() + 280)
@@ -31,9 +30,11 @@ export const ProfileEditForm = () => {
     mutationFn: updateProfile,
     onSuccess: updatedUser => {
       setUser(updatedUser)
+
       if (updatedUser.email !== initialEmail && updatedUser.email) {
         sendVerificationEmail(updatedUser.email).catch(err => toast.error(err.message))
       }
+
       toast.success('Профіль оновлено')
     },
     onError: error => toast.error(error.message),
@@ -50,44 +51,43 @@ export const ProfileEditForm = () => {
       }}
       validationSchema={validationSchema}
       onSubmit={values => {
-        // ВИПРАВЛЕНО: замість any використовуємо тип безпосередньо з User
         const selectedTheme = values.theme as NonNullable<User['theme']>
         setTheme(selectedTheme)
         mutate(values)
       }}
     >
       {({ resetForm, errors, touched }) => (
-        <Form className={styles.formLayout}>
-          <div className={styles.fieldsStack}>
-            <div className={styles.inputGroup}>
+        <Form className={styles.form}>
+          <div className={styles.fields}>
+            <div className={styles.field}>
               <label className={styles.label}>Імʼя</label>
-              <Field name="name" className={styles.textInput} placeholder="Ваше ім'я" />
+              <Field name="name" className={styles.input} placeholder="Ваше ім'я" />
               {touched.name && errors.name && <span className={styles.error}>{errors.name}</span>}
             </div>
 
-            <div className={styles.inputGroup}>
-              <label className={styles.label}>Email</label>
-              <Field name="email" className={styles.textInput} placeholder="example@mail.com" />
+            <div className={styles.field}>
+              <label className={styles.label}>Пошта</label>
+              <Field name="email" className={styles.input} placeholder="example@mail.com" />
               {touched.email && errors.email && (
                 <span className={styles.error}>{errors.email}</span>
               )}
             </div>
 
-            <div className={styles.inputGroup}>
+            <div className={styles.field}>
               <label className={styles.label}>Стать дитини</label>
-              <Field as="select" name="theme" className={styles.selectInput}>
+              <Field as="select" name="theme" className={styles.select}>
                 <option value="girl">Дівчинка</option>
                 <option value="boy">Хлопчик</option>
                 <option value="neutral">Ще не знаю</option>
               </Field>
             </div>
 
-            <div className={styles.inputGroup}>
+            <div className={styles.field}>
               <label className={styles.label}>Планова дата пологів</label>
               <Field
                 type="date"
                 name="dueDate"
-                className={styles.textInput}
+                className={styles.input}
                 min={today}
                 max={maxDateStr}
               />
@@ -98,11 +98,11 @@ export const ProfileEditForm = () => {
           </div>
 
           <div className={styles.actions}>
-            <button type="button" className={styles.cancelBtn} onClick={() => resetForm()}>
-              Відмінити
+            <button type="button" className={styles.cancel} onClick={() => resetForm()}>
+              Відмінити зміни
             </button>
 
-            <button type="submit" className={styles.submitBtn} disabled={isPending}>
+            <button type="submit" className={styles.submit} disabled={isPending}>
               {isPending ? 'Збереження...' : 'Зберегти зміни'}
             </button>
           </div>
