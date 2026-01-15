@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios from 'axios'
 
 export const api = axios.create({
-    baseURL: '/api/proxy',
+    baseURL: process.env.API_URL, // 🔥 ОБОВʼЯЗКОВО
     withCredentials: true,
-});
+})

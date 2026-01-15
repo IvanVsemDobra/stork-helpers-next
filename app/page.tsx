@@ -3,6 +3,7 @@ import css from './page.module.css'
 import { getFirstWeekInfo, getMyDayWeekInfo } from '@/services/server/weeks.server'
 import { BabyTodayCard } from '@/components/BabyTodayCard/baby-today-card'
 import { FeelingCheckCard } from '@/components/FeelingCheckCard/FeelingCheckCard'
+import { GreetingBlock } from '@/components/GreetingBlock/GreetingBlock'
 // Містить в собі компоненти:
 // GreetingBlock      ✅
 // StatusBlock        (Ще не підключено)
