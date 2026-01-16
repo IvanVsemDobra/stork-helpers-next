@@ -1,0 +1,80 @@
+/*========== MOBILE =============*/
+
+.list {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+}
+
+.week {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 32px;
+  padding: 16px;
+  width: 97px;
+  height: 87px;
+  border: 0px solid rgba(0, 0, 0, 0.15);
+
+  cursor: pointer;
+}
+
+.past {
+  background-color: #fff4f6;
+}
+
+.current {
+  border: 4px solid rgba(0, 0, 0, 0.15);
+  background-color: #ffcbd3;
+}
+
+.future {
+  cursor: default;
+  pointer-events: none;
+  background-color: #f2f2f2;
+  opacity: 0.6;
+}
+
+.value {
+  font-family: 'Comfortaa', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  text-align: center;
+  color: #000;
+}
+
+.text {
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+  color: #000;
+}
+
+.text,
+.value {
+  margin: 0;
+}
+
+/*========== TABLET =============*/
+
+/*========== DESKTOP ============*/
+
+@media (min-width: 1440px) {
+  .week {
+    height: 101px;
+  }
+
+  .value {
+    font-size: 32px;
+  }
+
+  .text {
+    font-size: 16px;
+  }
+}
