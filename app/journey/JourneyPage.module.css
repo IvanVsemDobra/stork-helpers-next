@@ -4,13 +4,13 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 32px;
+  margin: auto;
 }
 
 /*======Tablet styles======*/
 @media (min-width: 768px) {
   .container {
     max-width: 768px;
-    margin-inline: auto;
   }
 }
 

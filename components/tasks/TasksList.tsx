@@ -1,68 +1,129 @@
-import { getTasks, updateTasksStatus } from "@/services/tasks.service";
+"use client";
+
 import { Task } from "@/types/task";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import TaskItem from "./TaskItem";
+
 import AddTaskModal from "../add-task-modal/AddTaskModal";
-import TasksPlaceholder from "./TasksPlaceholder";
 
-interface TasksListProps {
-    isAuthenticated: boolean;
+import styles from "./TasksList.module.css";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getTasks, updateTasksStatus } from "@/services/tasks.service";
+
+
+type TaskListProps = {
+  isAuthenticated: boolean;
 }
 
-export default function TasksList({ isAuthenticated }: TasksListProps) {
-    const [tasks, setTasks] = useState<Task[]>([]);
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const router = useRouter();
+const TasksList = ({ isAuthenticated }: TaskListProps) => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-    useEffect(() => {
-        if (!isAuthenticated) return;
-
-        getTasks().then(setTasks).catch(console.error);
-    }, [isAuthenticated]);
-
-    const handleAddTaskClick = (): void => {
-        if (!isAuthenticated) {
-            router.push('/auth/register');
-            return;
-        }
-        setIsModalOpen(true);
-    }
-
-    const handleToggleTask = async (
-        taskId: string,
-        isDone: boolean
-    ): Promise<void> => {
-        try {
-            const updatedTask = await updateTasksStatus(taskId, isDone);
-
-            setTasks(prev => prev.map(task => task._id === updatedTask._id ? updatedTask : task));
-        } catch (error) { console.error(error); }
+  useEffect(() => {
+    document.body.style.overflow = isModalOpen ? 'hodden' : ''; 
+        return () => {
+      document.body.style.overflow = '';
     };
+  }, [isModalOpen]);
 
-    return (
-        <section>
-            <button onClick={handleAddTaskClick}>
-                Add task
-            </button>
+  const {
+    data: tasks = [],
+    isSuccess,
+    isPending,
+  } = useQuery<Task[]>({
+    queryKey: ['tasks'],
+    queryFn: getTasks,
+    enabled: isAuthenticated,
+    refetchOnMount: false,
+  });
 
-            {tasks.length === 0 ? (
-                <TasksPlaceholder />
-            ) : (
-                <ul>
-                    {tasks.map(task => (
-                        <TaskItem
-                            key={task._id}
-                            task={task}
-                            onToggle={handleToggleTask}
-                        />
-                    ))}
-                </ul>
-            )}
+  const { mutate } = useMutation({
+    mutationFn: ({ taskId, isDone }: { taskId: string, isDone: boolean }) =>
+      updateTasksStatus(taskId, isDone),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tasks'] });
+    },
+  });
+  
+  const handleToggle = (task: Task) => {
+    mutate({ taskId: task._id, isDone: !task.isDone });
+  };
 
-            {isModalOpen && (
-                <AddTaskModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-            )}
-        </section>
-    )
-}
+  const handleOpenModal = () => {
+    if (!isAuthenticated) {
+      router.push('/auth/register');
+      return;
+    }
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => setIsModalOpen(false);
+
+  const handleTaskSaved = () => {
+    queryClient.invalidateQueries({ queryKey: ['tasks'] });
+    handleCloseModal();
+  };
+
+  return (
+    <div className={styles.card}>
+      <div className={styles.header}>
+        <h3 className={styles.title}>Важливі завдання</h3>
+        <button className={styles.plusBtn} onClick={handleOpenModal}>
+          +
+        </button>
+      </div>
+
+      {/* NOT Authenticated */}
+      {!isAuthenticated && (
+        <>
+          <p className={styles.emptyBold}>Наразі немає жодних завдань</p>
+          <p className={styles.emptyText}>Створіть мерщій нове завдання!</p>
+          <button className={styles.createBtn} onClick={() => router.push("/auth/register")}>
+            Створити завдання
+          </button>
+        </>
+      )}
+
+      {/*  no tasks */}
+
+      {isAuthenticated && isSuccess && tasks.length === 0 && (
+        <>
+          <p className={styles.emptyBold}>Наразі немає жодних завдань</p>
+          <p className={styles.emptyText}>Створіть мерщій нове завдання!</p>
+          <button className={styles.createBtn} onClick={handleOpenModal}>
+            Створити завдання
+          </button>
+        </>
+      )}
+
+
+      {/* list of tasks*/}
+      
+      {isAuthenticated && tasks.length > 0 && (
+        <ul className={styles.list}>
+          {tasks.map(task => (
+            <li key={task._id} className={styles.item}>
+              <input
+                type="checkbox"
+                checked={task.isDone}
+                onChange={() => handleToggle(task)}
+                disabled={isPending}
+              />
+              <span className={task.isDone ? styles.done : ""}>
+                {task.name}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+      <AddTaskModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onTaskSaved={handleTaskSaved}
+      />
+    </div>
+  );
+};
+
+export default TasksList;

@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react'
 import { CloseOutlined } from '@ant-design/icons'
-import styles from './confirmation-modal.module.scss'
+import styles from './confirmation-modal.module.css'
 
 interface ConfirmationModalProps {
   isOpen: boolean

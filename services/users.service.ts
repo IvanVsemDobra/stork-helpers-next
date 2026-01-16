@@ -6,7 +6,6 @@ interface ApiError {
   message: string
 }
 
-// Оновлення даних користувача
 export const updateUser = async (data: Partial<User>): Promise<User> => {
   try {
     const res = await api.patch<User>('/users/me', data)
@@ -18,15 +17,12 @@ export const updateUser = async (data: Partial<User>): Promise<User> => {
   }
 }
 
-// Оновлення аватара
 export const updateUserAvatar = async (file: File): Promise<User> => {
   const formData = new FormData()
   formData.append('avatar', file)
 
   try {
-    const res = await api.patch<User>('/users/avatar', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    })
+    const res = await api.patch<User>('/users/avatar', formData)
     return res.data
   } catch (error) {
     const axiosError = error as AxiosError<ApiError>
@@ -34,17 +30,13 @@ export const updateUserAvatar = async (file: File): Promise<User> => {
   }
 }
 
-// Відправка листа для верифікації
 export const sendVerificationEmail = async (email: string): Promise<void> => {
   try {
     await api.post('/users/verify', { email })
   } catch (error) {
     const axiosError = error as AxiosError<ApiError>
-    throw new Error(
-      axiosError.response?.data?.message || 'Не вдалося надіслати лист для верифікації'
-    )
+    throw new Error(axiosError.response?.data?.message || 'Помилка верифікації')
   }
 }
 
-// Додатково: створюємо alias updateProfile для сумісності з OnboardingForm
 export const updateProfile = updateUser
