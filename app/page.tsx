@@ -4,7 +4,7 @@ import css from './page.module.css'
 import { getFirstWeekInfo, getMyDayWeekInfo } from '@/services/server/weeks.server'
 import { BabyTodayCard } from '@/components/BabyTodayCard/baby-today-card'
 import { FeelingCheckCard } from '@/components/FeelingCheckCard/FeelingCheckCard'
-import TasksList from '@/components/tasks/TasksList'
+import TasksList from '@/components/tasks/TasksReminderCard'
 
 // Містить в собі компоненти:
 // GreetingBlock      ✅
