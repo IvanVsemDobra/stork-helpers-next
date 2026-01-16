@@ -1,34 +1,35 @@
+import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL;
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'https://stork-helpers-api.onrender.com/api';
 
-interface ProxyContext {
-  params: Promise<{
-    path: string[];
-  }>;
+interface RouteParams {
+  params: Promise<{ path: string[] }>;
 }
 
 async function proxy(req: NextRequest, path: string[]) {
-  if (!BACKEND_URL) {
-    return NextResponse.json({ error: 'NEXT_PUBLIC_API_URL is missing' }, { status: 500 });
-  }
-
   const targetUrl = `${BACKEND_URL}/${path.join('/')}`;
   const requestHeaders = new Headers(req.headers);
+
   requestHeaders.delete('host');
   requestHeaders.delete('connection');
-  requestHeaders.delete('accept-encoding'); 
-  
+
+  //+added 2 lines
+  const cookieStore = await cookies();
+  requestHeaders.set('cookie', cookieStore.toString());
+
   try {
-    const body = ['GET', 'HEAD'].includes(req.method) 
-      ? undefined 
+    const body = ['GET', 'HEAD'].includes(req.method)
+      ? undefined
       : await req.arrayBuffer();
+
+    console.log(`🚀 Proxying ${req.method} to: ${targetUrl}`);
 
     const backendRes = await fetch(targetUrl, {
       method: req.method,
       headers: requestHeaders,
       body,
-      credentials: 'include',
+      cache: 'no-store',
     });
 
     const responseData = await backendRes.arrayBuffer();
@@ -46,30 +47,38 @@ async function proxy(req: NextRequest, path: string[]) {
 
     return res;
   } catch (error: unknown) {
-    console.error('🔴 Proxy Error:', error);
+    console.error('🔴 Proxy Error Detail:', error);
+
+    const errorMessage = error instanceof Error ? error.message : 'Unknown proxy error';
+
     return NextResponse.json(
-      { message: 'Proxy failed', error: error instanceof Error ? error.message : 'Unknown' },
+      { error: 'Proxy failed', details: errorMessage },
       { status: 502 }
     );
   }
 }
 
-export async function GET(req: NextRequest, ctx: ProxyContext) {
-  const { path } = await ctx.params;
-  return proxy(req, path);
+export async function GET(req: NextRequest, { params }: RouteParams) {
+  const resolvedParams = await params;
+  return proxy(req, resolvedParams.path);
 }
 
-export async function POST(req: NextRequest, ctx: ProxyContext) {
-  const { path } = await ctx.params;
-  return proxy(req, path);
+export async function POST(req: NextRequest, { params }: RouteParams) {
+  const resolvedParams = await params;
+  return proxy(req, resolvedParams.path);
 }
 
-export async function PUT(req: NextRequest, ctx: ProxyContext) {
-  const { path } = await ctx.params;
-  return proxy(req, path);
+export async function PATCH(req: NextRequest, { params }: RouteParams) {
+  const resolvedParams = await params;
+  return proxy(req, resolvedParams.path);
 }
 
-export async function DELETE(req: NextRequest, ctx: ProxyContext) {
-  const { path } = await ctx.params;
-  return proxy(req, path);
+export async function PUT(req: NextRequest, { params }: RouteParams) {
+  const resolvedParams = await params;
+  return proxy(req, resolvedParams.path);
+}
+
+export async function DELETE(req: NextRequest, { params }: RouteParams) {
+  const resolvedParams = await params;
+  return proxy(req, resolvedParams.path);
 }

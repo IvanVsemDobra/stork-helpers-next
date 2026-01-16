@@ -6,7 +6,7 @@ import { DiaryEntry, Emotion } from '../../interfaces/diary'
 import { FormOutlined } from '@ant-design/icons'
 import { ConfirmationModal } from '../confirmation-modal/confirmation-modal.component'
 import { DiaryService } from '@/services/diary.service'
-import styles from './diary-entry-details.module.scss'
+import styles from './diary-entry-details.module.css'
 
 interface DiaryEntryDetailsProps {
   entry: DiaryEntry | null

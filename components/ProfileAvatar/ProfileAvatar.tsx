@@ -1,76 +1,81 @@
 'use client'
 
-import { useRef, useState, useEffect } from 'react'
-import { useMutation } from '@tanstack/react-query'
-import Image from 'next/image'
-import { toast } from 'react-hot-toast'
 import styles from './ProfileAvatar.module.css'
-import { uploadAvatar } from '@/services/profile.service'
+import { useRef } from 'react'
+import toast from 'react-hot-toast'
+import Image from 'next/image'
 import { useAuthStore } from '@/store/auth.store'
+import { useMutation } from '@tanstack/react-query'
+import { updateUserAvatar } from '@/services/users.service'
+import { User } from '@/types/user'
 
-export default function ProfileAvatar() {
-  const fileInputRef = useRef<HTMLInputElement | null>(null)
+export const ProfileAvatar = () => {
+  const inputRef = useRef<HTMLInputElement>(null)
   const { user, setUser } = useAuthStore()
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const { mutate, isPending } = useMutation<User, Error, File>({
+    mutationFn: updateUserAvatar,
+    onSuccess: (data: User) => {
+      if (user) {
+        const avatarData = data.avatar || ''
 
-  useEffect(() => {
-    return () => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl)
-    }
-  }, [previewUrl])
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: uploadAvatar,
-    onSuccess: updatedUser => {
-      setUser(updatedUser)
-      setPreviewUrl(null)
-      toast.success('Фото оновлено!')
+        setUser({
+          ...user,
+          avatar: avatarData,
+        })
+      }
+      toast.success('Аватар оновлено')
     },
-    onError: () => {
-      setPreviewUrl(null)
-      toast.error('Помилка завантаження')
-    },
+    onError: (error: Error) => toast.error(error.message || 'Не вдалося завантажити фото'),
   })
+
+  const getAvatarSrc = () => {
+    const avatar = user?.avatar
+
+    if (!avatar || avatar === 'avatar') {
+      return '/images/unknownAvatarImage/unknown_avatar_Image.jpg'
+    }
+
+    if (avatar.length > 100 && !avatar.startsWith('data:image') && !avatar.startsWith('http')) {
+      return `data:image/jpeg;base64,${avatar}`
+    }
+
+    return avatar
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (file) {
-      if (previewUrl) URL.revokeObjectURL(previewUrl)
-
-      const url = URL.createObjectURL(file)
-      setPreviewUrl(url)
-      mutate(file)
-    }
+    if (file) mutate(file)
   }
 
   return (
-    <div className={styles.card}>
+    <div className={styles.wrapper}>
       <div className={styles.imageWrapper}>
         <Image
-          src={
-            previewUrl || user?.avatar || '/images/unknownAvatarImage/unknown_avatar_Image@2x.jpg' // Перевір літеру I!
-          }
+          src={getAvatarSrc()}
           alt="Avatar"
-          fill
-          sizes="132px"
+          width={132}
+          height={132}
           className={styles.avatarImg}
           priority
+          unoptimized
         />
       </div>
-      <div className={styles.userInfo}>
-        <h2 className={styles.name}>{user?.name || 'Користувач'}</h2>
-        <p className={styles.email}>{user?.email || 'Немає пошти'}</p>
+
+      <div className={styles.info}>
+        <p className={styles.name}>{user?.name || 'Гість'}</p>
+        <p className={styles.email}>{user?.email}</p>
 
         <button
-          type="button"
           className={styles.uploadBtn}
-          onClick={() => fileInputRef.current?.click()}
+          onClick={() => inputRef.current?.click()}
           disabled={isPending}
+          type="button"
         >
           {isPending ? 'Завантаження...' : 'Завантажити нове фото'}
         </button>
-        <input ref={fileInputRef} type="file" hidden accept="image/*" onChange={handleFileChange} />
       </div>
+
+      <input ref={inputRef} type="file" hidden onChange={handleFileChange} accept="image/*" />
     </div>
   )
 }

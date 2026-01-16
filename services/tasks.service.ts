@@ -1,14 +1,23 @@
-import axios from "axios"
-import type { Task } from '@/types/task';
+import { api } from "@/app/api/client";
+import { Task } from "@/types/task";
+
 
 export const getTasks = async (): Promise<Task[]> => {
-    const { data } = await axios.get<Task[]>('/api/tasks');
+    const { data } = await api.get('/tasks');
     return data;
 }
 
-export const updateTasksStatus = async (taskId: string, isDone: boolean): Promise<Task> => {
-    const { data } = await axios.patch<Task>(`/api/tasks/${taskId}/status`,
-        { isDone }
-    );
+export const updateTasksStatus = async (
+    taskId: string,
+    isDone: boolean
+): Promise<Task> => {
+    const { data } = await api.patch(`/tasks/${taskId}/status`, { isDone });
+    return data;
+};
+
+export const createTask = async (
+    payload: { name: string; date: string }
+): Promise<Task> => {
+    const { data } = await api.post('/tasks', payload);
     return data;
 };

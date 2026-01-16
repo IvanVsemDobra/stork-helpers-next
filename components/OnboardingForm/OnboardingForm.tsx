@@ -6,8 +6,9 @@ import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 
-import { updateProfile, uploadAvatar } from '@/services/profile.service'
+import { updateProfile, updateUserAvatar } from '@/services/users.service'
 import { useAuthStore } from '@/store/auth.store'
+import { useThemeStore } from '@/store/theme.store'
 
 import OnboardingAvatar from '@/components/OnboardingAvatar/OnboardingAvatar'
 import OnboardingCustomDate from '@/components/OnboardingCustomDate/OnboardingCustomDate'
@@ -30,10 +31,11 @@ const schema = Yup.object({
 export default function OnboardingForm() {
   const router = useRouter()
   const { user, setUser } = useAuthStore()
+  const setTheme = useThemeStore(state => state.setTheme)
 
   const mutation = useMutation({
     mutationFn: async (values: OnboardingValues) => {
-      if (values.avatar) await uploadAvatar(values.avatar)
+      if (values.avatar) await updateUserAvatar(values.avatar)
       return updateProfile({
         name: values.name,
         theme: values.theme,
@@ -42,6 +44,7 @@ export default function OnboardingForm() {
     },
     onSuccess: user => {
       setUser(user)
+      setTheme(user.theme ?? 'neutral')
       toast.success('Онбординг завершено')
       router.push('/diary')
     },
