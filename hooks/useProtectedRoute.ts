@@ -1,14 +1,19 @@
+'use client'
+
 import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { useAuthStore } from '@/store/auth.store'
 
 export const useProtectedRoute = () => {
-  const { user } = useAuthStore()
+  const { isAuthenticated, hydrated } = useAuthStore()
   const router = useRouter()
+  const pathname = usePathname()
 
   useEffect(() => {
-    if (!user) {
-      router.push('/auth/login')
+    if (!hydrated) return
+
+    if (!isAuthenticated && !pathname.startsWith('/auth')) {
+      router.replace('/auth/login')
     }
-  }, [user, router])
+  }, [hydrated, isAuthenticated, pathname, router])
 }
