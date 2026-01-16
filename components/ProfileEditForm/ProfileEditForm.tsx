@@ -20,7 +20,6 @@ export const ProfileEditForm = () => {
   const { user, setUser } = useAuthStore()
   const { setTheme } = useThemeStore()
   const initialEmail = user?.email
-
   const today = new Date().toISOString().split('T')[0]
   const maxDate = new Date()
   maxDate.setDate(maxDate.getDate() + 280)
@@ -53,7 +52,14 @@ export const ProfileEditForm = () => {
       onSubmit={values => {
         const selectedTheme = values.theme as NonNullable<User['theme']>
         setTheme(selectedTheme)
-        mutate(values)
+        const payload: Partial<User> = {
+          name: values.name,
+          email: values.email,
+          theme: selectedTheme,
+          dueDate: values.dueDate ? new Date(values.dueDate).toISOString() : undefined,
+        }
+
+        mutate(payload)
       }}
     >
       {({ resetForm, errors, touched }) => (
@@ -61,13 +67,13 @@ export const ProfileEditForm = () => {
           <div className={styles.fields}>
             <div className={styles.field}>
               <label className={styles.label}>Імʼя</label>
-              <Field name="name" className={styles.input} placeholder="Ваше ім'я" />
+              <Field name="name" className={styles.input} />
               {touched.name && errors.name && <span className={styles.error}>{errors.name}</span>}
             </div>
 
             <div className={styles.field}>
               <label className={styles.label}>Пошта</label>
-              <Field name="email" className={styles.input} placeholder="example@mail.com" />
+              <Field name="email" className={styles.input} />
               {touched.email && errors.email && (
                 <span className={styles.error}>{errors.email}</span>
               )}

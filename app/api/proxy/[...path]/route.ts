@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'https://stork-helpers-api.onrender.com/api';
@@ -13,9 +14,13 @@ async function proxy(req: NextRequest, path: string[]) {
   requestHeaders.delete('host');
   requestHeaders.delete('connection');
 
+  //+added 2 lines
+  const cookieStore = await cookies();
+  requestHeaders.set('cookie', cookieStore.toString());
+
   try {
-    const body = ['GET', 'HEAD'].includes(req.method) 
-      ? undefined 
+    const body = ['GET', 'HEAD'].includes(req.method)
+      ? undefined
       : await req.arrayBuffer();
 
     console.log(`🚀 Proxying ${req.method} to: ${targetUrl}`);
@@ -43,9 +48,9 @@ async function proxy(req: NextRequest, path: string[]) {
     return res;
   } catch (error: unknown) {
     console.error('🔴 Proxy Error Detail:', error);
-    
+
     const errorMessage = error instanceof Error ? error.message : 'Unknown proxy error';
-    
+
     return NextResponse.json(
       { error: 'Proxy failed', details: errorMessage },
       { status: 502 }

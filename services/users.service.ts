@@ -1,4 +1,4 @@
-import { api } from './api'
+import { api } from '@/app/api/client'
 import { AxiosError } from 'axios'
 import type { User } from '@/types/user'
 
@@ -22,7 +22,11 @@ export const updateUserAvatar = async (file: File): Promise<User> => {
   formData.append('avatar', file)
 
   try {
-    const res = await api.patch<User>('/users/avatar', formData)
+    const res = await api.patch<User>('/users/avatar', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
     return res.data
   } catch (error) {
     const axiosError = error as AxiosError<ApiError>

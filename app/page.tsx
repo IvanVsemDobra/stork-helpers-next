@@ -3,8 +3,9 @@ import { MomTipCard } from '@/components/MomTipCard/mom-tip-card'
 import css from './page.module.css'
 import { getFirstWeekInfo, getMyDayWeekInfo } from '@/services/server/weeks.server'
 import { BabyTodayCard } from '@/components/BabyTodayCard/baby-today-card'
+import StatusBlock from '@/components/StatusBlock/StatusBlock'
 import { FeelingCheckCard } from '@/components/FeelingCheckCard/FeelingCheckCard'
-import TasksList from '@/components/tasks/TasksList'
+import TasksList from '@/components/tasks/TasksReminderCard'
 
 // Містить в собі компоненти:
 // GreetingBlock      ✅
@@ -26,9 +27,7 @@ export default async function DashboardPage() {
   return (
     <div className={css.container}>
       <GreetingBlock />
-
-      <section>StatusBlock</section>
-
+      <StatusBlock />
       <BabyTodayCard
         image={weekData.image}
         imageAlt={weekData.imageAlt}
