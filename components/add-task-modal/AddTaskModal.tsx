@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect } from 'react'
 import AddTaskForm from './AddTaskForm'
 import styles from './AddTaskModal.module.css'
@@ -9,12 +11,12 @@ interface AddTaskModalProps {
   onTaskSaved: () => void
   taskToEdit?: {
     id: string
-    title: string
+    name: string
     date: string
   } | null
 }
 
-const AddTaskModal = ({ isOpen, onClose, taskToEdit }: AddTaskModalProps) => {
+const AddTaskModal = ({ isOpen, onClose, taskToEdit, onTaskSaved }: AddTaskModalProps) => {
   useEffect(() => {
     const onEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
@@ -42,7 +44,7 @@ const AddTaskModal = ({ isOpen, onClose, taskToEdit }: AddTaskModalProps) => {
 
         <h2 className={styles.title}>{taskToEdit ? 'Редагувати завдання' : 'Нове завдання'}</h2>
 
-        <AddTaskForm onClose={onClose} taskToEdit={taskToEdit} />
+        <AddTaskForm /* onClose={onClose} */ taskToEdit={taskToEdit} onTaskSaved={onTaskSaved}/>
       </div>
     </div>
   )

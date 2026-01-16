@@ -1,0 +1,126 @@
+.card {
+
+  background-color: #fff4f6;;
+  border-radius: 24px;
+  padding: 16px 20px 32px 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  max-width: 420px;
+  width: 100%;
+}
+
+/* ---------- Header ---------- */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-family: "Comfortaa", sans-serif;
+  font-weight: 700;
+font-size: 20px;
+line-height: 1.4;
+letter-spacing: 0.01em;
+color: #000;
+}
+
+.plusBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background-color: #2563eb;
+  color: #ffffff;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.plusBtn:hover {
+  background-color: #1e40af;
+}
+
+.plusBtn:active {
+  transform: scale(0.95);
+}
+
+/* ---------- Empty state ---------- */
+
+.emptyBold {
+  font-size: 15px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.emptyText {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 16px;
+}
+
+.createBtn {
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.createBtn:hover {
+  background-color: #1e40af;
+}
+
+/* ---------- Task list ---------- */
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+/* ---------- Checkbox ---------- */
+
+.item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #2563eb;
+  cursor: pointer;
+}
+
+.item input[type="checkbox"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------- Task text ---------- */
+
+.item span {
+  font-size: 14px;
+  color: #111827;
+  transition: color 0.2s ease;
+}
+
+.done {
+  color: #9ca3af;
+  text-decoration: line-through;
+}
