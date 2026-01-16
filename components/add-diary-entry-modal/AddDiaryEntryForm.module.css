@@ -1,105 +1,3 @@
-/* .form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.fieldGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.label {
-  font-family: 'Lato', sans-serif;
-  font-size: 16px;
-  color: #000;
-}
-
-.required {
-  color: #ff0000;
-}
-
-.input {
-  width: 100%;
-  height: 40px;
-  padding: 8px 12px;
-  border-radius: 12px;
-  background-color: #f5f5f5;
-  border: 2px solid transparent;
-  transition: 0.2s;
-}
-
-.input:focus {
-  outline: none;
-  border-color: #ffdae0;
-  background-color: #fff;
-}
-
-.input.error {
-  border-color: #ff4444;
-}
-
-.errorMessage {
-  font-size: 14px;
-  color: #ff4444;
-}
-
-.buttonGroup {
-  display: flex;
-  justify-content: center;
-  margin-top: 16px;
-}
-
-.button {
-  cursor: pointer;
-  border: none;
-}
-
-.submitButton {
-  width: 268px;
-  height: 46px;
-  background: #ffdae0;
-  border-radius: 100px;
-  border-bottom: 4px solid #ffcbd3;
-}
-
-.submitButton:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-@media screen and (min-width: 768px) and (max-width: 1439px) {
-  .form {
-    gap: 24px;
-  }
-  .input {
-    width: 640px;
-    height: 37px;
-  }
-
-  .submitButton {
-    width: 250px;
-    height: 44px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .form {
-    gap: 24px;
-  }
-
-  .input {
-    width: 295px;
-    height: 37px;
-  }
-
-  .submitButton {
-    width: 100%;
-    height: 44px;
-  }
-} */
-
 .form {
   display: flex;
   flex-direction: column;
@@ -165,10 +63,12 @@
   color: #ff4444;
 }
 
-/* ---------------------------- */
-/* Dropdown control + panel     */
-/* ---------------------------- */
+/* ✅ FIX: wrapper дає стабільний anchor для dropdownPanel */
+.dropdownWrapper {
+  position: relative;
+}
 
+/* Control */
 .dropdownControl {
   width: 100%;
   min-height: 48px;
@@ -177,7 +77,7 @@
   justify-content: space-between;
 
   border-radius: 12px;
-  border: 1px var(--opacity-transparent);
+  border: 1px solid var(--opacity-transparent);
   background: var(--color-neutral-lightest);
 
   padding: 10px 12px;
@@ -206,6 +106,34 @@
   text-overflow: ellipsis;
 }
 
+/* Chips */
+.chips {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  overflow: hidden;
+  flex-wrap: nowrap;
+}
+
+.chip {
+  border: 1px solid var(--opacity-transparent);
+  border-radius: 100px;
+  padding: 4px 10px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+
+  background: var(--opacity-neutral-darkest-5);
+
+  font-family: var(--font-family);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--color-scheme-text);
+  white-space: nowrap;
+}
+
+/* Chevron sprite */
 .chevronIcon {
   width: 22px;
   height: 22px;
@@ -218,17 +146,17 @@
   transform: rotate(-90deg);
 }
 
+/* ✅ FIX: тепер top рахується від кнопки (wrapper), не від всієї групи */
 .dropdownPanel {
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(48px + 8px);
-  z-index: 999;
+  top: calc(100% + 8px);
+  z-index: 9999;
 
   border-radius: 12px;
   border: 1px solid #d9d9d9;
   background: var(--color-neutral-lightest);
-
   overflow: hidden;
 }
 
@@ -238,7 +166,6 @@
   overflow-y: auto;
 }
 
-/* ✅ scrollbar (Chrome/Safari) — як на макеті */
 .dropdownScroll::-webkit-scrollbar {
   width: 12px;
 }
@@ -255,13 +182,12 @@
   background-clip: content-box;
 }
 
-/* Firefox */
 .dropdownScroll {
   scrollbar-width: thin;
   scrollbar-color: #ffb8c6 rgba(0, 0, 0, 0.15);
 }
 
-/* Option row */
+/* Options */
 .optionRow {
   display: flex;
   align-items: center;
@@ -278,14 +204,14 @@
   background: rgba(0, 0, 0, 0.06);
 }
 
-/* hide native checkbox */
+/* Hide native checkbox */
 .nativeCheckbox {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
 
-/* ✅ checkbox like макет: сірий квадратик, а checked — SVG зі спрайта */
+/* Checkbox */
 .checkboxBox {
   width: 28px;
   height: 28px;
@@ -296,9 +222,14 @@
   flex: 0 0 28px;
 }
 
-.checkboxIcon {
-  width: 28px;
-  height: 28px;
+.checkboxBoxChecked {
+  background: #000;
+}
+
+.checkboxTick {
+  width: 18px;
+  height: 18px;
+  color: #fff;
   display: block;
 }
 
@@ -315,15 +246,6 @@
   justify-content: center;
   gap: 16px;
   margin-top: 16px;
-}
-
-.buttonSecondary {
-  height: 46px;
-  padding: 0 24px;
-  border-radius: 100px;
-  border: 1px solid #d9d9d9;
-  background: #fff;
-  cursor: pointer;
 }
 
 .buttonPrimary {

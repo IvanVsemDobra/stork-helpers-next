@@ -11,7 +11,7 @@
 //   isEdit?: boolean
 //   onSubmitSuccess: () => void
 //   initialData?: {
-//     title: string
+//     title: stringпше
 //     emotions: string[]
 //     message: string
 //   }
