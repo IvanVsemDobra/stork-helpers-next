@@ -12,6 +12,7 @@ import toast from 'react-hot-toast'
 import axios from 'axios'
 import css from '@/components/auth/RegistrationForm.module.css'
 import AppLogo from '@/components/auth/AppLogo'
+import { GoogleButton } from './GoogleButton'
 
 const validationSchema = Yup.object({
   name: Yup.string().max(32, 'Максимум 32 символи').required('Обовʼязкове поле'),
@@ -122,6 +123,7 @@ export const RegistrationForm = () => {
                   >
                     Зареєструватися
                   </button>
+                  <GoogleButton />
                 </div>
 
                 <div className={css.auth_text}>
