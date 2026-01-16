@@ -87,7 +87,9 @@ export const LoginForm = () => {
                   >
                     Увійти
                   </button>
-                  <GoogleButton />
+                  <div className={css.google_button_wrap}>
+                    <GoogleButton />
+                  </div>
                 </div>
 
                 <div className={css.auth_text}>

@@ -9,8 +9,6 @@ import styles from './Layout.module.scss'
 import { usePathname } from 'next/navigation'
 
 export function Layout({ children }: { children: ReactNode }) {
-  console.log(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID)
-
   const pathname = usePathname()
   const isAuthPage = pathname?.startsWith('/auth')
 
