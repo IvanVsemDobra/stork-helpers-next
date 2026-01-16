@@ -1,14 +1,22 @@
 'use client'
 
 import styles from './ProfileEditForm.module.css'
-import { Formik, Form, Field } from 'formik'
+import { Formik, Form, Field, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import toast from 'react-hot-toast'
 import { useAuthStore } from '@/store/auth.store'
 import { useThemeStore } from '@/store/theme.store'
 import { useMutation } from '@tanstack/react-query'
-import { updateProfile, sendVerificationEmail } from '@/services/users.service'
+import { updateProfile, updateTheme } from '@/services/users.service'
+import { useRouter } from 'next/navigation'
 import type { User } from '@/types/user'
+
+interface FormValues {
+  name: string
+  email: string
+  theme: NonNullable<User['theme']>
+  dueDate: string
+}
 
 const validationSchema = Yup.object({
   name: Yup.string().required('Обовʼязкове поле'),
@@ -19,25 +27,47 @@ const validationSchema = Yup.object({
 export const ProfileEditForm = () => {
   const { user, setUser } = useAuthStore()
   const { setTheme } = useThemeStore()
+  const router = useRouter()
   const initialEmail = user?.email
+
+  const profileMutation = useMutation({ mutationFn: updateProfile })
+  const themeMutation = useMutation({ mutationFn: updateTheme })
+
+  const isPending = profileMutation.isPending || themeMutation.isPending
+
   const today = new Date().toISOString().split('T')[0]
   const maxDate = new Date()
   maxDate.setDate(maxDate.getDate() + 280)
   const maxDateStr = maxDate.toISOString().split('T')[0]
 
-  const { mutate, isPending } = useMutation<User, Error, Partial<User>>({
-    mutationFn: updateProfile,
-    onSuccess: updatedUser => {
-      setUser(updatedUser)
+  const handleSubmit = async (values: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
+    try {
+      const payload: Partial<User> = { name: values.name }
+      if (values.dueDate) payload.dueDate = new Date(values.dueDate).toISOString()
+      if (values.email !== initialEmail) payload.email = values.email
 
-      if (updatedUser.email !== initialEmail && updatedUser.email) {
-        sendVerificationEmail(updatedUser.email).catch(err => toast.error(err.message))
+      await profileMutation.mutateAsync(payload)
+
+      if (values.theme !== user?.theme) {
+        await themeMutation.mutateAsync(values.theme)
+        setTheme(values.theme)
       }
 
+      setUser({
+        name: values.name,
+        dueDate: payload.dueDate,
+        theme: values.theme,
+      })
+
       toast.success('Профіль оновлено')
-    },
-    onError: error => toast.error(error.message),
-  })
+      router.refresh()
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Помилка оновлення'
+      toast.error(errorMessage)
+    } finally {
+      setSubmitting(false)
+    }
+  }
 
   return (
     <Formik
@@ -45,24 +75,13 @@ export const ProfileEditForm = () => {
       initialValues={{
         name: user?.name || '',
         email: user?.email || '',
-        theme: user?.theme || 'neutral',
+        theme: (user?.theme as NonNullable<User['theme']>) || 'neutral',
         dueDate: user?.dueDate ? new Date(user.dueDate).toISOString().split('T')[0] : '',
       }}
       validationSchema={validationSchema}
-      onSubmit={values => {
-        const selectedTheme = values.theme as NonNullable<User['theme']>
-        setTheme(selectedTheme)
-        const payload: Partial<User> = {
-          name: values.name,
-          email: values.email,
-          theme: selectedTheme,
-          dueDate: values.dueDate ? new Date(values.dueDate).toISOString() : undefined,
-        }
-
-        mutate(payload)
-      }}
+      onSubmit={handleSubmit}
     >
-      {({ resetForm, errors, touched }) => (
+      {({ resetForm, dirty, errors, touched }) => (
         <Form className={styles.form}>
           <div className={styles.fields}>
             <div className={styles.field}>
@@ -104,11 +123,15 @@ export const ProfileEditForm = () => {
           </div>
 
           <div className={styles.actions}>
-            <button type="button" className={styles.cancel} onClick={() => resetForm()}>
-              Відмінити зміни
+            <button
+              type="button"
+              className={styles.cancel}
+              onClick={() => resetForm()}
+              disabled={!dirty || isPending}
+            >
+              Відмінити
             </button>
-
-            <button type="submit" className={styles.submit} disabled={isPending}>
+            <button type="submit" className={styles.submit} disabled={isPending || !dirty}>
               {isPending ? 'Збереження...' : 'Зберегти зміни'}
             </button>
           </div>
