@@ -1,15 +1,7 @@
 'use client'
 
 import { useEffect, useId } from 'react'
-import { jwtDecode } from 'jwt-decode'
 import { useAuthStore } from '@/store/auth.store'
-
-type GoogleJwtPayload = {
-  sub: string
-  email: string
-  name: string
-  picture: string
-}
 
 let googleInitialized = false
 
@@ -18,32 +10,39 @@ export function GoogleButton() {
   const buttonId = useId()
 
   useEffect(() => {
-    const google = window.google
-    if (!google) return
+    if (!window.google) return
 
     if (!googleInitialized) {
-      google.accounts.id.initialize({
+      window.google.accounts.id.initialize({
         client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-        callback: res => {
-          const payload = jwtDecode<GoogleJwtPayload>(res.credential)
+        callback: async res => {
+          try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/google`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+              body: JSON.stringify({ credential: res.credential }),
+            })
 
-          setUser({
-            id: payload.sub,
-            email: payload.email,
-            name: payload.name,
-            avatar: payload.picture,
-            hasCompletedOnboarding: false,
-          })
+            if (!response.ok) {
+              console.error('Google auth failed')
+              return
+            }
+
+            const data = await response.json()
+            setUser(data.user)
+          } catch (e) {
+            console.error(e)
+          }
         },
       })
 
       googleInitialized = true
     }
 
-    google.accounts.id.renderButton(document.getElementById(buttonId), {
+    window.google.accounts.id.renderButton(document.getElementById(buttonId)!, {
       theme: 'outline',
       size: 'large',
-      text: 'continue_with',
       width: 280,
     })
   }, [setUser, buttonId])

@@ -12,7 +12,7 @@ export const useProtectedRoute = () => {
   useEffect(() => {
     if (!hydrated) return
 
-    if (!isAuthenticated && !pathname.startsWith('/auth')) {
+    if (hydrated && !isAuthenticated && !pathname.startsWith('/auth')) {
       router.replace('/auth/login')
     }
   }, [hydrated, isAuthenticated, pathname, router])

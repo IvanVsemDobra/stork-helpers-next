@@ -8,7 +8,7 @@ export interface AuthState {
   isAuthenticated: boolean
   hydrated: boolean
   setUser: (user: User | null) => void
-  // clearAuth: () => void
+  clearAuth: () => void
 }
 
 export const useAuthStore = create<AuthState>(set => ({
@@ -20,6 +20,12 @@ export const useAuthStore = create<AuthState>(set => ({
     set({
       user,
       isAuthenticated: !!user,
+      hydrated: true,
+    }),
+  clearAuth: () =>
+    set({
+      user: null,
+      isAuthenticated: false,
       hydrated: true,
     }),
 }))
