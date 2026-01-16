@@ -5,26 +5,20 @@ import { Field, Form, Formik, ErrorMessage } from 'formik'
 import { useEffect, useId, useState } from 'react'
 import * as Yup from 'yup'
 import styles from './AddDiaryEntryForm.module.css'
-
-interface Emotion {
-  _id: string
-  title: string
-}
-
-interface DiaryEntry {
-  _id: string
-  title: string
-  emotions: (string | Emotion)[]
-  message: string
-}
+import { Emotion } from '@/types/diary'
+import { DiaryEntry } from '@/types/diary'
 
 interface AddDiaryEntryFormProps {
-  initialData?: DiaryEntry | null
+  initialData?: DiaryEntry | DiaryFormData | null
   isEdit?: boolean
   onSubmitSuccess: () => void
   onClose: () => void
 }
-
+export interface DiaryFormData {
+  title: string
+  emotions: string[]
+  message: string
+}
 interface FormValues {
   title: string
   emotions: string[]
@@ -32,12 +26,8 @@ interface FormValues {
 }
 
 const validationSchema = Yup.object({
-  title: Yup.string()
-    .min(2, 'Має бути щонайменше 2 символи')
-    .required('Заголовок обовʼязковий'),
-  emotions: Yup.array()
-    .min(1, 'Виберіть хоча б одну емоцію')
-    .required(),
+  title: Yup.string().min(2, 'Має бути щонайменше 2 символи').required('Заголовок обовʼязковий'),
+  emotions: Yup.array().min(1, 'Виберіть хоча б одну емоцію').required(),
   message: Yup.string().required('Поле обовʼязкове'),
 })
 
@@ -55,10 +45,9 @@ export default function AddDiaryEntryForm({
   useEffect(() => {
     const fetchEmotions = async () => {
       try {
-        const { data } = await axios.get<Emotion[]>(
-          `${API_BASE}/emotions`,
-          { withCredentials: true }
-        )
+        const { data } = await axios.get<Emotion[]>(`${API_BASE}/emotions`, {
+          withCredentials: true,
+        })
         setAvailableEmotions(data)
       } catch (error) {
         console.error('Помилка завантаження емоцій', error)
@@ -67,13 +56,13 @@ export default function AddDiaryEntryForm({
 
     fetchEmotions()
   }, [API_BASE])
-
   const initialValues: FormValues = initialData
     ? {
         title: initialData.title,
-        emotions: initialData.emotions.map(e =>
-          typeof e === 'string' ? e : e._id
-        ),
+        emotions:
+          'emotions' in initialData
+            ? initialData.emotions.map(e => (typeof e === 'string' ? e : e._id))
+            : [],
         message: initialData.message,
       }
     : {
@@ -81,21 +70,14 @@ export default function AddDiaryEntryForm({
         emotions: [],
         message: '',
       }
-
   const handleSubmit = async (values: FormValues) => {
     try {
-      if (isEdit && initialData) {
-        await axios.patch(
-          `${API_BASE}/diaries/me/${initialData._id}`,
-          values,
-          { withCredentials: true }
-        )
+      if (isEdit && initialData && '_id' in initialData) {
+        await axios.patch(`${API_BASE}/diaries/me/${initialData._id}`, values, {
+          withCredentials: true,
+        })
       } else {
-        await axios.post(
-          `${API_BASE}/diaries/me`,
-          values,
-          { withCredentials: true }
-        )
+        await axios.post(`${API_BASE}/diaries/me`, values, { withCredentials: true })
       }
 
       onSubmitSuccess()
@@ -138,17 +120,12 @@ export default function AddDiaryEntryForm({
           <label htmlFor={`${fieldId}-message`} className={styles.label}>
             Запис
           </label>
-          <Field
-            as="textarea"
-            id={`${fieldId}-message`}
-            name="message"
-            className={styles.input}
-          />
+          <Field as="textarea" id={`${fieldId}-message`} name="message" className={styles.input} />
           <ErrorMessage name="message" component="div" className={styles.errorMessage} />
         </div>
 
         <div className={styles.buttonGroup}>
-          <button type="submit" className={styles.button}>
+          <button type="submit" className={`${styles.button} ${styles.submitButton}`}>
             Зберегти
           </button>
         </div>
