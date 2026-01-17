@@ -27,7 +27,7 @@ export default async function DashboardPage() {
   return (
     <div className={css.container}>
       <GreetingBlock />
-      <StatusBlock />
+      <StatusBlock currentWeek={weekData.weekNumber} daysLeft={weekData.daysToMeeting} />
       <BabyTodayCard
         image={weekData.image}
         imageAlt={weekData.imageAlt}
