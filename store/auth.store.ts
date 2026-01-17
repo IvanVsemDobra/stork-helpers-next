@@ -1,28 +1,43 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import type { User } from '../types/user'
-
-export type { User } from '../types/user' // ← SAFE
 
 export interface AuthState {
   user: User | null
   isAuthenticated: boolean
-  setUser: (user: User) => void
+  setUser: (userData: Partial<User> | User | null) => void
   clearAuth: () => void
 }
 
-export const useAuthStore = create<AuthState>(set => ({
-  user: null,
-  isAuthenticated: false,
-
-  setUser: user =>
-    set({
-      user,
-      isAuthenticated: true,
-    }),
-
-  clearAuth: () =>
-    set({
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
       user: null,
       isAuthenticated: false,
+
+      setUser: (userData) =>
+        set((state) => {
+          if (userData === null) {
+            return { user: null, isAuthenticated: false }
+          }
+          const updatedUser = state.user 
+            ? { ...state.user, ...userData } 
+            : (userData as User)
+
+          return {
+            user: updatedUser,
+            isAuthenticated: !!updatedUser,
+          }
+        }),
+
+      clearAuth: () =>
+        set({
+          user: null,
+          isAuthenticated: false,
+        }),
     }),
-}))
+    {
+      name: 'auth-storage',
+    }
+  )
+)

@@ -10,6 +10,7 @@ import Link from 'next/link'
 import toast from 'react-hot-toast'
 import css from '@/components/auth/LoginForm.module.css'
 import AppLogo from '@/components/auth/AppLogo'
+import { GoogleButton } from './GoogleButton'
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -86,6 +87,9 @@ export const LoginForm = () => {
                   >
                     Увійти
                   </button>
+                  <div className={css.google_button_wrap}>
+                    <GoogleButton />
+                  </div>
                 </div>
 
                 <div className={css.auth_text}>

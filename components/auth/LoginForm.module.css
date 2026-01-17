@@ -41,6 +41,12 @@
   gap: 16px;
   align-items: center;
 }
+
+.css.google_button_wrap {
+  position: relative;
+  z-index: 20;
+  pointer-events: auto;
+}
 .auth_field {
   display: flex;
   flex-direction: column;

@@ -1,14 +1,23 @@
+'use client'
+
 import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { useAuthStore } from '@/store/auth.store'
 
+const PUBLIC_ROUTES = ['/auth/login', '/auth/register', '/auth/google']
+
 export const useProtectedRoute = () => {
-  const { user } = useAuthStore()
+  const { isAuthenticated, hydrated } = useAuthStore()
   const router = useRouter()
+  const pathname = usePathname()
 
   useEffect(() => {
-    if (!user) {
-      router.push('/auth/login')
+    if (!hydrated) return
+
+    const isPublic = PUBLIC_ROUTES.some(route => pathname.startsWith(route))
+
+    if (!isAuthenticated && !isPublic) {
+      router.replace('/auth/login')
     }
-  }, [user, router])
+  }, [hydrated, isAuthenticated, pathname, router])
 }
