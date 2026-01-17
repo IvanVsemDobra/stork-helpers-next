@@ -11,7 +11,7 @@ export default function JourneyDetails() {
         <button className={css.tabbutton}>Тіло мами</button>
       </div>
 
-      <div className={css.babytab}>
+      {/* <div className={css.babytab}>
         <div className={css.imagebox}>
           <Image
             className={css.picture}
@@ -61,7 +61,7 @@ export default function JourneyDetails() {
             aliquam nihil maxime repellat facere accusamus corporis?
           </p>
         </div>
-      </div>
+      </div> */}
 
       <div className={css.momtab}>
         <div className={css.itembox}>

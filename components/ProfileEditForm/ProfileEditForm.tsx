@@ -28,21 +28,18 @@ export const ProfileEditForm = () => {
   const { theme: localTheme, setTheme } = useThemeStore()
   const initialEmail = user?.email
 
-  // Обмеження дати (UX)
   const today = new Date().toISOString().split('T')[0]
   const maxDate = new Date()
-  maxDate.setDate(maxDate.getDate() + 280) // 40 тижнів
+  maxDate.setDate(maxDate.getDate() + 280)
   const maxDateStr = maxDate.toISOString().split('T')[0]
 
   const { mutate, isPending } = useMutation<Partial<User>, Error, Partial<User>>({
     mutationFn: updateProfile,
     onSuccess: vars => {
-      // 1. Оновлюємо дані юзера в сторі (тепер бекенд повернув або ми "схачили" повернення даних)
       if (user) {
         setUser({ ...user, ...vars })
       }
 
-      // 2. Оновлюємо тему в глобальному сторі теми
       if (vars.theme) {
         setTheme(vars.theme)
       }
@@ -53,17 +50,14 @@ export const ProfileEditForm = () => {
   })
 
   const handleSubmit = (values: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
-    // 1. Оптимістичне оновлення (щоб колір змінився миттєво, до відповіді сервера)
     if (values.theme !== localTheme) {
       setTheme(values.theme)
     }
 
     const payload: Partial<User> = {}
 
-    // Перевіряємо зміни для ВСІХ полів, включаючи тему
     if (values.name !== user?.name) payload.name = values.name
 
-    // ❗ ТЕПЕР ВІДПРАВЛЯЄМО ТЕМУ НА БЕКЕНД
     if (values.theme !== user?.theme) payload.theme = values.theme
 
     const formattedDate = values.dueDate ? new Date(values.dueDate).toISOString() : undefined
@@ -79,14 +73,12 @@ export const ProfileEditForm = () => {
       payload.email = values.email
     }
 
-    // Якщо змін немає
     if (Object.keys(payload).length === 0) {
       toast.error('Змін не виявлено')
       setSubmitting(false)
       return
     }
 
-    // Відправляємо запит
     mutate(payload, {
       onSuccess: () => {
         if (payload.email) {
@@ -104,8 +96,6 @@ export const ProfileEditForm = () => {
       initialValues={{
         name: user?.name || '',
         email: user?.email || '',
-        // ❗ ПРІОРИТЕТ: Тепер беремо тему з БЕКЕНДУ (user.theme), бо він її зберігає.
-        // Якщо там пусто — беремо локальну, або дефолтну.
         theme: (user?.theme as 'boy' | 'girl' | 'neutral') || localTheme || 'neutral',
         dueDate: user?.dueDate ? new Date(user.dueDate).toISOString().split('T')[0] : '',
       }}

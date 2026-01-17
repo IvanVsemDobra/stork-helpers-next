@@ -1,67 +1,55 @@
-"use client";
+'use client'
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useAuthStore } from '@/store/auth.store'
+import type { Task } from '@/types/task'
+import AddTaskModal from '../add-task-modal/AddTaskModal'
+import styles from './TasksReminderCard.module.css'
+import { getTasks, updateTasksStatus } from '@/services/tasks.service'
 
+const TasksList = () => {
+  const router = useRouter()
+  const queryClient = useQueryClient()
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const { isAuthenticated, hydrated } = useAuthStore()
 
-
-import type { Task } from "@/types/task";
-
-import AddTaskModal from "../add-task-modal/AddTaskModal";
-import styles from "./TasksReminderCard.module.css";
-import { getTasks, updateTasksStatus } from "@/services/tasks.service";
-
-interface TasksListProps {
-  isAuthenticated: boolean;
-}
-
-const TasksList = ({ isAuthenticated }: TasksListProps) => {
-  const router = useRouter();
-  const queryClient = useQueryClient();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
- 
   useEffect(() => {
-    document.body.style.overflow = isModalOpen ? "hidden" : "";
+    document.body.style.overflow = isModalOpen ? 'hidden' : ''
     return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isModalOpen]);
+      document.body.style.overflow = ''
+    }
+  }, [isModalOpen])
 
-  const { data: tasks = [] } = useQuery<Task[]>({
-    queryKey: ["tasks"],
+  const { data: tasks = [], isLoading } = useQuery<Task[]>({
+    queryKey: ['tasks'],
     queryFn: getTasks,
-    enabled: isAuthenticated,
-  });
-
+    enabled: hydrated && isAuthenticated,
+  })
 
   const { mutate: toggleTask } = useMutation({
-    mutationFn: ({ id, isDone }: { id: string; isDone: boolean }) =>
-      updateTasksStatus(id, isDone),
+    mutationFn: ({ id, isDone }: { id: string; isDone: boolean }) => updateTasksStatus(id, isDone),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      queryClient.invalidateQueries({ queryKey: ['tasks'] })
     },
-  });
+  })
 
-  const handleToggle = (task: Task) => {
-    toggleTask({ id: task._id, isDone: !task.isDone });
-  };
+  if (!hydrated) {
+    return (
+      <section className={styles.card}>
+        <p>Завантаження сесії...</p>
+      </section>
+    )
+  }
 
   const handleOpenModal = () => {
     if (!isAuthenticated) {
-      router.push("/auth/register");
-      return;
+      router.push('/auth/register')
+      return
     }
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => setIsModalOpen(false);
-
-  const handleTaskSaved = () => {
-    queryClient.invalidateQueries({ queryKey: ["tasks"] });
-    handleCloseModal();
-  };
+    setIsModalOpen(true)
+  }
 
   return (
     <section className={styles.card}>
@@ -72,22 +60,17 @@ const TasksList = ({ isAuthenticated }: TasksListProps) => {
         </button>
       </div>
 
-      {/*  NOT AUTHENTICATED */}
       {!isAuthenticated && (
         <>
           <p className={styles.emptyBold}>Наразі немає жодних завдань</p>
-          <p className={styles.emptyText}>Створіть мерщій нове завдання!</p>
-          <button
-            className={styles.createBtn}
-            onClick={() => router.push("/auth/register")}
-          >
-            Створити завдання
+          <p className={styles.emptyText}>Увійдіть, щоб створювати завдання!</p>
+          <button className={styles.createBtn} onClick={() => router.push('/auth/register')}>
+            Зареєструватися
           </button>
         </>
       )}
 
-      {/* NO TASKS*/}
-      {isAuthenticated && tasks.length === 0 && (
+      {isAuthenticated && tasks.length === 0 && !isLoading && (
         <>
           <p className={styles.emptyBold}>Наразі немає жодних завдань</p>
           <p className={styles.emptyText}>Створіть мерщій нове завдання!</p>
@@ -97,7 +80,6 @@ const TasksList = ({ isAuthenticated }: TasksListProps) => {
         </>
       )}
 
-      {/* OK */}
       {isAuthenticated && tasks.length > 0 && (
         <ul className={styles.list}>
           {tasks.map(task => (
@@ -105,24 +87,21 @@ const TasksList = ({ isAuthenticated }: TasksListProps) => {
               <input
                 type="checkbox"
                 checked={task.isDone}
-                onChange={() => handleToggle(task)}
+                onChange={() => toggleTask({ id: task._id, isDone: !task.isDone })}
               />
-              <span className={task.isDone ? styles.done : ""}>
-                {task.name}
-              </span>
+              <span className={task.isDone ? styles.done : ''}>{task.name}</span>
             </li>
           ))}
         </ul>
       )}
 
-   
       <AddTaskModal
         isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onTaskSaved={handleTaskSaved}
+        onClose={() => setIsModalOpen(false)}
+        onTaskSaved={() => queryClient.invalidateQueries({ queryKey: ['tasks'] })}
       />
     </section>
-  );
-};
+  )
+}
 
-export default TasksList;
+export default TasksList
