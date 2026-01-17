@@ -7,25 +7,21 @@ import Image from 'next/image'
 import { useAuthStore } from '@/store/auth.store'
 import { useMutation } from '@tanstack/react-query'
 import { updateUserAvatar } from '@/services/users.service'
-import { User } from '@/types/user'
+import type { User } from '@/types/user'
 
 export const ProfileAvatar = () => {
   const inputRef = useRef<HTMLInputElement>(null)
   const { user, setUser } = useAuthStore()
+
   const { mutate, isPending } = useMutation<User, Error, File>({
     mutationFn: updateUserAvatar,
-    onSuccess: (data: User) => {
+    onSuccess: updatedData => {
       if (user) {
-        const avatarData = data.avatar || ''
-
-        setUser({
-          ...user,
-          avatar: avatarData,
-        })
+        setUser({ ...user, avatar: updatedData.avatar })
       }
       toast.success('Аватар оновлено')
     },
-    onError: (error: Error) => toast.error(error.message || 'Не вдалося завантажити фото'),
+    onError: error => toast.error(error.message || 'Не вдалося завантажити фото'),
   })
 
   const getAvatarSrc = () => {

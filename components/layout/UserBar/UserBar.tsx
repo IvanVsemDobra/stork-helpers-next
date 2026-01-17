@@ -15,6 +15,20 @@ export const UserBar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const router = useRouter()
 
+  const getAvatarSrc = () => {
+    const avatar = user?.avatar
+
+    if (!avatar || avatar === 'avatar') {
+      return '/images/unknownAvatarImage/unknown_avatar_Image.jpg'
+    }
+
+    if (avatar.length > 100 && !avatar.startsWith('data:image') && !avatar.startsWith('http')) {
+      return `data:image/jpeg;base64,${avatar}`
+    }
+
+    return avatar
+  }
+
   const handleLogoutClick = () => {
     setIsModalOpen(true)
   }
@@ -43,7 +57,7 @@ export const UserBar = () => {
     <>
       <div className={styles.userBar}>
         <div className={styles.userBar__info}>
-          <Avatar size={40} icon={<UserOutlined />} src={user.avatar} />
+          <Avatar key={user.avatar} size={40} icon={<UserOutlined />} src={getAvatarSrc()} />
           <div className={styles.userBar__details}>
             <span className={styles.userBar__name}>{user.name}</span>
             <span className={styles.userBar__email}>{user.email}</span>
