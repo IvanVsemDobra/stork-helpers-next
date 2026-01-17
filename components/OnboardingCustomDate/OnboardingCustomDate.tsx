@@ -7,7 +7,16 @@ export default function OnboardingCustomDate() {
   return (
     <div className={styles.wrapper}>
       <label className={styles.label}>Очікувана дата пологів</label>
-      <Field type="date" name="dueDate" className={styles.input} />
+
+      <Field
+        type="text"
+        name="dueDate"
+        className={styles.input}
+        placeholder="16.07.2025"
+        maxLength={10}
+        required
+      />
+
       <ErrorMessage name="dueDate" component="div" className={styles.error} />
     </div>
   )
