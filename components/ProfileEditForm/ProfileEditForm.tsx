@@ -27,27 +27,44 @@ export const ProfileEditForm = () => {
   const { user, setUser } = useAuthStore()
   const { theme: localTheme, setTheme } = useThemeStore()
   const initialEmail = user?.email
+
+  // Обмеження дати (UX)
+  const today = new Date().toISOString().split('T')[0]
+  const maxDate = new Date()
+  maxDate.setDate(maxDate.getDate() + 280) // 40 тижнів
+  const maxDateStr = maxDate.toISOString().split('T')[0]
+
   const { mutate, isPending } = useMutation<Partial<User>, Error, Partial<User>>({
     mutationFn: updateProfile,
     onSuccess: vars => {
+      // 1. Оновлюємо дані юзера в сторі (тепер бекенд повернув або ми "схачили" повернення даних)
       if (user) {
         setUser({ ...user, ...vars })
       }
+
+      // 2. Оновлюємо тему в глобальному сторі теми
+      if (vars.theme) {
+        setTheme(vars.theme)
+      }
+
       toast.success('Профіль оновлено')
     },
     onError: error => toast.error(error.message),
   })
 
   const handleSubmit = (values: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
-    let themeChanged = false
+    // 1. Оптимістичне оновлення (щоб колір змінився миттєво, до відповіді сервера)
     if (values.theme !== localTheme) {
       setTheme(values.theme)
-      themeChanged = true
     }
 
     const payload: Partial<User> = {}
 
+    // Перевіряємо зміни для ВСІХ полів, включаючи тему
     if (values.name !== user?.name) payload.name = values.name
+
+    // ❗ ТЕПЕР ВІДПРАВЛЯЄМО ТЕМУ НА БЕКЕНД
+    if (values.theme !== user?.theme) payload.theme = values.theme
 
     const formattedDate = values.dueDate ? new Date(values.dueDate).toISOString() : undefined
     const currentStoredDate = user?.dueDate
@@ -62,28 +79,23 @@ export const ProfileEditForm = () => {
       payload.email = values.email
     }
 
-    const hasBackendChanges = Object.keys(payload).length > 0
-
-    if (!hasBackendChanges && !themeChanged) {
+    // Якщо змін немає
+    if (Object.keys(payload).length === 0) {
       toast.error('Змін не виявлено')
       setSubmitting(false)
       return
     }
 
-    if (hasBackendChanges) {
-      mutate(payload, {
-        onSuccess: () => {
-          if (payload.email) {
-            sendVerificationEmail(payload.email).catch((err: Error) => toast.error(err.message))
-            toast.success('Лист для верифікації надіслано')
-          }
-        },
-        onSettled: () => setSubmitting(false),
-      })
-    } else {
-      toast.success('Налаштування статі збережено')
-      setSubmitting(false)
-    }
+    // Відправляємо запит
+    mutate(payload, {
+      onSuccess: () => {
+        if (payload.email) {
+          sendVerificationEmail(payload.email).catch((err: Error) => toast.error(err.message))
+          toast.success('Лист для верифікації надіслано')
+        }
+      },
+      onSettled: () => setSubmitting(false),
+    })
   }
 
   return (
@@ -92,7 +104,9 @@ export const ProfileEditForm = () => {
       initialValues={{
         name: user?.name || '',
         email: user?.email || '',
-        theme: localTheme || 'neutral',
+        // ❗ ПРІОРИТЕТ: Тепер беремо тему з БЕКЕНДУ (user.theme), бо він її зберігає.
+        // Якщо там пусто — беремо локальну, або дефолтну.
+        theme: (user?.theme as 'boy' | 'girl' | 'neutral') || localTheme || 'neutral',
         dueDate: user?.dueDate ? new Date(user.dueDate).toISOString().split('T')[0] : '',
       }}
       validationSchema={validationSchema}
@@ -126,7 +140,13 @@ export const ProfileEditForm = () => {
 
             <div className={styles.field}>
               <label className={styles.label}>Планова дата пологів</label>
-              <Field type="date" name="dueDate" className={styles.input} />
+              <Field
+                type="date"
+                name="dueDate"
+                className={styles.input}
+                min={today}
+                max={maxDateStr}
+              />
               {touched.dueDate && errors.dueDate && (
                 <span className={styles.error}>{errors.dueDate}</span>
               )}
