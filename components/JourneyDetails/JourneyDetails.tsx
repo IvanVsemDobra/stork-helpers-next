@@ -1,4 +1,5 @@
 import React from 'react'
+import TasksReminderCard from '../tasks/TasksReminderCard'
 import Image from 'next/image'
 
 import css from './JourneyDetails.module.css'
@@ -11,7 +12,7 @@ export default function JourneyDetails() {
         <button className={css.tabbutton}>Тіло мами</button>
       </div>
 
-      {/* <div className={css.babytab}>
+      <div className={css.babytab}>
         <div className={css.imagebox}>
           <Image
             className={css.picture}
@@ -21,6 +22,7 @@ export default function JourneyDetails() {
             height={379}
           />
         </div>
+
         <div className={css.infobox}>
           <p className={css.textinfo}>Ваш малюк зараз розміром з Авокадо</p>
           <p className={css.textinfo}>
@@ -61,9 +63,9 @@ export default function JourneyDetails() {
             aliquam nihil maxime repellat facere accusamus corporis?
           </p>
         </div>
-      </div> */}
+      </div>
 
-      <div className={css.momtab}>
+      {/* <div className={css.momtab}>
         <div className={css.itembox}>
           <p className={css.title}>Як ви можете почуватись</p>
           <div className={css.feelingsbox}>
@@ -73,7 +75,13 @@ export default function JourneyDetails() {
           </div>
           <p className={css.textinfo}>
             Ви можете відчувати легке потягування внизу живота. Ранкова нудота може все ще
-            турбувати, але скоро має піти на спад. Настрій може бути мінливим — це нормально.
+            турбувати, але скоро має піти на спад. Настрій може бути мінливим — це нормально. Lorem
+            ipsum dolor, sit amet consectetur adipisicing elit. Fuga quidem nulla nostrum dolorum
+            temporibus. Harum aliquid eveniet cum blanditiis incidunt aperiam. Debitis velit magnam
+            amet? Nemo veniam molestiae sint voluptas? Lorem ipsum dolor sit, amet consectetur
+            adipisicing elit. Accusamus, voluptate illum animi sapiente aperiam neque magnam officia
+            nostrum praesentium impedit hic dolor ipsa earum ducimus! Porro doloremque totam fugit
+            voluptatum?
           </p>
         </div>
         <div className={css.itembox}>
@@ -100,10 +108,9 @@ export default function JourneyDetails() {
             </p>
           </div>
         </div>
-        <div>
-          <div className={css.itembox}>TasksReminderCard component</div>
-        </div>
-      </div>
+
+        <TasksReminderCard />
+      </div> */}
     </section>
   )
 }
