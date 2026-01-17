@@ -7,14 +7,6 @@ import StatusBlock from '@/components/StatusBlock/StatusBlock'
 import { FeelingCheckCard } from '@/components/FeelingCheckCard/FeelingCheckCard'
 import TasksList from '@/components/tasks/TasksReminderCard'
 
-// Містить в собі компоненти:
-// GreetingBlock      ✅
-// StatusBlock        (Ще не підключено)
-// BabyTodayCard      ✅
-// MomTipCard         ✅
-// TasksReminderCard  ✅ (Підключено через TasksList)
-// FeelingCheckCard   ✅
-
 export default async function DashboardPage() {
   let weekData
   try {
@@ -22,6 +14,15 @@ export default async function DashboardPage() {
   } catch {
     weekData = await getFirstWeekInfo()
   }
+
+  // Містить в собі компоненти:
+  // GreetingBlock      ✅
+  // StatusBlock        (Ще не підключено)
+  // BabyTodayCard      ✅
+  // MomTipCard         ✅
+  // TasksReminderCard  ✅ (Підключено через TasksList)
+  // FeelingCheckCard   ✅
+
   const tipIndex = 6 - (weekData.daysToMeeting % 7)
 
   return (
@@ -40,7 +41,7 @@ export default async function DashboardPage() {
       <MomTipCard tipIndex={tipIndex} momDailyTips={weekData.momDailyTips} />
 
       <aside className={css.tasksSidebar}>
-        <TasksList isAuthenticated={true} />
+        <TasksList />
       </aside>
 
       <section>
