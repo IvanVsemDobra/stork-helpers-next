@@ -123,7 +123,7 @@ export const RegistrationForm = () => {
                   >
                     Зареєструватися
                   </button>
-                  <GoogleButton />
+                  <GoogleButton mode="register" />
                 </div>
 
                 <div className={css.auth_text}>
