@@ -1,46 +1,17 @@
 import { api } from '@/app/api/client'
-import { AxiosError } from 'axios'
 import type { User } from '@/types/user'
 
-interface ApiError {
-  message: string
+export const updateProfile = async (data: Partial<User>): Promise<{ message: string }> => {
+  const res = await api.patch('/users/me', data)
+  return res.data
 }
 
-export const updateUser = async (data: Partial<User>): Promise<User> => {
-  try {
-    const res = await api.patch<User>('/users/me', data)
-    return res.data
-  } catch (error) {
-    const axiosError = error as AxiosError<ApiError>
-    const message = axiosError.response?.data?.message || 'Помилка оновлення профілю'
-    throw new Error(message)
-  }
-}
-
-export const updateUserAvatar = async (file: File): Promise<User> => {
+export const updateUserAvatar = async (file: File): Promise<{ avatar: string }> => {
   const formData = new FormData()
   formData.append('avatar', file)
-
-  try {
-    const res = await api.patch<User>('/users/avatar', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-    return res.data
-  } catch (error) {
-    const axiosError = error as AxiosError<ApiError>
-    throw new Error(axiosError.response?.data?.message || 'Не вдалося завантажити фото')
-  }
+  
+  const res = await api.patch('/users/avatar', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  })
+  return res.data
 }
-
-export const sendVerificationEmail = async (email: string): Promise<void> => {
-  try {
-    await api.post('/users/verify', { email })
-  } catch (error) {
-    const axiosError = error as AxiosError<ApiError>
-    throw new Error(axiosError.response?.data?.message || 'Помилка верифікації')
-  }
-}
-
-export const updateProfile = updateUser

@@ -1,7 +1,6 @@
 'use client'
 
 import { useAuthStore } from '@/store/auth.store'
-import { AuthService } from '@/services/auth.service'
 import { Button, Avatar } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/navigation'
@@ -11,28 +10,29 @@ import styles from './UserBar.module.scss'
 
 export const UserBar = () => {
   const { user, clearAuth } = useAuthStore()
-  const [isLoading, setIsLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const router = useRouter()
+  const getAvatarSrc = () => {
+    const avatar = user?.avatar
 
+    if (!avatar || avatar === 'avatar') {
+      return '/images/unknownAvatarImage/unknown_avatar_Image.jpg'
+    }
+
+    if (avatar.length > 100 && !avatar.startsWith('data:image') && !avatar.startsWith('http')) {
+      return `data:image/jpeg;base64,${avatar}`
+    }
+
+    return avatar
+  }
   const handleLogoutClick = () => {
     setIsModalOpen(true)
   }
-
-  const handleConfirmLogout = async () => {
-    setIsLoading(true)
-    try {
-      await AuthService.logout()
-      clearAuth()
-      setIsModalOpen(false)
-      router.push('/auth/login')
-    } catch (error) {
-      console.error('Logout failed', error)
-    } finally {
-      setIsLoading(false)
-    }
+  const handleConfirmLogout = () => {
+    clearAuth()
+    setIsModalOpen(false)
+    router.push('/auth/login')
   }
-
   const handleCancelLogout = () => {
     setIsModalOpen(false)
   }
@@ -43,15 +43,15 @@ export const UserBar = () => {
     <>
       <div className={styles.userBar}>
         <div className={styles.userBar__info}>
-          <Avatar size={40} icon={<UserOutlined />} src={user.avatar} />
+          <Avatar size={40} icon={<UserOutlined />} src={getAvatarSrc()} alt={user.name} />
           <div className={styles.userBar__details}>
             <span className={styles.userBar__name}>{user.name}</span>
             <span className={styles.userBar__email}>{user.email}</span>
           </div>
         </div>
+
         <Button
           type="text"
-          loading={isLoading}
           onClick={handleLogoutClick}
           className={styles.userBar__logout}
           icon={null}

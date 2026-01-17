@@ -1,14 +1,23 @@
 'use client'
 
 import styles from './ProfileEditForm.module.css'
-import { Formik, Form, Field } from 'formik'
+import { Formik, Form, Field, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import toast from 'react-hot-toast'
 import { useAuthStore } from '@/store/auth.store'
 import { useThemeStore } from '@/store/theme.store'
 import { useMutation } from '@tanstack/react-query'
-import { updateProfile, sendVerificationEmail } from '@/services/users.service'
+import { updateProfile } from '@/services/users.service'
+import { useRouter } from 'next/navigation'
 import type { User } from '@/types/user'
+import axios from 'axios'
+
+interface FormValues {
+  name: string
+  email: string
+  theme: NonNullable<User['theme']>
+  dueDate: string
+}
 
 const validationSchema = Yup.object({
   name: Yup.string().required('Обовʼязкове поле'),
@@ -18,26 +27,69 @@ const validationSchema = Yup.object({
 
 export const ProfileEditForm = () => {
   const { user, setUser } = useAuthStore()
-  const { setTheme } = useThemeStore()
+  const { theme: localTheme, setTheme } = useThemeStore()
+  const router = useRouter()
   const initialEmail = user?.email
+
+  const { mutateAsync, isPending } = useMutation({ mutationFn: updateProfile })
+
   const today = new Date().toISOString().split('T')[0]
   const maxDate = new Date()
   maxDate.setDate(maxDate.getDate() + 280)
   const maxDateStr = maxDate.toISOString().split('T')[0]
 
-  const { mutate, isPending } = useMutation<User, Error, Partial<User>>({
-    mutationFn: updateProfile,
-    onSuccess: updatedUser => {
-      setUser(updatedUser)
+  const handleSubmit = async (values: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
+    try {
+      const formattedDueDate = values.dueDate ? new Date(values.dueDate).toISOString() : undefined
+      const currentStoredDate = user?.dueDate
+        ? new Date(user.dueDate).toISOString().split('T')[0]
+        : ''
 
-      if (updatedUser.email !== initialEmail && updatedUser.email) {
-        sendVerificationEmail(updatedUser.email).catch(err => toast.error(err.message))
+      const hasProfileChanges =
+        values.name !== user?.name ||
+        values.email !== initialEmail ||
+        values.dueDate !== currentStoredDate
+
+      const hasThemeChanges = values.theme !== localTheme
+
+      if (!hasProfileChanges && !hasThemeChanges) {
+        toast.error('Змін не виявлено')
+        return
       }
 
-      toast.success('Профіль оновлено')
-    },
-    onError: error => toast.error(error.message),
-  })
+      if (hasProfileChanges) {
+        const payload: Partial<User> = { name: values.name }
+        if (values.dueDate !== currentStoredDate) payload.dueDate = formattedDueDate
+        if (values.email !== initialEmail) payload.email = values.email
+
+        await mutateAsync(payload)
+      }
+
+      if (hasThemeChanges) {
+        setTheme(values.theme)
+      }
+
+      setUser({
+        ...user,
+        name: values.name,
+        dueDate: formattedDueDate,
+        theme: values.theme,
+        email: values.email === initialEmail ? values.email : user?.email,
+      })
+
+      toast.success('Зміни успішно збережено')
+      router.refresh()
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response?.status === 429) {
+        toast.error('Бекенд заблокував запит (ліміт 5/год). Почекайте хвилину.')
+      } else {
+        const errorMessage = error instanceof Error ? error.message : 'Помилка оновлення'
+        toast.error(errorMessage)
+      }
+    } finally {
+      setSubmitting(false)
+    }
+  }
 
   return (
     <Formik
@@ -45,24 +97,13 @@ export const ProfileEditForm = () => {
       initialValues={{
         name: user?.name || '',
         email: user?.email || '',
-        theme: user?.theme || 'neutral',
+        theme: localTheme || (user?.theme as NonNullable<User['theme']>) || 'neutral',
         dueDate: user?.dueDate ? new Date(user.dueDate).toISOString().split('T')[0] : '',
       }}
       validationSchema={validationSchema}
-      onSubmit={values => {
-        const selectedTheme = values.theme as NonNullable<User['theme']>
-        setTheme(selectedTheme)
-        const payload: Partial<User> = {
-          name: values.name,
-          email: values.email,
-          theme: selectedTheme,
-          dueDate: values.dueDate ? new Date(values.dueDate).toISOString() : undefined,
-        }
-
-        mutate(payload)
-      }}
+      onSubmit={handleSubmit}
     >
-      {({ resetForm, errors, touched }) => (
+      {({ resetForm, dirty, errors, touched }) => (
         <Form className={styles.form}>
           <div className={styles.fields}>
             <div className={styles.field}>
@@ -89,7 +130,7 @@ export const ProfileEditForm = () => {
             </div>
 
             <div className={styles.field}>
-              <label className={styles.label}>Планова дата пологів</label>
+              <label className={styles.label}>Дата пологів</label>
               <Field
                 type="date"
                 name="dueDate"
@@ -104,11 +145,15 @@ export const ProfileEditForm = () => {
           </div>
 
           <div className={styles.actions}>
-            <button type="button" className={styles.cancel} onClick={() => resetForm()}>
-              Відмінити зміни
+            <button
+              type="button"
+              className={styles.cancel}
+              onClick={() => resetForm()}
+              disabled={!dirty || isPending}
+            >
+              Відмінити
             </button>
-
-            <button type="submit" className={styles.submit} disabled={isPending}>
+            <button type="submit" className={styles.submit} disabled={isPending || !dirty}>
               {isPending ? 'Збереження...' : 'Зберегти зміни'}
             </button>
           </div>
