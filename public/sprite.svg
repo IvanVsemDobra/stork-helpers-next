@@ -26,7 +26,7 @@
 <symbol id="icon-menu" viewBox="0 0 32 32">
 <path d="M5.333 8h21.333v2.667h-21.333v-2.667zM5.333 14.667h21.333v2.667h-21.333v-2.667zM5.333 21.333h21.333v2.667h-21.333v-2.667z"></path>
 </symbol>
-<symbol id="icon-Checkbox" viewBox="0 0 32 32">
+<symbol id="icon-Checkbox" viewBox="0 0 18 18">
 <path d="M24 0.8c3.976 0 7.2 3.224 7.2 7.2v16c0 3.976-3.224 7.2-7.2 7.2h-16c-3.976 0-7.2-3.224-7.2-7.2v-16c0-3.976 3.224-7.2 7.2-7.2h16z"></path>
 <path stroke-linejoin="miter" stroke-linecap="butt" stroke-miterlimit="4" stroke-width="1.6" d="M24 0.8c3.976 0 7.2 3.224 7.2 7.2v16c0 3.976-3.224 7.2-7.2 7.2h-16c-3.976 0-7.2-3.224-7.2-7.2v-16c0-3.976 3.224-7.2 7.2-7.2h16z"></path>
 <path d="M12.115 20.247l-5.117-5.117-2.197 2.197 7.315 7.315 15.085-15.085-2.197-2.197-12.888 12.888z"></path>
