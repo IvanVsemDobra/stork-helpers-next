@@ -5,7 +5,7 @@ import type { User } from '../types/user'
 export interface AuthState {
   user: User | null
   isAuthenticated: boolean
-  setUser: (userData: Partial<User> | User) => void
+  setUser: (userData: Partial<User> | User | null) => void
   clearAuth: () => void
 }
 
@@ -16,10 +16,20 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
 
       setUser: (userData) =>
-        set((state) => ({
-          user: state.user ? { ...state.user, ...userData } : (userData as User),
-          isAuthenticated: true,
-        })),
+        set((state) => {
+          if (userData === null) {
+            return { user: null, isAuthenticated: false }
+          }
+
+          const newUser = state.user 
+            ? { ...state.user, ...userData } 
+            : (userData as User)
+
+          return {
+            user: newUser,
+            isAuthenticated: !!newUser,
+          }
+        }),
 
       clearAuth: () =>
         set({
