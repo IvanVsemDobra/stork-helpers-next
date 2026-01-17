@@ -5,8 +5,10 @@ interface ApiErrorResponse {
   error?: string;
 }
 
+const BASE_URL: string = process.env.NEXT_PUBLIC_API_URL || 'https://stork-helpers-api.onrender.com/api';
+
 export const api: AxiosInstance = axios.create({
-  baseURL: '/api/proxy',
+  baseURL: BASE_URL,
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
