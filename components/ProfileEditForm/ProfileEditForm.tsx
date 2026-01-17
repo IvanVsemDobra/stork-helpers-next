@@ -7,17 +7,8 @@ import toast from 'react-hot-toast'
 import { useAuthStore } from '@/store/auth.store'
 import { useThemeStore } from '@/store/theme.store'
 import { useMutation } from '@tanstack/react-query'
-import { updateProfile } from '@/services/users.service'
-import { useRouter } from 'next/navigation'
+import { updateProfile, sendVerificationEmail } from '@/services/users.service'
 import type { User } from '@/types/user'
-import axios from 'axios'
-
-interface FormValues {
-  name: string
-  email: string
-  theme: NonNullable<User['theme']>
-  dueDate: string
-}
 
 const validationSchema = Yup.object({
   name: Yup.string().required('Обовʼязкове поле'),
@@ -25,70 +16,86 @@ const validationSchema = Yup.object({
   dueDate: Yup.date().required('Вкажіть дату'),
 })
 
+interface FormValues {
+  name: string
+  email: string
+  theme: 'boy' | 'girl' | 'neutral'
+  dueDate: string
+}
+
 export const ProfileEditForm = () => {
   const { user, setUser } = useAuthStore()
   const { theme: localTheme, setTheme } = useThemeStore()
-  const router = useRouter()
   const initialEmail = user?.email
 
-  const { mutateAsync, isPending } = useMutation({ mutationFn: updateProfile })
-
+  // Обмеження дати (UX)
   const today = new Date().toISOString().split('T')[0]
   const maxDate = new Date()
-  maxDate.setDate(maxDate.getDate() + 280)
+  maxDate.setDate(maxDate.getDate() + 280) // 40 тижнів
   const maxDateStr = maxDate.toISOString().split('T')[0]
 
-  const handleSubmit = async (values: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
-    try {
-      const formattedDueDate = values.dueDate ? new Date(values.dueDate).toISOString() : undefined
-      const currentStoredDate = user?.dueDate
-        ? new Date(user.dueDate).toISOString().split('T')[0]
-        : ''
-
-      const hasProfileChanges =
-        values.name !== user?.name ||
-        values.email !== initialEmail ||
-        values.dueDate !== currentStoredDate
-
-      const hasThemeChanges = values.theme !== localTheme
-
-      if (!hasProfileChanges && !hasThemeChanges) {
-        toast.error('Змін не виявлено')
-        return
+  const { mutate, isPending } = useMutation<Partial<User>, Error, Partial<User>>({
+    mutationFn: updateProfile,
+    onSuccess: vars => {
+      // 1. Оновлюємо дані юзера в сторі (тепер бекенд повернув або ми "схачили" повернення даних)
+      if (user) {
+        setUser({ ...user, ...vars })
       }
 
-      if (hasProfileChanges) {
-        const payload: Partial<User> = { name: values.name }
-        if (values.dueDate !== currentStoredDate) payload.dueDate = formattedDueDate
-        if (values.email !== initialEmail) payload.email = values.email
-
-        await mutateAsync(payload)
+      // 2. Оновлюємо тему в глобальному сторі теми
+      if (vars.theme) {
+        setTheme(vars.theme)
       }
 
-      if (hasThemeChanges) {
-        setTheme(values.theme)
-      }
+      toast.success('Профіль оновлено')
+    },
+    onError: error => toast.error(error.message),
+  })
 
-      setUser({
-        ...user,
-        name: values.name,
-        dueDate: formattedDueDate,
-        theme: values.theme,
-        email: values.email === initialEmail ? values.email : user?.email,
-      })
-
-      toast.success('Зміни успішно збережено')
-      router.refresh()
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error) && error.response?.status === 429) {
-        toast.error('Бекенд заблокував запит (ліміт 5/год). Почекайте хвилину.')
-      } else {
-        const errorMessage = error instanceof Error ? error.message : 'Помилка оновлення'
-        toast.error(errorMessage)
-      }
-    } finally {
-      setSubmitting(false)
+  const handleSubmit = (values: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
+    // 1. Оптимістичне оновлення (щоб колір змінився миттєво, до відповіді сервера)
+    if (values.theme !== localTheme) {
+      setTheme(values.theme)
     }
+
+    const payload: Partial<User> = {}
+
+    // Перевіряємо зміни для ВСІХ полів, включаючи тему
+    if (values.name !== user?.name) payload.name = values.name
+
+    // ❗ ТЕПЕР ВІДПРАВЛЯЄМО ТЕМУ НА БЕКЕНД
+    if (values.theme !== user?.theme) payload.theme = values.theme
+
+    const formattedDate = values.dueDate ? new Date(values.dueDate).toISOString() : undefined
+    const currentStoredDate = user?.dueDate
+      ? new Date(user.dueDate).toISOString().split('T')[0]
+      : ''
+
+    if (values.dueDate !== currentStoredDate) {
+      payload.dueDate = formattedDate
+    }
+
+    if (values.email !== initialEmail) {
+      payload.email = values.email
+    }
+
+    // Якщо змін немає
+    if (Object.keys(payload).length === 0) {
+      toast.error('Змін не виявлено')
+      setSubmitting(false)
+      return
+    }
+
+    // Відправляємо запит
+    mutate(payload, {
+      onSuccess: () => {
+        if (payload.email) {
+          sendVerificationEmail(payload.email).catch((err: Error) => toast.error(err.message))
+          toast.success('Лист для верифікації надіслано')
+        }
+      },
+      onSettled: () => setSubmitting(false),
+    })
   }
 
   return (
@@ -97,7 +104,9 @@ export const ProfileEditForm = () => {
       initialValues={{
         name: user?.name || '',
         email: user?.email || '',
-        theme: localTheme || (user?.theme as NonNullable<User['theme']>) || 'neutral',
+        // ❗ ПРІОРИТЕТ: Тепер беремо тему з БЕКЕНДУ (user.theme), бо він її зберігає.
+        // Якщо там пусто — беремо локальну, або дефолтну.
+        theme: (user?.theme as 'boy' | 'girl' | 'neutral') || localTheme || 'neutral',
         dueDate: user?.dueDate ? new Date(user.dueDate).toISOString().split('T')[0] : '',
       }}
       validationSchema={validationSchema}
@@ -130,7 +139,7 @@ export const ProfileEditForm = () => {
             </div>
 
             <div className={styles.field}>
-              <label className={styles.label}>Дата пологів</label>
+              <label className={styles.label}>Планова дата пологів</label>
               <Field
                 type="date"
                 name="dueDate"

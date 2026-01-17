@@ -20,14 +20,13 @@ export const useAuthStore = create<AuthState>()(
           if (userData === null) {
             return { user: null, isAuthenticated: false }
           }
-
-          const newUser = state.user 
+          const updatedUser = state.user 
             ? { ...state.user, ...userData } 
             : (userData as User)
 
           return {
-            user: newUser,
-            isAuthenticated: !!newUser,
+            user: updatedUser,
+            isAuthenticated: !!updatedUser,
           }
         }),
 
