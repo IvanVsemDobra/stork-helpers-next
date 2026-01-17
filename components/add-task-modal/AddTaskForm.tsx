@@ -74,13 +74,13 @@ const AddTaskForm = ({ onClose, taskToEdit }: AddTaskFormProps) => {
         <Form className={styles.form}>
           <div className={styles.fieldGroup}>
             <label htmlFor="title" className={styles.label}>
-              Завдання <span className={styles.required}>*</span>
+              Назва завдання <span className={styles.required}>*</span>
             </label>
             <Field
               id="title"
               name="title"
               type="text"
-              placeholder="Введіть назву завдання"
+              placeholder="Прийняти вітаміни"
               className={`${styles.input} ${errors.title && touched.title ? styles.error : ''}`}
             />
             <ErrorMessage name="title" component="div" className={styles.errorMessage} />
