@@ -10,12 +10,12 @@ interface ThemeState {
 
 export const useThemeStore = create<ThemeState>()(
   persist(
-    set => ({
+    (set) => ({
       theme: 'neutral',
-      setTheme: theme => set({ theme }),
+      setTheme: (theme) => set({ theme }),
     }),
     {
-      name: 'theme-storage', // унікальне ім'я для localStorage
+      name: 'theme-storage', // Ключ у localStorage
     }
   )
 )

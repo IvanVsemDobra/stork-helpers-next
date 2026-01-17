@@ -7,9 +7,10 @@ import toast from 'react-hot-toast'
 import { useAuthStore } from '@/store/auth.store'
 import { useThemeStore } from '@/store/theme.store'
 import { useMutation } from '@tanstack/react-query'
-import { updateProfile, updateTheme } from '@/services/users.service'
+import { updateProfile } from '@/services/users.service'
 import { useRouter } from 'next/navigation'
 import type { User } from '@/types/user'
+import axios from 'axios'
 
 interface FormValues {
   name: string
@@ -26,14 +27,11 @@ const validationSchema = Yup.object({
 
 export const ProfileEditForm = () => {
   const { user, setUser } = useAuthStore()
-  const { setTheme } = useThemeStore()
+  const { theme: localTheme, setTheme } = useThemeStore()
   const router = useRouter()
   const initialEmail = user?.email
 
-  const profileMutation = useMutation({ mutationFn: updateProfile })
-  const themeMutation = useMutation({ mutationFn: updateTheme })
-
-  const isPending = profileMutation.isPending || themeMutation.isPending
+  const { mutateAsync, isPending } = useMutation({ mutationFn: updateProfile })
 
   const today = new Date().toISOString().split('T')[0]
   const maxDate = new Date()
@@ -42,28 +40,52 @@ export const ProfileEditForm = () => {
 
   const handleSubmit = async (values: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
     try {
-      const payload: Partial<User> = { name: values.name }
-      if (values.dueDate) payload.dueDate = new Date(values.dueDate).toISOString()
-      if (values.email !== initialEmail) payload.email = values.email
+      const formattedDueDate = values.dueDate ? new Date(values.dueDate).toISOString() : undefined
+      const currentStoredDate = user?.dueDate
+        ? new Date(user.dueDate).toISOString().split('T')[0]
+        : ''
 
-      await profileMutation.mutateAsync(payload)
+      const hasProfileChanges =
+        values.name !== user?.name ||
+        values.email !== initialEmail ||
+        values.dueDate !== currentStoredDate
 
-      if (values.theme !== user?.theme) {
-        await themeMutation.mutateAsync(values.theme)
+      const hasThemeChanges = values.theme !== localTheme
+
+      if (!hasProfileChanges && !hasThemeChanges) {
+        toast.error('Змін не виявлено')
+        return
+      }
+
+      if (hasProfileChanges) {
+        const payload: Partial<User> = { name: values.name }
+        if (values.dueDate !== currentStoredDate) payload.dueDate = formattedDueDate
+        if (values.email !== initialEmail) payload.email = values.email
+
+        await mutateAsync(payload)
+      }
+
+      if (hasThemeChanges) {
         setTheme(values.theme)
       }
 
       setUser({
+        ...user,
         name: values.name,
-        dueDate: payload.dueDate,
+        dueDate: formattedDueDate,
         theme: values.theme,
+        email: values.email === initialEmail ? values.email : user?.email,
       })
 
-      toast.success('Профіль оновлено')
+      toast.success('Зміни успішно збережено')
       router.refresh()
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Помилка оновлення'
-      toast.error(errorMessage)
+      if (axios.isAxiosError(error) && error.response?.status === 429) {
+        toast.error('Бекенд заблокував запит (ліміт 5/год). Почекайте хвилину.')
+      } else {
+        const errorMessage = error instanceof Error ? error.message : 'Помилка оновлення'
+        toast.error(errorMessage)
+      }
     } finally {
       setSubmitting(false)
     }
@@ -75,7 +97,7 @@ export const ProfileEditForm = () => {
       initialValues={{
         name: user?.name || '',
         email: user?.email || '',
-        theme: (user?.theme as NonNullable<User['theme']>) || 'neutral',
+        theme: localTheme || (user?.theme as NonNullable<User['theme']>) || 'neutral',
         dueDate: user?.dueDate ? new Date(user.dueDate).toISOString().split('T')[0] : '',
       }}
       validationSchema={validationSchema}
@@ -108,7 +130,7 @@ export const ProfileEditForm = () => {
             </div>
 
             <div className={styles.field}>
-              <label className={styles.label}>Планова дата пологів</label>
+              <label className={styles.label}>Дата пологів</label>
               <Field
                 type="date"
                 name="dueDate"
