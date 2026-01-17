@@ -1,0 +1,25 @@
+/*======Mobile styles======*/
+.container {
+  max-width: 375px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  margin: auto;
+}
+
+/*======Tablet styles======*/
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+/*======Desctop styles======*/
+
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1128px;
+    margin-inline: auto;
+    gap: 32px;
+  }
+}

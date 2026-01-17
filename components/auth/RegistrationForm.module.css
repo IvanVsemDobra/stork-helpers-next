@@ -2,11 +2,13 @@
   display: flex;
   position: fixed;
   top: 12px;
-  left: 12px;
+  left: 20px;
   z-index: 1000;
 }
 
 .auth_logo_img {
+  display: inline-flex;
+  cursor: pointer;
   width: 105px;
   height: 45px;
 }
@@ -86,6 +88,7 @@
 
 .auth_button {
   border-bottom: 4px solid var(--color-scheme-accent);
+  border: none;
   border-radius: 100px;
   padding: 10px 24px;
   width: 335px;
@@ -137,6 +140,9 @@
 
 /* tablet */
 @media (min-width: 768px) {
+  .auth_logo {
+    left: 32px;
+  }
   .auth_input {
     width: 480px;
     height: 37px;
@@ -149,10 +155,19 @@
 
 /* desktop */
 @media (min-width: 1280px) {
-  .auth_wraper {
+  .auth_logo {
+    left: 40px;
+  }
+
+  .auth_wrapper {
+    display: flex;
     min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    width: 100vw;
+  }
+
+  .auth_form {
+    flex: 1;
+    background: #fff;
   }
   .auth_input {
     height: 40px;
@@ -179,9 +194,9 @@
 
   .auth_image {
     display: block;
-    background-image: url('/images/twoStorksInTheNest/two_storks_in_the_nest.jpg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
+    position: relative;
+    flex: 1;
+    height: 100vh;
+    overflow: hidden;
   }
 }

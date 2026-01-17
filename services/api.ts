@@ -1,16 +1,14 @@
 import axios from 'axios'
 
-export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
-  withCredentials: true,
-})
+const isServer = typeof window === 'undefined'
+const BASE_URL = isServer
+  ? process.env.NEXT_PUBLIC_API_URL || 'https://stork-helpers-api.onrender.com/api'
+  : '/api'
 
-api.interceptors.response.use(
-  res => res,
-  error => {
-    if (error.response?.status >= 500) {
-      console.error('Server error')
-    }
-    return Promise.reject(error)
-  }
-)
+export const api = axios.create({
+  baseURL: BASE_URL,
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})

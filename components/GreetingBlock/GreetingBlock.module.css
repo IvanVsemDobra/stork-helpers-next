@@ -1,0 +1,33 @@
+.block {
+  padding-left: 16px;
+}
+
+/* MOBILE */
+.title {
+  font-family: var(--second-family);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: var(--color-text-primary);
+  max-width: 335px;
+  word-break: break-word;
+}
+
+/* TABLET */
+@media (min-width: 768px) {
+  .title {
+    max-width: none;
+  }
+}
+
+/* DESKTOP */
+@media (min-width: 1440px) {
+  .title {
+    font-size: 32px;
+  }
+}
+
+.name {
+  color: inherit;
+}
