@@ -221,3 +221,18 @@
     gap: 10px;
   }
 }
+
+/*======Desctop======*/
+@media (min-width: 1440px) {
+  .container {
+    width: 1128px;
+    max-width: 1064px;
+    height: 610px;
+  }
+
+  .tabsplug {
+    width: 572px;
+    height: 54px;
+    margin: auto;
+  }
+}
