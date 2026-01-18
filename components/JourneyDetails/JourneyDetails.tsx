@@ -4,96 +4,28 @@ import { Loader } from '@/components/Loader/Loader'
 import Image from 'next/image'
 
 import css from './JourneyDetails.module.css'
-
-import axios from 'axios'
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://stork-helpers-api.onrender.com/api'
-
-export const api = axios.create({
-  baseURL: BASE_URL,
-  withCredentials: true,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-})
-
+import { MomState, BabyState } from '@/types/babyData'
 type Tab = 'baby' | 'mom'
 
-export type BabyState = {
-  weekNumber: number
-  analogy: string
-  babySize: number
-  babyWeight: number
-  image: string
-  babyActivity: string
-  babyDevelopment: string
-  interestingFact: string
+export type Props = {
+  week: number
 }
 
-export type MomFeelings = {
-  states: string[]
-  sensationDescr: string
-}
-
-export type MomComfortTip = {
-  category: string
-  tip: string
-}
-
-export type MomState = {
-  _id: string
-  weekNumber: number
-
-  feelings: MomFeelings
-  comfortTips: MomComfortTip[]
-}
-
-export default function JourneyDetails({ weekNumber }: { weekNumber: number }) {
-  const [activeTab, setActiveTab] = useState<Tab>('baby')
+export default function JourneyDetails({ week }: Props) {
   const [isLoading, setIsLoading] = useState(false)
-  // // const [data, setData] = useState<FakeData>(() => getData(weekNumber))
+  const [activeTab, setActiveTab] = useState<Tab>('baby')
+  const [baby, setBaby] = useState<BabyState | null>(null)
+  const [mom, setMom] = useState<MomState | null>(null)
 
-  // useEffect(() => {
-  //   let cancelled = false
+  useEffect(() => {
+    fetch(`/api/proxy/weeks/me/journey/baby/${week}`)
+      .then(res => res.json())
+      .then(setBaby)
 
-  //   setIsLoading(true)
-
-  //   const timer = setTimeout(() => {
-  //     if (cancelled) return
-  //     setData(getFakeData(weekNumber))
-  //     setIsLoading(false)
-  //   }, 700)
-
-  //   return () => {
-  //     cancelled = true
-  //     clearTimeout(timer)
-  //   }
-  // }, [weekNumber, activeTab]) // важливо: і тиждень, і таб
-
-  // const baby = data.baby
-  // const mom = data.mom
-
-  console.log(process.env.NEXT_PUBLIC_API_URL)
-
-  const getWeekBabyInfo = async (weekNumber: number): Promise<BabyState> => {
-    const res = await api.get(`/weeks/me/journey/baby/${weekNumber}`, {
-      params: { weekNumber },
-    })
-    console.log(res.data)
-    return res.data
-  }
-
-  getWeekBabyInfo(2)
-
-  const getWeekMomInfo = async (weekNumber: number): Promise<MomState> => {
-    const res = await api.get(`/weeks/me/journey/baby/3`, {
-      params: { weekNumber },
-    })
-    console.log(res.data)
-    return res.data
-  }
-
-  getWeekMomInfo(2)
+    fetch(`/api/proxy/weeks/me/journey/mom/${week}`)
+      .then(res => res.json())
+      .then(setMom)
+  }, [week])
 
   return (
     <section className={css.container}>
@@ -101,16 +33,12 @@ export default function JourneyDetails({ weekNumber }: { weekNumber: number }) {
         <button
           type="button"
           className={`${css.tabbutton} ${activeTab === 'baby' ? css.active : ''} `}
-          onClick={() => setActiveTab('baby')}
-          disabled={isLoading}
         >
           Розвиток малюка
         </button>
         <button
           type="button"
           className={`${css.tabbutton} ${activeTab === 'mom' ? css.active : ''}`}
-          onClick={() => setActiveTab('mom')}
-          disabled={isLoading}
         >
           Тіло мами
         </button>

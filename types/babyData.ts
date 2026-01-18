@@ -33,3 +33,32 @@ export interface MomInfo {
   }
   comfortTips: ComfortTip[]
 }
+
+export type BabyState = {
+  weekNumber: number
+  analogy: string
+  babySize: number
+  babyWeight: number
+  image: string
+  babyActivity: string
+  babyDevelopment: string
+  interestingFact: string
+}
+
+export type MomFeelings = {
+  states: string[]
+  sensationDescr: string
+}
+
+export type MomComfortTip = {
+  category: string
+  tip: string
+}
+
+export type MomState = {
+  _id: string
+  weekNumber: number
+
+  feelings: MomFeelings
+  comfortTips: MomComfortTip[]
+}

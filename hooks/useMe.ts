@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import type { User } from '@/types/user'
 import { useAuthStore } from '@/store/auth.store'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL!
+// const API_URL = process.env.NEXT_PUBLIC_API_URL!
 
 export function useMe() {
   const setUser = useAuthStore(s => s.setUser)
@@ -18,7 +18,7 @@ export function useMe() {
     enabled: true,
 
     queryFn: async () => {
-      const res = await fetch(`${API_URL}/users/me`, {
+      const res = await fetch('/api/proxy/users/me', {
         credentials: 'include',
       })
 
