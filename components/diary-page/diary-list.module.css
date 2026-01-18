@@ -135,10 +135,10 @@
 }
 
 @media screen and (min-width: 1440px) {
-  .diaryListContainer {
-    width: 389px;
-    margin: 0;
-  }
+    .diaryListContainer {
+        width: auto;
+        margin: 0;
+    }
 
   .newEntry {
     width: 125px;
