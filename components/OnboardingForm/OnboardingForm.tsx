@@ -24,9 +24,13 @@ export interface OnboardingValues {
 }
 
 const schema = Yup.object({
-  name: Yup.string().min(2, 'Ім’я має бути не менше 2 символів').required('Обов’язкове поле'),
-  theme: Yup.string().oneOf(['boy', 'girl', 'neutral']).required('Обов’язкове поле'),
-  dueDate: Yup.string().required('Обов’язкове поле'), 
+  name: Yup.string()
+    .min(2, 'Ім’я має бути не менше 2 символів')
+    .required('Обов’язкове поле'),
+  theme: Yup.string()
+    .oneOf(['boy', 'girl', 'neutral'])
+    .required('Обов’язкове поле'),
+  dueDate: Yup.string().required('Обов’язкове поле'),
 })
 
 export default function OnboardingForm() {
@@ -87,9 +91,10 @@ export default function OnboardingForm() {
       validationSchema={schema}
       onSubmit={values => mutation.mutate(values)}
     >
-      {({ isSubmitting, dirty, isValid }) => (
+      {({ isSubmitting, isValid }) => (
         <Form className={styles.form}>
           <OnboardingAvatar />
+
           <div className={styles.fields}>
             <OnboardingCustomSelect />
             <OnboardingCustomDate />
@@ -97,7 +102,7 @@ export default function OnboardingForm() {
 
           <button
             type="submit"
-            disabled={isSubmitting || !dirty || !isValid}
+            disabled={isSubmitting || !isValid}
             className={styles.submit}
           >
             Зберегти
