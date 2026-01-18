@@ -17,13 +17,15 @@
     &__logo {
         display: flex;
         align-items: center;
-        gap: 12px;
-        font-size: 20px;
-        font-weight: 700;
-        color: #333;
         text-decoration: none;
-        font-family: var(--second-family);
-        pointer-events: none;
+        cursor: pointer;
+    }
+
+    &__logo_img {
+        width: 105px;
+        height: 45px;
+        color: #333;
+        /* For SVG fill if needed */
     }
 
     &__burger {

@@ -39,7 +39,7 @@
 
 .input:focus {
   outline: none;
-  border-color: #ffdae0;
+  border-color: var(--theme-light);
   background-color: #fff;
 }
 
@@ -57,7 +57,7 @@
 
 .textarea:focus {
   outline: none;
-  border-color: #ffdae0;
+  border-color: var(--theme-light);
   background-color: #fff;
 }
 
@@ -86,7 +86,7 @@
   min-height: 48px;
   height: auto;
   border-radius: 12px;
-  border: 1px solid var(--opacity-transparent);
+  border: 1px solid var(--theme-light);
   background: var(--color-neutral-lightest);
 
   padding: 10px 12px;
@@ -94,7 +94,7 @@
 }
 
 .dropdownControlOpen {
-  border-color: #ffdae0;
+  border-color: var(--theme-light);
   box-shadow: 0 0 0 3px rgba(255, 218, 224, 0.35);
 }
 
@@ -187,7 +187,7 @@
 }
 
 .dropdownScroll::-webkit-scrollbar-thumb {
-  background: #ffb8c6;
+  background: var(--theme-main);
   border-radius: 999px;
   border: 3px solid transparent;
   background-clip: content-box;
@@ -195,7 +195,7 @@
 
 .dropdownScroll {
   scrollbar-width: thin;
-  scrollbar-color: #ffb8c6 rgba(0, 0, 0, 0.15);
+  scrollbar-color: var(--theme-main) rgba(0, 0, 0, 0.15);
 }
 
 /* Options */
@@ -262,10 +262,10 @@
 .buttonPrimary {
   width: 268px;
   height: 46px;
-  background: #ffdae0;
+  background: var(--theme-light);
   border-radius: 100px;
   border: none;
-  border-bottom: 4px solid #ffcbd3;
+  border-bottom: 4px solid var(--theme-main);
   cursor: pointer;
 }
 

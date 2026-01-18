@@ -4,14 +4,15 @@
   padding: 24px;
   width: 335px;
   height: 193px;
-  background: var(--color-scheme-foreground);
+  background: var(--theme-lighter);
 }
 
 .feelingcheck_title {
   font-family: var(--second-family);
+  margin: 0;
   font-weight: 700;
   font-size: 20px;
-  line-height: 140%;
+  line-height: 1.4;
   letter-spacing: 0.01em;
   color: var(--color-scheme-text);
 }
@@ -20,12 +21,12 @@
   font-family: var(--font-family);
   font-weight: 600;
   font-size: 14px;
-  line-height: 160%;
+  line-height: 1.6;
   color: var(--color-scheme-text);
 }
 .feelingcheck_span {
   font-weight: 400;
-  line-height: 150%;
+  line-height: 1.5;
 }
 
 .feelingcheck_button {
@@ -39,7 +40,7 @@
   font-family: var(--font-family);
   font-weight: 500;
   font-size: 14px;
-  line-height: 160%;
+  line-height: 1.6;
   color: var(--color-scheme-text);
 }
 
