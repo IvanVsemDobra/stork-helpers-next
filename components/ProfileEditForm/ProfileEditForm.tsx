@@ -1,7 +1,8 @@
 'use client'
 
+import { useEffect } from 'react'
 import styles from './ProfileEditForm.module.css'
-import { Formik, Form, Field, FormikHelpers } from 'formik'
+import { Formik, Form, Field, FormikHelpers, useFormikContext } from 'formik'
 import * as Yup from 'yup'
 import toast from 'react-hot-toast'
 import { useAuthStore } from '@/store/auth.store'
@@ -23,37 +24,42 @@ interface FormValues {
   dueDate: string
 }
 
+const ThemeWatcher = () => {
+  const { values } = useFormikContext<FormValues>()
+  const { setTheme } = useThemeStore()
+
+  useEffect(() => {
+    if (values.theme) {
+      setTheme(values.theme)
+    }
+  }, [values.theme, setTheme])
+
+  return null
+}
+
 export const ProfileEditForm = () => {
   const { user, setUser } = useAuthStore()
   const { theme: localTheme, setTheme } = useThemeStore()
-  const initialEmail = user?.email
 
+  const initialEmail = user?.email
   const today = new Date().toISOString().split('T')[0]
+
   const maxDate = new Date()
   maxDate.setDate(maxDate.getDate() + 280)
   const maxDateStr = maxDate.toISOString().split('T')[0]
 
   const { mutate, isPending } = useMutation<Partial<User>, Error, Partial<User>>({
     mutationFn: updateProfile,
-    onSuccess: vars => {
+    onSuccess: updatedVars => {
       if (user) {
-        setUser({ ...user, ...vars })
+        setUser({ ...user, ...updatedVars })
       }
-
-      if (vars.theme) {
-        setTheme(vars.theme)
-      }
-
       toast.success('Профіль оновлено')
     },
     onError: error => toast.error(error.message),
   })
 
   const handleSubmit = (values: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
-    if (values.theme !== localTheme) {
-      setTheme(values.theme)
-    }
-
     const payload: Partial<User> = {}
 
     if (values.name !== user?.name) payload.name = values.name
@@ -83,7 +89,7 @@ export const ProfileEditForm = () => {
       onSuccess: () => {
         if (payload.email) {
           sendVerificationEmail(payload.email).catch((err: Error) => toast.error(err.message))
-          toast.success('Лист для верифікації надіслано')
+          toast.success('Лист для верифікації надіслано на нову пошту')
         }
       },
       onSettled: () => setSubmitting(false),
@@ -104,16 +110,18 @@ export const ProfileEditForm = () => {
     >
       {({ resetForm, dirty, errors, touched }) => (
         <Form className={styles.form}>
+          <ThemeWatcher />
+
           <div className={styles.fields}>
             <div className={styles.field}>
               <label className={styles.label}>Імʼя</label>
-              <Field name="name" className={styles.input} />
+              <Field name="name" className={styles.input} placeholder="Ваше ім'я" />
               {touched.name && errors.name && <span className={styles.error}>{errors.name}</span>}
             </div>
 
             <div className={styles.field}>
               <label className={styles.label}>Пошта</label>
-              <Field name="email" className={styles.input} />
+              <Field name="email" className={styles.input} placeholder="example@mail.com" />
               {touched.email && errors.email && (
                 <span className={styles.error}>{errors.email}</span>
               )}
@@ -147,7 +155,10 @@ export const ProfileEditForm = () => {
             <button
               type="button"
               className={styles.cancel}
-              onClick={() => resetForm()}
+              onClick={() => {
+                resetForm()
+                if (user?.theme) setTheme(user.theme as 'boy' | 'girl' | 'neutral')
+              }}
               disabled={!dirty || isPending}
             >
               Відмінити

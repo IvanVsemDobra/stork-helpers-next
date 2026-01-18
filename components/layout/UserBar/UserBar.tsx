@@ -4,7 +4,7 @@ import { useAuthStore } from '@/store/auth.store'
 import { AuthService } from '@/services/auth.service'
 import { Button, Avatar } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
-import { useRouter } from 'next/navigation'
+import { useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { ConfirmationModal } from '@/components/confirmation-modal/confirmation-modal.component'
 import styles from './UserBar.module.scss'
@@ -13,7 +13,7 @@ export const UserBar = () => {
   const { user, clearAuth } = useAuthStore()
   const [isLoading, setIsLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const router = useRouter()
+  const queryClient = useQueryClient()
 
   const getAvatarSrc = () => {
     const avatar = user?.avatar
@@ -38,10 +38,15 @@ export const UserBar = () => {
     try {
       await AuthService.logout()
       clearAuth()
+      queryClient.clear()
+
       setIsModalOpen(false)
-      router.push('/auth/login')
+      window.location.href = '/auth/login'
     } catch (error) {
       console.error('Logout failed', error)
+      clearAuth()
+      queryClient.clear()
+      window.location.href = '/auth/login'
     } finally {
       setIsLoading(false)
     }
