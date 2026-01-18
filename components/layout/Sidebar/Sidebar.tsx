@@ -8,6 +8,7 @@ import styles from './Sidebar.module.scss';
 import { useAuthStore } from '@/store/auth.store';
 import { UserBar } from '@/components/layout/UserBar/UserBar';
 import { AuthBar } from '@/components/layout/AuthBar/AuthBar';
+import AppLogo from '@/components/auth/AppLogo';
 
 const NAV_ITEMS = [
     { label: 'Мій день', href: '/', icon: '/icons/calendar.svg' },
@@ -25,9 +26,8 @@ export const Sidebar = () => {
 
     return (
         <aside className={styles.sidebar}>
-            <Link href="/" className={styles.sidebar__logo}>
-                <Image src="/logo.svg" alt="Stork Helpers Logo" width={40} height={40} />
-                <span>Лелека</span>
+            <Link href="/" className={styles.sidebar__logo} aria-label="Мій день">
+                <AppLogo className={styles.sidebar__logo_img} />
             </Link>
 
             <nav className={styles.sidebar__nav}>
