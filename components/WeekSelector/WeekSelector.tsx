@@ -5,7 +5,7 @@ import css from './WeekSelector.module.css'
 interface WeekSelectorProps {
   currentWeek: number
   selectedWeek: number
-  onWeekSelect: (week: number) => void //ця функція прихпдить з батьківського компонента
+  onWeekSelect: (week: number) => void
 }
 
 const TOTAL_WEEKS = 40
