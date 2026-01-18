@@ -8,38 +8,44 @@ interface RouteParams {
 
 async function proxy(req: NextRequest, path: string[]) {
   const targetUrl = `${BACKEND_URL}/${path.join('/')}`;
-  
-  // Копіюємо всі заголовки з оригінального запиту
   const requestHeaders = new Headers(req.headers);
 
   requestHeaders.delete('host');
   requestHeaders.delete('connection');
   requestHeaders.set('X-Forwarded-Proto', 'https');
 
-  // Перевіряємо, чи бачить проксі куки взагалі
   const rawCookies = req.headers.get('cookie');
   if (rawCookies) {
     requestHeaders.set('cookie', rawCookies);
   }
 
   try {
+    const method = req.method;
+    const hasBody = !['GET', 'HEAD'].includes(method);
+    const body = hasBody ? await req.arrayBuffer() : undefined;
+
     const backendRes = await fetch(targetUrl, {
-      method: req.method,
+      method,
       headers: requestHeaders,
-      body: ['GET', 'HEAD'].includes(req.method) ? undefined : await req.arrayBuffer(),
+      body,
       cache: 'no-store',
-      // @ts-ignore
-      duplex: 'half',
+      // @ts-expect-error - duplex
+      duplex: hasBody ? 'half' : undefined,
     });
 
-    // ... (решта коду обробки Set-Cookie, який ви вже мали, він правильний)
     const responseData = await backendRes.arrayBuffer();
     const res = new NextResponse(responseData, {
       status: backendRes.status,
       statusText: backendRes.statusText,
     });
 
-    // Обов'язково додаємо обробку Set-Cookie
+    backendRes.headers.forEach((value, key) => {
+      const lowKey = key.toLowerCase();
+      if (!['content-encoding', 'content-length', 'transfer-encoding', 'set-cookie'].includes(lowKey)) {
+        res.headers.set(key, value);
+      }
+    });
+
     const setCookies = backendRes.headers.getSetCookie();
     setCookies.forEach(cookie => {
       const cleanCookie = cookie
@@ -56,8 +62,16 @@ async function proxy(req: NextRequest, path: string[]) {
     });
 
     return res;
-  } catch (error) {
-    return NextResponse.json({ error: 'Proxy failed' }, { status: 502 });
+  } catch (error: unknown) {
+    console.error('🔴 Proxy Error:', error);
+    
+    return NextResponse.json(
+      { 
+        error: 'Proxy failed', 
+        details: error instanceof Error ? error.message : 'Unknown error' 
+      }, 
+      { status: 502 }
+    );
   }
 }
 
