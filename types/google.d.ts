@@ -16,6 +16,7 @@ declare global {
               size?: string
               text?: string
               width?: number
+              shape?: string
             }
           ) => void
           disableAutoSelect?: () => void

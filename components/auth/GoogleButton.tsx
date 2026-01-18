@@ -5,7 +5,12 @@ import { useAuthStore } from '@/store/auth.store'
 import toast from 'react-hot-toast'
 import { User } from '@/types/user'
 
-export function GoogleButton() {
+type GoogleButtonProps = {
+  mode: 'login'| 'register'
+}
+
+
+export function GoogleButton( {mode}: GoogleButtonProps) {
   const setUser = useAuthStore(s => s.setUser)
   const buttonRef = useRef<HTMLDivElement | null>(null)
 
@@ -55,10 +60,12 @@ export function GoogleButton() {
     google.accounts.id.renderButton(buttonRef.current, {
       theme: 'outline',
       size: 'large',
-      width: 280,
-      text: 'signin_with',
+      width: 335,
+      text: mode === 'login' ? 'signin_with' : 'signup_with',
+      shape:'pill',
+    
     })
-  }, [setUser])
+  }, [setUser, mode])
 
   return <div ref={buttonRef} style={{ minHeight: '40px' }} />
 }
