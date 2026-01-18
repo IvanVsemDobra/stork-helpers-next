@@ -1,9 +1,10 @@
-.wrapper {
+.wrapper { 
   position: relative;
+  font-family: var(--font-family-base); 
 }
 
 .label {
-  font-family: var(--font-family);
+  font-family: var(--font-family-base);
   font-weight: 400;
   font-size: 16px;
   line-height: 150%;
@@ -24,7 +25,7 @@
   align-items: center;
   justify-content: space-between;
 
-  font-family: var(--font-family);
+  font-family: var(--font-family-base);
   font-weight: 400;
   font-size: 16px;
   line-height: 150%;
@@ -34,7 +35,7 @@
 }
 
 .placeholder {
-  font-family: var(--font-family);
+  font-family: var(--font-family-base);
   font-weight: 400;
   font-size: 16px;
   line-height: 150%;
@@ -85,7 +86,7 @@
 .option {
   padding: 12px;
 
-  font-family: var(--font-family);
+  font-family: var(--font-family-base);
   font-weight: 400;
   font-size: 16px;
   line-height: 150%;
@@ -100,6 +101,7 @@
 .error {
   margin-top: 4px;
   font-size: 12px;
+  font-family: var(--font-family-base);
   color: var(--color-danger);
 }
 

@@ -75,7 +75,9 @@ export default function OnboardingForm() {
       toast.success('Онбординг завершено')
       router.push('/diary')
     },
-    onError: () => toast.error('Помилка збереження'),
+    onError: () => {
+      toast.error('Помилка збереження')
+    },
   })
 
   if (!user) return null
@@ -89,9 +91,23 @@ export default function OnboardingForm() {
         avatar: null,
       }}
       validationSchema={schema}
-      onSubmit={values => mutation.mutate(values)}
+      validateOnBlur={false}
+      validateOnChange={false}
+      onSubmit={(values, { setTouched }) => {
+        setTouched(
+          {
+            name: true,
+            theme: true,
+            dueDate: true,
+            avatar: false,
+          },
+          true
+        )
+
+        mutation.mutate(values)
+      }}
     >
-      {({ isSubmitting, isValid }) => (
+      {({ isSubmitting }) => (
         <Form className={styles.form}>
           <OnboardingAvatar />
 
@@ -102,7 +118,7 @@ export default function OnboardingForm() {
 
           <button
             type="submit"
-            disabled={isSubmitting || !isValid}
+            disabled={isSubmitting}
             className={styles.submit}
           >
             Зберегти
