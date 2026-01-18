@@ -7,14 +7,10 @@ interface momDailyTipsProps {
 export const MomTipCard = ({ tipIndex, momDailyTips }: momDailyTipsProps) => {
   return (
     <section className={css.card}>
-      
       <h2 className={css.title}>Порада для мами</h2>
       <p className={css.text}>
         {momDailyTips[tipIndex] ? momDailyTips[tipIndex] : 'Порада відсутня'}
       </p>
- 
     </section>
-    
   )
 }
-
