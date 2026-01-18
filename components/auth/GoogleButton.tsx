@@ -5,32 +5,6 @@ import { useAuthStore } from '@/store/auth.store'
 import toast from 'react-hot-toast'
 import { User } from '@/types/user'
 
-declare global {
-  interface Window {
-    google?: {
-      accounts: {
-        id: {
-          initialize: (options: {
-            client_id: string
-            callback: (response: { credential: string }) => void
-          }) => void
-          renderButton: (
-            element: HTMLElement | null,
-            options: {
-              theme?: 'outline' | 'filled_blue' | 'filled_black'
-              size?: 'large' | 'medium' | 'small'
-              width?: number
-              text?: string
-              shape?: 'rectangular' | 'pill' | 'circle' | 'square'
-            }
-          ) => void
-          disableAutoSelect: () => void
-        }
-      }
-    }
-  }
-}
-
 export function GoogleButton() {
   const setUser = useAuthStore(s => s.setUser)
   const buttonRef = useRef<HTMLDivElement | null>(null)
@@ -43,7 +17,7 @@ export function GoogleButton() {
     const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
 
     if (!clientId) {
-      console.error('Google Client ID is missing')
+      console.error('Google Client ID is missing in environment variables')
       return
     }
 
