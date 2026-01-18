@@ -4,17 +4,28 @@
   border-radius: 24px;
   padding: 16px 20px 32px 20px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-  max-width: 420px;
-  width: 100%;
+ 
+  width: 335px;
 }
+@media (min-width: 768px) {
+  .card {
+    width: 704px;
+  }
+  }
+@media (min-width: 1440px) {
+  .card {
+    width: 390px;
+  }
 
+}
 /* ---------- Header ---------- */
 
 .header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+align-items: center;
+justify-content: space-between;
+flex-direction: row;
+
 }
 
 .title {
@@ -24,74 +35,137 @@ font-size: 20px;
 line-height: 1.4;
 letter-spacing: 0.01em;
 color: #000;
+
 }
 
 .plusBtn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+    border-radius: 50%;
   border: none;
-  background-color: #2563eb;
-  color: #ffffff;
-  font-size: 22px;
-  line-height: 1;
+  background-color: transparent;
+  color: #000;
+  
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.1s ease;
+  /* margin-top: 32px;
+  margin-right: 32px; */
 }
 
 .plusBtn:hover {
-  background-color: #1e40af;
+  
+  transform: scale(1.25);
 }
 
 .plusBtn:active {
-  transform: scale(0.95);
+  transform: scale(1.25);
 }
 
 /* ---------- Empty state ---------- */
 
 .emptyBold {
-  font-size: 15px;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 6px;
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+font-size: 14px;
+line-height: 1.6;
+color: #000;
 }
 
 .emptyText {
-  font-size: 14px;
-  color: #6b7280;
-  margin-bottom: 16px;
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+font-size: 14px;
+
+line-height: 1.5;
+color: #000;
 }
 
 .createBtn {
-  background-color: #2563eb;
-  color: #ffffff;
-  border: none;
-  border-radius: 9999px;
-  padding: 10px 20px;
-  font-size: 14px;
+   
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  
+  
+  background-color: #ffdae0; 
+  color: #000000;            
+  
+  padding: 10px 24px;       
+  border-radius: 100px;     
+  
+  border: none;              
+  border-bottom: 4px solid #ffcbd3; 
+  
+  
   font-weight: 500;
+  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease; 
+  
+  
+  user-select: none;
+}
+
+
+.createBtn:active {
+  border-bottom-width: 0px;  
+  transform: translateY(4px);
+  background-color: #ffcbd3;  
 }
 
 .createBtn:hover {
-  background-color: #1e40af;
+  background-color: #ffe4e8;
+}
+
+
+.createBtn:hover {
+  background-color: #ffe4e8;
 }
 
 /* ---------- Task list ---------- */
 
-.list {
+ .list {
   list-style: none;
   padding: 0;
   margin: 0;
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+font-size: 14px;
+line-height: 1.6;
+color: #000;
+  
 }
 
-.item {
+
+ .item {
+  
+  display: flex;
+  flex-direction: column; 
+  
+}
+
+.date {
+  font-weight: 400;
+  font-size: 12px;
+  color: #000;
+  margin-left: 50px;
+}
+
+.taskRow {
+  
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid #e5e7eb;
+  gap: 8px;
+  
+}
+
+.done {
+  text-decoration: line-through;
+  opacity: 0.6;
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+font-size: 14px;
+line-height: 1.5;
+color: #000;
 }
 
 .item:last-child {
@@ -101,10 +175,11 @@ color: #000;
 /* ---------- Checkbox ---------- */
 
 .item input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  accent-color: #2563eb;
+  width: 20px;
+  height: 20px;
+  accent-color: #000;
   cursor: pointer;
+  margin-left: 24px;
 }
 
 .item input[type="checkbox"]:disabled {
@@ -112,15 +187,6 @@ color: #000;
   cursor: not-allowed;
 }
 
-/* ---------- Task text ---------- */
 
-.item span {
-  font-size: 14px;
-  color: #111827;
-  transition: color 0.2s ease;
-}
 
-.done {
-  color: #9ca3af;
-  text-decoration: line-through;
-}
+
