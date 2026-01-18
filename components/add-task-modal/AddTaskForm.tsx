@@ -1,81 +1,72 @@
-"use client";
+'use client'
 
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
-import * as Yup from "yup";
-import { toast } from "react-toastify";
-import styles from "./AddTaskForm.module.css";
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
+import * as Yup from 'yup'
+import { toast } from 'react-toastify'
+import styles from './AddTaskForm.module.css'
+import { createTask, updateTask } from '@/services/tasks.service'
 
 interface AddTaskFormProps {
-  /* onClose: () => void; */
-  onTaskSaved: () => void;
+  onTaskSaved: () => void
   taskToEdit?: {
-    id: string;
-    name: string;
-    date: string;
-  } | null;
+    id: string
+    name: string
+    date: string
+  } | null
 }
 
 type TaskFormValues = {
-  name: string;
-  date: string;
-};
+  name: string
+  date: string
+}
 
 const taskValidationSchema = Yup.object({
   name: Yup.string()
-    .min(3, "Назва завдання повинна містити мінімум 3 символи")
-    .max(100, "Назва завдання не може перевищувати 100 символів")
+    .min(3, 'Назва завдання повинна містити мінімум 3 символи')
+    .max(100, 'Назва завдання не може перевищувати 100 символів')
     .required("Обов'язкове поле"),
-  date: Yup.date()
-    .required("Обов'язкове поле")
-    .typeError("Введіть коректну дату"),
-});
+  date: Yup.date().required("Обов'язкове поле").typeError('Введіть коректну дату'),
+})
 
 const getCurrentDate = (): string => {
-  const today = new Date();
-  return today.toISOString().split("T")[0];
-};
+  const today = new Date()
+  return today.toISOString().split('T')[0]
+}
 
-const AddTaskForm = ({ /* onClose, */ onTaskSaved,taskToEdit }: AddTaskFormProps) => {
+const AddTaskForm = ({ onTaskSaved, taskToEdit }: AddTaskFormProps) => {
   const initialValues: TaskFormValues = {
-    name: taskToEdit?.name || "",
+    name: taskToEdit?.name || '',
     date: taskToEdit?.date || getCurrentDate(),
-  };
+  }
 
   const handleSubmit = async (
-  values: TaskFormValues,
-  { setSubmitting }: FormikHelpers<TaskFormValues>
-) => {
-  try {
-    const url = taskToEdit ? `/api/tasks/${taskToEdit.id}` : "/api/tasks";
-    const method = taskToEdit ? "PUT" : "POST";
+    values: TaskFormValues,
+    { setSubmitting }: FormikHelpers<TaskFormValues>
+  ) => {
+    try {
+      if (taskToEdit) {
+        await updateTask(taskToEdit.id, values)
+        toast.success('Завдання оновлено!')
+      } else {
+        await createTask(values)
+        toast.success('Завдання створено!')
+      }
 
-    const response = await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-    });
-
-    if (!response.ok) {
-      throw new Error("Request failed");
+      onTaskSaved()
+    } catch (error: unknown) {
+      console.error('Task save error:', error)
+      toast.error('Помилка при збереженні завдання. Перевірте авторизацію.')
+    } finally {
+      setSubmitting(false)
     }
-
-    toast.success(
-      taskToEdit ? "Завдання оновлено!" : "Завдання створено!"
-    );
-
-    onTaskSaved(); 
-
-  } catch {
-    toast.error("Помилка при збереженні завдання");
-  } finally {
-    setSubmitting(false);
   }
-};
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={taskValidationSchema}
       onSubmit={handleSubmit}
+      enableReinitialize
     >
       {({ isSubmitting, errors, touched }) => (
         <Form className={styles.form}>
@@ -88,15 +79,9 @@ const AddTaskForm = ({ /* onClose, */ onTaskSaved,taskToEdit }: AddTaskFormProps
               name="name"
               type="text"
               placeholder="Введіть назву завдання"
-              className={`${styles.input} ${
-                errors.name && touched.name ? styles.error : ""
-              }`}
+              className={`${styles.input} ${errors.name && touched.name ? styles.error : ''}`}
             />
-            <ErrorMessage
-              name="name"
-              component="div"
-              className={styles.errorMessage}
-            />
+            <ErrorMessage name="name" component="div" className={styles.errorMessage} />
           </div>
 
           <div className={styles.fieldGroup}>
@@ -107,15 +92,9 @@ const AddTaskForm = ({ /* onClose, */ onTaskSaved,taskToEdit }: AddTaskFormProps
               id="date"
               name="date"
               type="date"
-              className={`${styles.input} ${
-                errors.date && touched.date ? styles.error : ""
-              }`}
+              className={`${styles.input} ${errors.date && touched.date ? styles.error : ''}`}
             />
-            <ErrorMessage
-              name="date"
-              component="div"
-              className={styles.errorMessage}
-            />
+            <ErrorMessage name="date" component="div" className={styles.errorMessage} />
           </div>
 
           <div className={styles.buttonGroup}>
@@ -124,13 +103,13 @@ const AddTaskForm = ({ /* onClose, */ onTaskSaved,taskToEdit }: AddTaskFormProps
               disabled={isSubmitting}
               className={`${styles.button} ${styles.submitButton}`}
             >
-              {isSubmitting ? "Збереження..." : "Зберегти"}
+              {isSubmitting ? 'Збереження...' : 'Зберегти'}
             </button>
           </div>
         </Form>
       )}
     </Formik>
-  );
-};
+  )
+}
 
-export default AddTaskForm;
+export default AddTaskForm
