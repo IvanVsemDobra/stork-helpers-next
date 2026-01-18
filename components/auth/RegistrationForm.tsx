@@ -123,7 +123,9 @@ export const RegistrationForm = () => {
                   >
                     Зареєструватися
                   </button>
-                  <GoogleButton />
+                  <div className={css.google_button_wrap}>
+                    <GoogleButton mode='register'/>
+                    </div>
                 </div>
 
                 <div className={css.auth_text}>
