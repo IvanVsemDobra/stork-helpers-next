@@ -11,7 +11,7 @@ const BASE_URL: string = typeof window === 'undefined'
 
 export const api: AxiosInstance = axios.create({
   baseURL: BASE_URL,
-  withCredentials: true, // ОБОВ'ЯЗКОВО
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
