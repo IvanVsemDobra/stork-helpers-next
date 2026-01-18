@@ -28,25 +28,25 @@ export default async function DashboardPage() {
   return (
     <div className={css.container}>
       <GreetingBlock />
-      <StatusBlock currentWeek={weekData.weekNumber} daysLeft={weekData.daysToMeeting} />
-      <BabyTodayCard
-        image={weekData.image}
-        imageAlt={weekData.imageAlt}
-        babySize={weekData.babySize}
-        babyWeight={weekData.babyWeight}
-        babyActivity={weekData.babyActivity}
-        babyDevelopment={weekData.babyDevelopment}
-      />
-
-      <MomTipCard tipIndex={tipIndex} momDailyTips={weekData.momDailyTips} />
-
-      <aside className={css.tasksSidebar}>
+      <div className={css.column}>
+        <div className={css.left}>
+        <StatusBlock currentWeek={weekData.weekNumber} daysLeft={weekData.daysToMeeting} />
+        <BabyTodayCard
+          image={weekData.image}
+          imageAlt={weekData.imageAlt}
+          babySize={weekData.babySize}
+          babyWeight={weekData.babyWeight}
+          babyActivity={weekData.babyActivity}
+          babyDevelopment={weekData.babyDevelopment}
+        />
+        <MomTipCard tipIndex={tipIndex} momDailyTips={weekData.momDailyTips} />
+      </div>
+      <div className={css.right}>
         <TasksList />
-      </aside>
-
-      <section>
         <FeelingCheckCard />
-      </section>
+      </div>
+</div>
+      
     </div>
   )
 }
