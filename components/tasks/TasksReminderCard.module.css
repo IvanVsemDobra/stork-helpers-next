@@ -1,49 +1,36 @@
 .card {
-
-  background-color: #fff4f6;;
+  background-color: var(--theme-lighter);
   border-radius: 24px;
   padding: 16px 20px 32px 20px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
- 
-  width: 335px;
-}
-@media (min-width: 768px) {
-  .card {
-    width: 704px;
-  }
-  }
-@media (min-width: 1440px) {
-  .card {
-    width: 390px;
-  }
+  /* box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06); */
 
+  width: 100%;
 }
+
 /* ---------- Header ---------- */
 
 .header {
   display: flex;
-align-items: center;
-justify-content: space-between;
-flex-direction: row;
-
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
 }
 
 .title {
-  font-family: "Comfortaa", sans-serif;
+  font-family: 'Comfortaa', sans-serif;
   font-weight: 700;
-font-size: 20px;
-line-height: 1.4;
-letter-spacing: 0.01em;
-color: #000;
-
+  font-size: 20px;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: #000;
 }
 
 .plusBtn {
-    border-radius: 50%;
+  border-radius: 50%;
   border: none;
   background-color: transparent;
   color: #000;
-  
+
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.1s ease;
   /* margin-top: 32px;
@@ -51,7 +38,6 @@ color: #000;
 }
 
 .plusBtn:hover {
-  
   transform: scale(1.25);
 }
 
@@ -62,60 +48,54 @@ color: #000;
 /* ---------- Empty state ---------- */
 
 .emptyBold {
-  font-family: "Lato", sans-serif;
+  font-family: 'Lato', sans-serif;
   font-weight: 700;
-font-size: 14px;
-line-height: 1.6;
-color: #000;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #000;
 }
 
 .emptyText {
-  font-family: "Lato", sans-serif;
+  font-family: 'Lato', sans-serif;
   font-weight: 400;
-font-size: 14px;
+  font-size: 14px;
 
-line-height: 1.5;
-color: #000;
+  line-height: 1.5;
+  color: #000;
 }
 
 .createBtn {
-   
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  
-  
-  background-color: #ffdae0; 
-  color: #000000;            
-  
-  padding: 10px 24px;       
-  border-radius: 100px;     
-  
-  border: none;              
-  border-bottom: 4px solid #ffcbd3; 
-  
-  
+
+  background-color: #ffdae0;
+  color: #000000;
+
+  padding: 10px 24px;
+  border-radius: 100px;
+
+  border: none;
+  border-bottom: 4px solid #ffcbd3;
+
   font-weight: 500;
   font-size: 16px;
   cursor: pointer;
-  transition: all 0.2s ease; 
-  
-  
+  transition: all 0.2s ease;
+
   user-select: none;
 }
 
-
 .createBtn:active {
-  border-bottom-width: 0px;  
+  border-bottom-width: 0px;
   transform: translateY(4px);
-  background-color: #ffcbd3;  
+  background-color: #ffcbd3;
 }
 
 .createBtn:hover {
   background-color: #ffe4e8;
 }
-
 
 .createBtn:hover {
   background-color: #ffe4e8;
@@ -123,24 +103,20 @@ color: #000;
 
 /* ---------- Task list ---------- */
 
- .list {
+.list {
   list-style: none;
   padding: 0;
   margin: 0;
-  font-family: "Lato", sans-serif;
+  font-family: 'Lato', sans-serif;
   font-weight: 400;
-font-size: 14px;
-line-height: 1.6;
-color: #000;
-  
+  font-size: 14px;
+  line-height: 1.6;
+  color: #000;
 }
 
-
- .item {
-  
+.item {
   display: flex;
-  flex-direction: column; 
-  
+  flex-direction: column;
 }
 
 .date {
@@ -151,21 +127,19 @@ color: #000;
 }
 
 .taskRow {
-  
   display: flex;
   align-items: center;
   gap: 8px;
-  
 }
 
 .done {
   text-decoration: line-through;
   opacity: 0.6;
-  font-family: "Lato", sans-serif;
+  font-family: 'Lato', sans-serif;
   font-weight: 400;
-font-size: 14px;
-line-height: 1.5;
-color: #000;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #000;
 }
 
 .item:last-child {
@@ -174,7 +148,7 @@ color: #000;
 
 /* ---------- Checkbox ---------- */
 
-.item input[type="checkbox"] {
+.item input[type='checkbox'] {
   width: 20px;
   height: 20px;
   accent-color: #000;
@@ -182,11 +156,7 @@ color: #000;
   margin-left: 24px;
 }
 
-.item input[type="checkbox"]:disabled {
+.item input[type='checkbox']:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
-
-
-
-
