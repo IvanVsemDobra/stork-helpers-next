@@ -63,6 +63,8 @@
   fill: var(--color-text-muted);
 }
 
+/* dropdown */
+
 .dropdown {
   position: absolute;
   top: 100%;
