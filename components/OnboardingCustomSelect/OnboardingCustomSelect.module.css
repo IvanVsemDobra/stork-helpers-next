@@ -103,6 +103,7 @@
   color: var(--color-danger);
 }
 
+/* media */ 
 @media (max-width: 1023px) and (min-width: 768px) {
   .wrapper {
     min-width: unset;
