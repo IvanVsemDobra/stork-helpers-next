@@ -1,23 +1,31 @@
 'use client'
 
-import { Field, ErrorMessage } from 'formik'
+import { useField } from 'formik'
 import styles from './OnboardingCustomDate.module.css'
 
-export default function OnboardingCustomDate() {
+interface OnboardingCustomDateProps {
+  className?: string
+}
+
+export default function OnboardingCustomDate({ className }: OnboardingCustomDateProps) {
+  const [field, meta] = useField('dueDate')
+  const today = new Date().toISOString().split('T')[0]
+
   return (
     <div className={styles.wrapper}>
       <label className={styles.label}>Очікувана дата пологів</label>
 
-      <Field
-        type="text"
-        name="dueDate"
-        className={styles.input}
-        placeholder="16.07.2025"
-        maxLength={10}
+      <input
+        type="date"
+        {...field}
+        className={`${styles.input} ${meta.touched && meta.error ? styles.invalidInput : ''} ${className || ''}`}
+        min={today}
         required
       />
 
-      <ErrorMessage name="dueDate" component="div" className={styles.error} />
+      {meta.touched && meta.error && (
+        <div className={styles.error}>{meta.error}</div>
+      )}
     </div>
   )
 }

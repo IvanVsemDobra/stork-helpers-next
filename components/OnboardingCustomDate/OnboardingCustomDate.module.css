@@ -28,20 +28,13 @@
   transition: border 0.2s ease;
 }
 
-.input::placeholder {
-  font-family: var(--font-family);
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 150%;
-}
-
 .input:focus {
   outline: none;
   border: 2px solid var(--theme-main);
 }
 
-.input:invalid {
-  border: 1px solid var(--color-danger);
+.invalidInput {
+  border: 2px solid var(--color-danger);
 }
 
 .error {
