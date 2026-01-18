@@ -56,7 +56,9 @@ const TasksList = () => {
       <div className={styles.header}>
         <h3 className={styles.title}>Важливі завдання</h3>
         <button className={styles.plusBtn} onClick={handleOpenModal}>
-          +
+          <svg className={styles.icon} width="21" height="21">
+            <use href="/sprite.svg#icon-add_circle" />
+          </svg>
         </button>
       </div>
 
@@ -65,7 +67,7 @@ const TasksList = () => {
           <p className={styles.emptyBold}>Наразі немає жодних завдань</p>
           <p className={styles.emptyText}>Увійдіть, щоб створювати завдання!</p>
           <button className={styles.createBtn} onClick={() => router.push('/auth/register')}>
-            Зареєструватися
+            Створити завдання
           </button>
         </>
       )}
@@ -80,20 +82,37 @@ const TasksList = () => {
         </>
       )}
 
-      {isAuthenticated && tasks.length > 0 && (
-        <ul className={styles.list}>
-          {tasks.map(task => (
-            <li key={task._id} className={styles.item}>
-              <input
-                type="checkbox"
-                checked={task.isDone}
-                onChange={() => toggleTask({ id: task._id, isDone: !task.isDone })}
-              />
-              <span className={task.isDone ? styles.done : ''}>{task.name}</span>
-            </li>
-          ))}
-        </ul>
-      )}
+    {isAuthenticated && tasks.length > 0 && (
+  <ul className={styles.list}>
+    {tasks.map(task => (
+      <li key={task._id} className={styles.item}>
+        
+        <span className={styles.date}>
+          {new Date(task.date).toLocaleDateString("uk-UA", {
+            day: "2-digit",
+            month: "2-digit",
+          })}
+        </span>
+
+        
+        <div className={styles.taskRow}>
+    <input
+      type="checkbox"
+      checked={task.isDone}
+      onChange={() =>
+        toggleTask({ id: task._id, isDone: !task.isDone })
+      }
+      className={styles.checkbox}
+    />
+    <span className={`${styles.taskText} ${task.isDone ? styles.done : ""}`}>
+      {task.name}
+    </span>
+  </div>
+</li>
+    ))}
+  </ul>
+)}
+
 
       <AddTaskModal
         isOpen={isModalOpen}

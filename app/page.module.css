@@ -1,16 +1,38 @@
 /*======Mobile styles======*/
 .container {
   max-width: 375px;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
 }
 
 /*======Tablet styles======*/
 @media (min-width: 768px) {
   .container {
     max-width: 768px;
-    margin-inline: auto;
+  }
+
+  .column {
+    gap: 32px;
   }
 }
 
@@ -19,16 +41,17 @@
 @media (min-width: 1440px) {
   .container {
     max-width: 1128px;
-    margin-inline: auto;
-    gap: 32px;
   }
 
-  /* tasks-block */
-  .tasksSidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
+  .column {
+    flex-direction: row;
+  }
+
+  .left > :first-child {
+    margin-bottom: 8px; /* 24 + 8 = 32 між 1 і 2 */
+  }
+
+  .right {
+    flex: 0 0 390px;
   }
 }
-
-

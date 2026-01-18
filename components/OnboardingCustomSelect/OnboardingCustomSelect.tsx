@@ -5,14 +5,14 @@ import { useField } from 'formik'
 import styles from './OnboardingCustomSelect.module.css'
 
 const options = [
-  { value: 'boy', label: 'Хлопчик' },
-  { value: 'girl', label: 'Дівчинка' },
-  { value: 'unknown', label: 'Ще не знаю' },
+  { value: 'boy', label: 'Хлопчик' },       
+  { value: 'girl', label: 'Дівчинка' },     
+  { value: 'neutral', label: 'Ще не знаю' },
 ]
 
 export default function OnboardingCustomSelect() {
   const [isOpen, setIsOpen] = useState(false)
-  const [field, meta, helpers] = useField('gender')
+  const [field, meta, helpers] = useField('theme') 
   const ref = useRef<HTMLDivElement>(null)
 
   const selectedOption = options.find(o => o.value === field.value)
