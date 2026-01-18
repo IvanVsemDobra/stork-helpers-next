@@ -1,4 +1,3 @@
-import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'https://stork-helpers-api.onrender.com/api';
@@ -11,74 +10,78 @@ async function proxy(req: NextRequest, path: string[]) {
   const targetUrl = `${BACKEND_URL}/${path.join('/')}`;
   const requestHeaders = new Headers(req.headers);
 
+  // Очищаємо заголовки хоста
   requestHeaders.delete('host');
   requestHeaders.delete('connection');
+  
+  // КРИТИЧНО для Render/Express: емулюємо HTTPS для коректної роботи сесій
+  requestHeaders.set('X-Forwarded-Proto', 'https');
 
-  //+added 2 lines
-  const cookieStore = await cookies();
-  requestHeaders.set('cookie', cookieStore.toString());
+  // Передаємо куки з браузера на бекенд
+  const rawCookies = req.headers.get('cookie');
+  if (rawCookies) {
+    requestHeaders.set('cookie', rawCookies);
+  }
 
   try {
-    const body = ['GET', 'HEAD'].includes(req.method)
-      ? undefined
-      : await req.arrayBuffer();
-
-    console.log(`🚀 Proxying ${req.method} to: ${targetUrl}`);
+    const method = req.method;
+    const hasBody = !['GET', 'HEAD'].includes(method);
+    const body = hasBody ? await req.arrayBuffer() : undefined;
 
     const backendRes = await fetch(targetUrl, {
-      method: req.method,
+      method,
       headers: requestHeaders,
       body,
       cache: 'no-store',
+      // @ts-ignore - для передачі Buffer у Next.js
+      duplex: hasBody ? 'half' : undefined,
     });
 
     const responseData = await backendRes.arrayBuffer();
-
     const res = new NextResponse(responseData, {
       status: backendRes.status,
       statusText: backendRes.statusText,
     });
 
+    // 1. Копіюємо всі заголовки крім службових
     backendRes.headers.forEach((value, key) => {
-      if (!['content-encoding', 'content-length', 'transfer-encoding'].includes(key.toLowerCase())) {
-        res.headers.append(key, value);
+      const lowKey = key.toLowerCase();
+      if (!['content-encoding', 'content-length', 'transfer-encoding', 'set-cookie'].includes(lowKey)) {
+        res.headers.set(key, value);
       }
+    });
+
+    // 2. ОБРОБЛЯЄМО КУКИ (Set-Cookie)
+    const setCookies = backendRes.headers.getSetCookie();
+    
+    setCookies.forEach(cookie => {
+      // ОЧИЩЕННЯ:
+      // - Видаляємо Domain (щоб браузер прив'язав до localhost)
+      // - Видаляємо Secure (щоб працювало на http)
+      // - Ставимо SameSite=Lax (None не працює без Secure)
+      const cleanCookie = cookie
+        .replace(/Domain=[^;]+;?/, '')
+        .replace(/Secure;?/, '')
+        .replace(/SameSite=None/gi, 'SameSite=Lax')
+        .trim();
+      
+      // Примусово робимо куку доступною для всього сайту
+      const finalCookie = cleanCookie.includes('Path=') 
+        ? cleanCookie.replace(/Path=[^;]+/, 'Path=/')
+        : `${cleanCookie}; Path=/`;
+
+      res.headers.append('Set-Cookie', finalCookie);
     });
 
     return res;
   } catch (error: unknown) {
-    console.error('🔴 Proxy Error Detail:', error);
-
-    const errorMessage = error instanceof Error ? error.message : 'Unknown proxy error';
-
-    return NextResponse.json(
-      { error: 'Proxy failed', details: errorMessage },
-      { status: 502 }
-    );
+    console.error('🔴 Proxy Error:', error);
+    return NextResponse.json({ error: 'Proxy failed' }, { status: 502 });
   }
 }
 
-export async function GET(req: NextRequest, { params }: RouteParams) {
-  const resolvedParams = await params;
-  return proxy(req, resolvedParams.path);
-}
-
-export async function POST(req: NextRequest, { params }: RouteParams) {
-  const resolvedParams = await params;
-  return proxy(req, resolvedParams.path);
-}
-
-export async function PATCH(req: NextRequest, { params }: RouteParams) {
-  const resolvedParams = await params;
-  return proxy(req, resolvedParams.path);
-}
-
-export async function PUT(req: NextRequest, { params }: RouteParams) {
-  const resolvedParams = await params;
-  return proxy(req, resolvedParams.path);
-}
-
-export async function DELETE(req: NextRequest, { params }: RouteParams) {
-  const resolvedParams = await params;
-  return proxy(req, resolvedParams.path);
-}
+export async function GET(req: NextRequest, { params }: RouteParams) { return proxy(req, (await params).path); }
+export async function POST(req: NextRequest, { params }: RouteParams) { return proxy(req, (await params).path); }
+export async function PATCH(req: NextRequest, { params }: RouteParams) { return proxy(req, (await params).path); }
+export async function PUT(req: NextRequest, { params }: RouteParams) { return proxy(req, (await params).path); }
+export async function DELETE(req: NextRequest, { params }: RouteParams) { return proxy(req, (await params).path); }
