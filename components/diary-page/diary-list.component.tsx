@@ -3,14 +3,14 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { DiaryEntry, DiaryListProps } from '../../interfaces/diary'
-import { AddDiaryEntryModal } from '../add-diary-entry-modal/add-diary-entry-modal'
+import { AddDiaryEntryModal } from '../add-diary-entry-modal/AddDiaryEntryModal'
 import styles from './diary-list.module.css'
 
-export const DiaryList: React.FC<DiaryListProps> = ({
+export const DiaryList: React.FC<DiaryListProps & { onEntryAdd: (entry: DiaryEntry) => void }> = ({
   entries,
   allEmotions,
   onSelect,
-  onRefresh,
+  onEntryAdd,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const router = useRouter()
@@ -82,7 +82,7 @@ export const DiaryList: React.FC<DiaryListProps> = ({
       <AddDiaryEntryModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onSubmitSuccess={onRefresh}
+        onSubmitSuccess={onEntryAdd}
       />
     </div>
   )

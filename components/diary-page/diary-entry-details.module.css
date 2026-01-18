@@ -71,14 +71,6 @@
     transition: color 0.2s ease;
 }
 
-.deleteButton:hover {
-    color: #ffffff;
-}
-
-.deleteButton:active {
-    color: #B2B2B2;
-}
-
 .deleteButton svg {
     display: block;
     fill: currentColor;
@@ -121,7 +113,7 @@
 
 @media screen and (min-width: 1440px) {
     .detailsContainer {
-        width: 643px;
+        width: auto;
         margin: 0;
     }
 }
