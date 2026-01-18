@@ -2,7 +2,7 @@
 
 .statusItem {
   border-radius: 32px;
-  background-color: #fff4f6;
+  background-color: var(--theme-lighter);
 
   display: flex;
   flex-direction: column;
@@ -15,7 +15,7 @@
 }
 
 .text {
-  font-family: 'Lato', sans-serif;
+  font-family: var(--font-family-base);
   color: #000;
   font-size: 14px;
   font-weight: 400;
@@ -23,7 +23,7 @@
 }
 
 .value {
-  font-family: 'Comfortaa', sans-serif;
+  font-family: var(--font-family-accent);
   font-weight: 700;
   font-size: 40px;
   line-height: 1.2;
