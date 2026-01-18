@@ -1,3 +1,7 @@
+.block {
+  padding-left: 16px;
+}
+
 /* MOBILE */
 .title {
   font-family: var(--second-family);
@@ -12,6 +16,10 @@
 
 /* TABLET */
 @media (min-width: 768px) {
+  .block {
+    padding-left: 0;
+  }
+
   .title {
     max-width: none;
   }
