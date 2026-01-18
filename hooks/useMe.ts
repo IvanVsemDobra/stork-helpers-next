@@ -2,10 +2,10 @@
 
 import { useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
 import type { User } from '@/types/user'
 import { useAuthStore } from '@/store/auth.store'
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL!
+import { api } from '@/app/api/client'
 
 export function useMe() {
   const setUser = useAuthStore(s => s.setUser)
@@ -13,35 +13,44 @@ export function useMe() {
 
   const query = useQuery<User | null>({
     queryKey: ['me'],
+    
+    queryFn: async (): Promise<User | null> => {
+      try {
+        const { data } = await api.get<{ user?: User } & User>('/users/me')
+        
+        return data?.user ?? data
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          if (error.response?.status === 401) {
+            return null
+          }
+        }
 
-    // ✅ виконуємо завжди 1 раз при старті
-    enabled: true,
-
-    queryFn: async () => {
-      const res = await fetch(`${API_URL}/users/me`, {
-        credentials: 'include',
-      })
-
-      if (res.status === 401) return null
-      if (!res.ok) throw new Error('Failed to fetch /me')
-
-      const json = await res.json()
-      return json?.user ?? json
+        throw error
+      }
     },
 
     retry: false,
-    staleTime: Infinity,
+    staleTime: Infinity, 
+    enabled: true,
   })
 
   useEffect(() => {
-    if (!query.isFetched) return
+    if (query.isLoading || query.isPlaceholderData) return
 
     if (query.data) {
       setUser(query.data)
-    } else {
+    } else if (query.isFetched && query.data === null) {
       clearAuth()
     }
-  }, [query.isFetched, query.data, setUser, clearAuth])
+  }, [
+    query.isFetched, 
+    query.data, 
+    query.isLoading, 
+    query.isPlaceholderData,
+    setUser, 
+    clearAuth
+  ])
 
   return query
 }

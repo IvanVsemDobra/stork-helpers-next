@@ -35,16 +35,19 @@ const AddTaskModal = ({ isOpen, onClose, taskToEdit, onTaskSaved }: AddTaskModal
 
   if (!isOpen) return null
 
+  const handleSuccess = () => {
+    onTaskSaved()
+    onClose()
+  }
+
   return (
     <div className={styles.backdrop} onClick={e => e.target === e.currentTarget && onClose()}>
       <div className={styles.modal}>
         <button type="button" className={styles.closeBtn} onClick={onClose}>
           <CloseOutlined />
         </button>
-
         <h2 className={styles.title}>{taskToEdit ? 'Редагувати завдання' : 'Нове завдання'}</h2>
-
-        <AddTaskForm /* onClose={onClose} */ taskToEdit={taskToEdit} onTaskSaved={onTaskSaved}/>
+        <AddTaskForm taskToEdit={taskToEdit} onTaskSaved={handleSuccess} />
       </div>
     </div>
   )

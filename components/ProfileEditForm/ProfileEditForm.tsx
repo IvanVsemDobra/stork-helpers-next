@@ -1,7 +1,8 @@
 'use client'
 
+import { useEffect } from 'react'
 import styles from './ProfileEditForm.module.css'
-import { Formik, Form, Field, FormikHelpers } from 'formik'
+import { Formik, Form, Field, FormikHelpers, useFormikContext } from 'formik'
 import * as Yup from 'yup'
 import toast from 'react-hot-toast'
 import { useAuthStore } from '@/store/auth.store'
@@ -23,47 +24,46 @@ interface FormValues {
   dueDate: string
 }
 
+const ThemeWatcher = () => {
+  const { values } = useFormikContext<FormValues>()
+  const { setTheme } = useThemeStore()
+
+  useEffect(() => {
+    if (values.theme) {
+      setTheme(values.theme)
+    }
+  }, [values.theme, setTheme])
+
+  return null
+}
+
 export const ProfileEditForm = () => {
   const { user, setUser } = useAuthStore()
   const { theme: localTheme, setTheme } = useThemeStore()
-  const initialEmail = user?.email
 
-  // Обмеження дати (UX)
+  const initialEmail = user?.email
   const today = new Date().toISOString().split('T')[0]
+
   const maxDate = new Date()
-  maxDate.setDate(maxDate.getDate() + 280) // 40 тижнів
+  maxDate.setDate(maxDate.getDate() + 280)
   const maxDateStr = maxDate.toISOString().split('T')[0]
 
   const { mutate, isPending } = useMutation<Partial<User>, Error, Partial<User>>({
     mutationFn: updateProfile,
-    onSuccess: vars => {
-      // 1. Оновлюємо дані юзера в сторі (тепер бекенд повернув або ми "схачили" повернення даних)
+    onSuccess: updatedVars => {
       if (user) {
-        setUser({ ...user, ...vars })
+        setUser({ ...user, ...updatedVars })
       }
-
-      // 2. Оновлюємо тему в глобальному сторі теми
-      if (vars.theme) {
-        setTheme(vars.theme)
-      }
-
       toast.success('Профіль оновлено')
     },
     onError: error => toast.error(error.message),
   })
 
   const handleSubmit = (values: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
-    // 1. Оптимістичне оновлення (щоб колір змінився миттєво, до відповіді сервера)
-    if (values.theme !== localTheme) {
-      setTheme(values.theme)
-    }
-
     const payload: Partial<User> = {}
 
-    // Перевіряємо зміни для ВСІХ полів, включаючи тему
     if (values.name !== user?.name) payload.name = values.name
 
-    // ❗ ТЕПЕР ВІДПРАВЛЯЄМО ТЕМУ НА БЕКЕНД
     if (values.theme !== user?.theme) payload.theme = values.theme
 
     const formattedDate = values.dueDate ? new Date(values.dueDate).toISOString() : undefined
@@ -79,19 +79,17 @@ export const ProfileEditForm = () => {
       payload.email = values.email
     }
 
-    // Якщо змін немає
     if (Object.keys(payload).length === 0) {
       toast.error('Змін не виявлено')
       setSubmitting(false)
       return
     }
 
-    // Відправляємо запит
     mutate(payload, {
       onSuccess: () => {
         if (payload.email) {
           sendVerificationEmail(payload.email).catch((err: Error) => toast.error(err.message))
-          toast.success('Лист для верифікації надіслано')
+          toast.success('Лист для верифікації надіслано на нову пошту')
         }
       },
       onSettled: () => setSubmitting(false),
@@ -104,8 +102,6 @@ export const ProfileEditForm = () => {
       initialValues={{
         name: user?.name || '',
         email: user?.email || '',
-        // ❗ ПРІОРИТЕТ: Тепер беремо тему з БЕКЕНДУ (user.theme), бо він її зберігає.
-        // Якщо там пусто — беремо локальну, або дефолтну.
         theme: (user?.theme as 'boy' | 'girl' | 'neutral') || localTheme || 'neutral',
         dueDate: user?.dueDate ? new Date(user.dueDate).toISOString().split('T')[0] : '',
       }}
@@ -114,16 +110,18 @@ export const ProfileEditForm = () => {
     >
       {({ resetForm, dirty, errors, touched }) => (
         <Form className={styles.form}>
+          <ThemeWatcher />
+
           <div className={styles.fields}>
             <div className={styles.field}>
               <label className={styles.label}>Імʼя</label>
-              <Field name="name" className={styles.input} />
+              <Field name="name" className={styles.input} placeholder="Ваше ім'я" />
               {touched.name && errors.name && <span className={styles.error}>{errors.name}</span>}
             </div>
 
             <div className={styles.field}>
               <label className={styles.label}>Пошта</label>
-              <Field name="email" className={styles.input} />
+              <Field name="email" className={styles.input} placeholder="example@mail.com" />
               {touched.email && errors.email && (
                 <span className={styles.error}>{errors.email}</span>
               )}
@@ -157,7 +155,10 @@ export const ProfileEditForm = () => {
             <button
               type="button"
               className={styles.cancel}
-              onClick={() => resetForm()}
+              onClick={() => {
+                resetForm()
+                if (user?.theme) setTheme(user.theme as 'boy' | 'girl' | 'neutral')
+              }}
               disabled={!dirty || isPending}
             >
               Відмінити

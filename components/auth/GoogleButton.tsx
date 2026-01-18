@@ -1,104 +1,64 @@
-// 'use client'
-
-// import { useEffect, useRef } from 'react'
-// import { useAuthStore } from '@/store/auth.store'
-// import { useRouter } from 'next/navigation'
-
-// export function GoogleButton() {
-//   console.log('GOOGLE CLIENT ID:', process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID)
-
-//   const setUser = useAuthStore(s => s.setUser)
-//   const buttonRef = useRef<HTMLDivElement | null>(null)
-//   const router = useRouter()
-
-//   useEffect(() => {
-//     if (!window.google || !buttonRef.current) return
-
-//     window.google.accounts.id.initialize({
-//       client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-//       callback: async (res: { credential: string }) => {
-//         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/google`, {
-//           method: 'POST',
-//           headers: { 'Content-Type': 'application/json' },
-//           credentials: 'include',
-//           body: JSON.stringify({ credential: res.credential }),
-//         })
-
-//         if (!response.ok) return
-
-//         const data = await response.json()
-//         setUser(data.user)
-//         router.push('/')
-//       },
-//     })
-
-//     window.google.accounts.id.renderButton(buttonRef.current, {
-//       theme: 'outline',
-//       size: 'large',
-//       width: 280,
-//     })
-//   }, [setUser])
-
-//   return <div ref={buttonRef} />
-// }
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useAuthStore } from '@/store/auth.store'
-import { useRouter } from 'next/navigation'
-import css from './GoogleButton.module.css'
+import toast from 'react-hot-toast'
+import { User } from '@/types/user'
 
-type GoogleButtonProps = {
-  mode: 'login' | 'register'
-}
-
-export function GoogleButton({ mode }: GoogleButtonProps) {
+export function GoogleButton() {
   const setUser = useAuthStore(s => s.setUser)
-  const router = useRouter()
+  const buttonRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    if (!window.google) return
+    const google = window.google
 
-    window.google.accounts.id.initialize({
-      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-      callback: async (res: { credential: string }) => {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/google`,
-          {
+    if (!google || !buttonRef.current) return
+
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
+
+    if (!clientId) {
+      console.error('Google Client ID is missing in environment variables')
+      return
+    }
+
+    google.accounts.id.initialize({
+      client_id: clientId,
+      callback: async res => {
+        try {
+          const response = await fetch('/api/proxy/auth/google', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
             body: JSON.stringify({ credential: res.credential }),
+          })
+
+          if (!response.ok) {
+            const errorData: { message?: string } = await response.json()
+            throw new Error(errorData.message || 'Помилка Google авторизації')
           }
-        )
 
-        if (!response.ok) return
+          const data: User = await response.json()
 
-        const data = await response.json()
-        setUser(data.user)
-        router.push('/')
+          if (data && data.email) {
+            setUser(data)
+            toast.success('Успішний вхід через Google')
+            window.location.href = '/'
+          }
+        } catch (error: unknown) {
+          const message = error instanceof Error ? error.message : 'Невідома помилка'
+          toast.error(message)
+          console.error('Google Auth Error:', error)
+        }
       },
     })
-  }, [setUser, router])
 
-  const handleGoogleLogin = () => {
-     if (!window.google) return
-    window.google.accounts.id.prompt()
-  }
+    google.accounts.id.renderButton(buttonRef.current, {
+      theme: 'outline',
+      size: 'large',
+      width: 280,
+      text: 'signin_with',
+    })
+  }, [setUser])
 
-    const label =
-    mode === 'login'
-      ? 'Увійти через Google'
-      : 'Зареєструватися через Google'
-
-  return (
-    <button
-      type="button"
-      className={css.google_button}
-      onClick={handleGoogleLogin}
-    >
-      <img src="/icons/google.svg" alt="Google" />
-      <span>{label}</span>
-    </button>
-  )
+  return <div ref={buttonRef} style={{ minHeight: '40px' }} />
 }

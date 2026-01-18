@@ -15,10 +15,14 @@ export default function ProfileEditPage() {
       <div className={styles.card}>
         <div className={styles.left}>
           <h1 className={styles.title}>
-            Давайте познайомимось ближче
+            <span className={styles.word}>Давайте</span>
+            <span className={styles.word}>познайомимось</span>
+            <span className={styles.word}>ближче</span>
           </h1>
+
           <OnboardingForm />
         </div>
+
         <div className={styles.right}>
           <OnboardingImage />
         </div>

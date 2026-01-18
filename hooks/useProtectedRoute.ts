@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { useAuthStore } from '@/store/auth.store'
 
-const PUBLIC_ROUTES = ['/auth/login', '/auth/register', '/auth/google']
+const PUBLIC_ROUTES = ['/auth/login', '/auth/register']
 
 export const useProtectedRoute = () => {
   const { isAuthenticated, hydrated } = useAuthStore()
@@ -18,6 +18,10 @@ export const useProtectedRoute = () => {
 
     if (!isAuthenticated && !isPublic) {
       router.replace('/auth/login')
+    }
+
+    if (isAuthenticated && isPublic) {
+      router.replace('/')
     }
   }, [hydrated, isAuthenticated, pathname, router])
 }
