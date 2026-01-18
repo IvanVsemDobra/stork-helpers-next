@@ -1,7 +1,7 @@
 .detailsContainer {
     display: flex;
     flex-direction: column;
-    background-color: #FFF4F6;
+    background-color: var(--theme-lighter);
     border-radius: 32px;
     padding: 24px 24px 112px 24px;
     margin: 0 24px;
@@ -31,14 +31,6 @@
     padding: 0;
     color: #4C4C4C;
     transition: color 0.2s ease;
-}
-
-.button:hover {
-    color: #ffffff;
-}
-
-.button:active {
-    color: #B2B2B2;
 }
 
 .buttonIcon {
