@@ -24,9 +24,13 @@ export interface OnboardingValues {
 }
 
 const schema = Yup.object({
-  name: Yup.string().min(2, 'Ім’я має бути не менше 2 символів').required('Обов’язкове поле'),
-  theme: Yup.string().oneOf(['boy', 'girl', 'neutral']).required('Обов’язкове поле'),
-  dueDate: Yup.string().required('Обов’язкове поле'), 
+  name: Yup.string()
+    .min(2, 'Ім’я має бути не менше 2 символів')
+    .required('Обов’язкове поле'),
+  theme: Yup.string()
+    .oneOf(['boy', 'girl', 'neutral'])
+    .required('Обов’язкове поле'),
+  dueDate: Yup.string().required('Обов’язкове поле'),
 })
 
 export default function OnboardingForm() {
@@ -71,7 +75,9 @@ export default function OnboardingForm() {
       toast.success('Онбординг завершено')
       router.push('/diary')
     },
-    onError: () => toast.error('Помилка збереження'),
+    onError: () => {
+      toast.error('Помилка збереження')
+    },
   })
 
   if (!user) return null
@@ -85,11 +91,26 @@ export default function OnboardingForm() {
         avatar: null,
       }}
       validationSchema={schema}
-      onSubmit={values => mutation.mutate(values)}
+      validateOnBlur={false}
+      validateOnChange={false}
+      onSubmit={(values, { setTouched }) => {
+        setTouched(
+          {
+            name: true,
+            theme: true,
+            dueDate: true,
+            avatar: false,
+          },
+          true
+        )
+
+        mutation.mutate(values)
+      }}
     >
-      {({ isSubmitting, dirty, isValid }) => (
+      {({ isSubmitting }) => (
         <Form className={styles.form}>
           <OnboardingAvatar />
+
           <div className={styles.fields}>
             <OnboardingCustomSelect />
             <OnboardingCustomDate />
@@ -97,7 +118,7 @@ export default function OnboardingForm() {
 
           <button
             type="submit"
-            disabled={isSubmitting || !dirty || !isValid}
+            disabled={isSubmitting}
             className={styles.submit}
           >
             Зберегти

@@ -1,9 +1,10 @@
 'use client';
 
-import Image from 'next/image';
+
 
 import Link from 'next/link';
 import styles from './Header.module.scss';
+import AppLogo from '@/components/auth/AppLogo';
 import { MenuOutlined } from '@ant-design/icons';
 import { useUiStore } from '@/store/ui.store';
 import { usePathname } from 'next/navigation';
@@ -17,9 +18,8 @@ export const Header = () => {
 
     return (
         <header className={styles.header}>
-            <Link href="/" className={styles.header__logo}>
-                <Image src="/logo.svg" alt="Stork Helpers Logo" width={40} height={40} />
-                <span>Лелека</span>
+            <Link href="/" className={styles.header__logo} aria-label="Мій день">
+                <AppLogo className={styles.header__logo_img} />
             </Link>
 
             <button className={styles.header__burger} onClick={openBurgerMenu}>
