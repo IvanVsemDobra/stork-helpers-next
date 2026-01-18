@@ -76,9 +76,9 @@ const TasksList = () => {
         <>
           <p className={styles.emptyBold}>Наразі немає жодних завдань</p>
           <p className={styles.emptyText}>Створіть мерщій нове завдання!</p>
-          <button className={styles.createBtn} onClick={handleOpenModal}>
+          {/* <button className={styles.createBtn} onClick={handleOpenModal}>
             Створити завдання
-          </button>
+          </button> */}
         </>
       )}
 

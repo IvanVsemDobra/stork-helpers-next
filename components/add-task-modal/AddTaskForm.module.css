@@ -32,7 +32,7 @@
 
 .input:focus {
   outline: none;
-  border-color: #ffdae0;
+  border-color: var(--theme-light);
   background-color: #fff;
 }
 
@@ -59,9 +59,9 @@
 .submitButton {
   width: 268px;
   height: 46px;
-  background: #ffdae0;
+  background: var(--theme-light);
   border-radius: 100px;
-  border-bottom: 4px solid #ffcbd3;
+  border-bottom: 4px solid var(--theme-main);
 }
 
 .submitButton:disabled {

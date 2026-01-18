@@ -70,14 +70,14 @@
   justify-content: center;
   gap: 8px;
 
-  background-color: #ffdae0;
+  background-color: var(--theme-main);
   color: #000000;
 
   padding: 10px 24px;
   border-radius: 100px;
 
   border: none;
-  border-bottom: 4px solid #ffcbd3;
+  border-bottom: 4px solid var(--theme-main);
 
   font-weight: 500;
   font-size: 16px;
@@ -90,15 +90,15 @@
 .createBtn:active {
   border-bottom-width: 0px;
   transform: translateY(4px);
-  background-color: #ffcbd3;
+  background-color: var(--theme-main);
 }
 
 .createBtn:hover {
-  background-color: #ffe4e8;
+  background-color: var(--theme-light);
 }
 
 .createBtn:hover {
-  background-color: #ffe4e8;
+  background-color: var(--theme-light);
 }
 
 /* ---------- Task list ---------- */
