@@ -65,7 +65,9 @@ export const UserBar = () => {
           <Avatar key={user.avatar} size={40} icon={<UserOutlined />} src={getAvatarSrc()} />
           <div className={styles.userBar__details}>
             <span className={styles.userBar__name}>{user.name}</span>
-            <span className={styles.userBar__email}>{user.email}</span>
+            <span className={styles.userBar__email}>
+              {user.email.length > 18 ? `${user.email.substring(0, 18)}...` : user.email}
+            </span>
           </div>
         </div>
         <Button
