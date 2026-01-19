@@ -2,21 +2,32 @@
   display: flex;
   justify-content: flex-start;
   width: 100%;
-  padding: 24px 16px;
+  padding-left: 32px;
+  padding-right: 16;
+}
 
-  @media (min-width: 768px) {
-    .main {
-      padding: 40px 24px;
-    }
-  }
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
 
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
   .content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 32px;
-    width: 100%;
-    max-width: 580px;
+    max-width: 768px;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .content {
+    max-width: 768px;
     margin-left: 0;
+    margin-right: auto;
   }
 }
