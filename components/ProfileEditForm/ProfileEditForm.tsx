@@ -63,7 +63,6 @@ export const ProfileEditForm = () => {
     const payload: Partial<User> = {}
 
     if (values.name !== user?.name) payload.name = values.name
-
     if (values.theme !== user?.theme) payload.theme = values.theme
 
     const formattedDate = values.dueDate ? new Date(values.dueDate).toISOString() : undefined
@@ -161,7 +160,7 @@ export const ProfileEditForm = () => {
               }}
               disabled={!dirty || isPending}
             >
-              Відмінити
+              Відмінити зміни
             </button>
             <button type="submit" className={styles.submit} disabled={isPending || !dirty}>
               {isPending ? 'Збереження...' : 'Зберегти зміни'}

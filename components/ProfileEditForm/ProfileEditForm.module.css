@@ -22,7 +22,7 @@
   font-family: var(--font-family-base);
   font-weight: 500;
   font-size: 14px;
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
   line-height: 1.5;
 }
 
@@ -35,7 +35,7 @@
 .input,
 .select {
   height: 48px;
-  padding: 0 16px;
+  padding-left: 16;
   border-radius: 12px;
   border: 1px solid transparent;
   background: rgba(0, 0, 0, 0.05);
@@ -52,45 +52,50 @@
   outline: 1px solid var(--theme-main);
   background-color: var(--color-bg-primary);
 }
-
 .actions {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
   margin-top: 8px;
 }
 
 @media (min-width: 480px) {
   .actions {
-    flex-direction: row;
     justify-content: flex-end;
-    gap: 16px;
   }
 }
 
 .submit,
 .cancel {
-  padding: 8px 20px;
+  border: none;
   border-radius: 100px;
-  font-weight: 700;
-  font-size: 14px;
   cursor: pointer;
-  width: 100%;
-  min-width: unset;
-  height: 42px;
-  text-align: center;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.6;
   font-family: var(--font-family-base);
   transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 8px 20px;
+  width: 159px;
+  height: 38px;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 768px) {
   .submit,
   .cancel {
-    width: auto;
-    min-width: 159px;
+    width: 150px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .submit,
+  .cancel {
+    width: 165px;
+    height: 42px;
   }
 }
 
@@ -101,11 +106,47 @@
   border-bottom: 4px solid var(--theme-main);
 }
 
+/* Hover / Focus */
+.submit:hover,
+.submit:focus {
+  filter: brightness(0.9);
+}
+
+/* Active */
+.submit:active {
+  filter: brightness(0.8);
+}
+
+/* Disabled */
+.submit:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  filter: brightness(1);
+}
+
+/* Кнопка скасування */
 .cancel {
-  background: rgba(0, 0, 0, 0.05);
+  background-color: rgba(0, 0, 0, 0.05);
   color: var(--color-text-secondary);
-  border: none;
   border-bottom: 4px solid rgba(0, 0, 0, 0.15);
+}
+
+/* Hover / Focus */
+.cancel:hover,
+.cancel:focus {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Active */
+.cancel:active {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Disabled */
+.cancel:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .error {

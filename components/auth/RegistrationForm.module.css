@@ -4,13 +4,28 @@
   top: 12px;
   left: 20px;
   z-index: 1000;
+  &:hover {
+    transform: scale(1.03);
+  opacity: 0.9;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.5);
+  }
 }
+
+
 
 .auth_logo_img {
   display: inline-flex;
   cursor: pointer;
   width: 105px;
   height: 45px;
+  border-radius: 12px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .auth_container {
