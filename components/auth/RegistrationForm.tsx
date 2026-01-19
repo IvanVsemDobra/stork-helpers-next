@@ -57,9 +57,7 @@ export const RegistrationForm = () => {
           <div className={css.auth_form}>
             <Form>
               <div className={css.auth_logo}>
-                <Link href="/" aria-label="Перейти на мій день">
                   <AppLogo className={css.auth_logo_img} />
-                </Link>
               </div>
               <div className={css.auth_container}>
                 <h1 className={css.auth_title}>Реєстрація</h1>
