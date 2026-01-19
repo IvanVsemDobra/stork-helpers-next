@@ -23,7 +23,7 @@ export default function JourneyPage() {
         selectedWeek={selectedWeek}
         onWeekSelect={setSelectedWeek}
       />
-      <JourneyDetails selectedWeek={selectedWeek} />
+      <JourneyDetails weekNumber={selectedWeek} />
     </div>
   )
 }

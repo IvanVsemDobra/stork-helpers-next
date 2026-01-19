@@ -1,25 +1,23 @@
-/*========== MOBILE =============*/
+/* ======== MOBILE ========= */
 
 .statusItem {
+  width: 335px;
+  height: 121px;
   border-radius: 32px;
   background-color: var(--theme-lighter);
-
   display: flex;
   flex-direction: column;
   gap: 4px;
-  border: 0px solid rgba(0, 0, 0, 0.15);
-
   padding: 16px;
-  width: 159px;
-  height: 105px;
+  border: 0px solid rgba(0, 0, 0, 0.15);
 }
 
 .text {
   font-family: var(--font-family-base);
-  color: #000;
-  font-size: 14px;
   font-weight: 400;
+  font-size: 14px;
   line-height: 1.5;
+  color: var(--color-text-primary);
 }
 
 .value {
@@ -28,7 +26,7 @@
   font-size: 40px;
   line-height: 1.2;
   letter-spacing: 0.01em;
-  color: #000;
+  color: var(--color-text-primary);
 }
 
 .text,
@@ -36,23 +34,20 @@
   margin: 0;
 }
 
-/*========== TABLET =============*/
+/* ======== TABLET =========== */
 
-.statusItem {
-  width: 336px;
+@media (min-width: 768px) {
+  .statusItem {
+    height: 105px;
+    width: 336px;
+  }
 }
 
-/*========== DESKTOP ============*/
+/* ======== DESKTOP =========== */
 
-.statusItem {
-  width: 305px;
-  height: 127px;
-}
-
-.text {
-  font-size: 16px;
-}
-
-.value {
-  font-size: 56px;
+@media (min-width: 1440px) {
+  .statusItem {
+    height: 127px;
+    width: 305px;
+  }
 }
