@@ -8,6 +8,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  position: relative;
 }
 
 .fieldGroupCategories {
@@ -38,7 +39,7 @@
 
 .input:focus {
   outline: none;
-  border-color: #ffdae0;
+  border-color: var(--theme-light);
   background-color: #fff;
 }
 
@@ -50,12 +51,19 @@
   background-color: #f5f5f5;
   border: 2px solid transparent;
   resize: none;
+  font-family: var(--font-family);
+  font-weight: 400;
 }
 
 .textarea:focus {
   outline: none;
-  border-color: #ffdae0;
+  border-color: var(--theme-light);
   background-color: #fff;
+}
+
+.dropdownWrapper {
+  position: relative;
+  width: 100%;
 }
 
 .errorMessage {
@@ -75,9 +83,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  min-height: 48px;
+  height: auto;
   border-radius: 12px;
-  border: 1px solid var(--opacity-transparent);
+  border: 1px solid var(--theme-light);
   background: var(--color-neutral-lightest);
 
   padding: 10px 12px;
@@ -85,7 +94,7 @@
 }
 
 .dropdownControlOpen {
-  border-color: #ffdae0;
+  border-color: var(--theme-light);
   box-shadow: 0 0 0 3px rgba(255, 218, 224, 0.35);
 }
 
@@ -94,16 +103,20 @@
   align-items: center;
   min-width: 0;
   overflow: hidden;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .dropdownPlaceholder {
   color: #8f8f8f;
-  font-family: 'Lato', sans-serif;
+  font-family: var(--font-family);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-family: Lato, sans-serif;
+
 }
 
 /* Chips */
@@ -113,7 +126,7 @@
   gap: 10px;
   min-width: 0;
   overflow: hidden;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 }
 
 .chip {
@@ -123,14 +136,12 @@
   height: 32px;
   display: inline-flex;
   align-items: center;
-
   background: var(--opacity-neutral-darkest-5);
-
   font-family: var(--font-family);
   font-size: 18px;
   font-weight: 500;
   color: var(--color-scheme-text);
-  white-space: nowrap;
+  white-space: normal;
 }
 
 /* Chevron sprite */
@@ -176,7 +187,7 @@
 }
 
 .dropdownScroll::-webkit-scrollbar-thumb {
-  background: #ffb8c6;
+  background: var(--theme-main);
   border-radius: 999px;
   border: 3px solid transparent;
   background-clip: content-box;
@@ -184,7 +195,7 @@
 
 .dropdownScroll {
   scrollbar-width: thin;
-  scrollbar-color: #ffb8c6 rgba(0, 0, 0, 0.15);
+  scrollbar-color: var(--theme-main) rgba(0, 0, 0, 0.15);
 }
 
 /* Options */
@@ -251,16 +262,33 @@
 .buttonPrimary {
   width: 268px;
   height: 46px;
-  background: #ffdae0;
+  background: var(--theme-light);
   border-radius: 100px;
   border: none;
-  border-bottom: 4px solid #ffcbd3;
+  border-bottom: 4px solid var(--theme-main);
   cursor: pointer;
 }
 
 .buttonPrimary:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.loaderContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  width: 100%;
+  background-color: transparent;
+}
+
+.loaderContainer :global(.ant-spin-text) {
+  font-family: 'Comfortaa', cursive;
+  color: #FEF1DB;
+  margin-top: 16px;
+  font-size: 16px;
 }
 
 /* Responsive widths */

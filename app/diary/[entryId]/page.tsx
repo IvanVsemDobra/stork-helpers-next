@@ -1,12 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import axios from 'axios'
 import { Spin } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
 import { DiaryService } from '@/services/diary.service'
 import { DiaryEntryDetails } from '@/components/diary-page/diary-entry-details.component'
+import { AddDiaryEntryModal } from '@/components/add-diary-entry-modal/AddDiaryEntryModal'
 import { DiaryEntry, Emotion } from '@/interfaces/diary'
 import styles from './styles.module.css'
 
@@ -16,39 +17,56 @@ export default function DiaryEntryPage() {
   const params = useParams()
   const router = useRouter()
   const entryId = params.entryId as string
-
   const [entry, setEntry] = useState<DiaryEntry | null>(null)
   const [allEmotions, setAllEmotions] = useState<Emotion[]>([])
   const [loading, setLoading] = useState(true)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true)
-        const [emotions, entries] = await Promise.all([
-          DiaryService.getEmotions(),
-          DiaryService.getEntries(),
-        ])
-
-        setAllEmotions(emotions)
-        const foundEntry = entries.find((e: DiaryEntry) => e._id === entryId)
-
-        if (foundEntry) {
-          setEntry(foundEntry)
-        } else {
-          router.push('/diary')
-        }
-      } catch (err: unknown) {
-        if (axios.isAxiosError(err)) {
-          console.error('Помилка завантаження:', err.response?.status)
-        }
-      } finally {
-        setLoading(false)
+    const handleResize = () => {
+      if (window.innerWidth >= 1440) {
+        router.push('/diary')
       }
     }
 
-    if (entryId) fetchData()
+    handleResize()
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [router])
+
+  const fetchData = useCallback(async () => {
+    try {
+      const [emotions, entries] = await Promise.all([
+        DiaryService.getEmotions(),
+        DiaryService.getEntries(),
+      ])
+
+      setAllEmotions(emotions)
+      const foundEntry = entries.find((e: DiaryEntry) => e._id === entryId)
+
+      if (foundEntry) {
+        setEntry(foundEntry)
+      } else {
+        router.push('/diary')
+      }
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        console.error('Помилка завантаження:', err.response?.status)
+      }
+    } finally {
+      setLoading(false)
+    }
   }, [entryId, router])
+
+  useEffect(() => {
+    if (entryId) fetchData()
+  }, [fetchData, entryId])
+
+  const handleEntryUpdate = (updatedEntry: DiaryEntry) => {
+    setEntry(updatedEntry)
+    setIsEditModalOpen(false)
+  }
 
   if (loading) {
     return (
@@ -66,9 +84,17 @@ export default function DiaryEntryPage() {
         entry={entry}
         allEmotions={allEmotions}
         onDeleteSuccess={() => router.push('/diary')}
-        onEditTrigger={(entryToEdit: DiaryEntry) => {
-          console.log('Edit:', entryToEdit._id)
+        onEditTrigger={() => {
+          setIsEditModalOpen(true)
         }}
+      />
+
+      <AddDiaryEntryModal
+        isOpen={isEditModalOpen}
+        isEdit={true}
+        initialData={entry}
+        onClose={() => setIsEditModalOpen(false)}
+        onSubmitSuccess={handleEntryUpdate}
       />
     </div>
   )

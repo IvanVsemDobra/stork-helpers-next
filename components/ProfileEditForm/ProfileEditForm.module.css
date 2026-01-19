@@ -95,10 +95,10 @@
 }
 
 .submit {
-  background-color: var(--theme-main);
+  background-color: var(--theme-light);
   color: var(--color-text-primary);
   border: none;
-  border-bottom: 4px solid var(--theme-light);
+  border-bottom: 4px solid var(--theme-main);
 }
 
 .cancel {

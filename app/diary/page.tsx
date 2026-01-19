@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { DiaryService } from '@/services/diary.service'
 import { DiaryList } from '@/components/diary-page/diary-list.component'
 import { DiaryEntryDetails } from '@/components/diary-page/diary-entry-details.component'
-import { AddDiaryEntryModal } from '@/components/add-diary-entry-modal/add-diary-entry-modal'
+import { AddDiaryEntryModal } from '@/components/add-diary-entry-modal/AddDiaryEntryModal'
 import { DiaryEntry, Emotion } from '@/interfaces/diary'
 import styles from './styles.module.css'
 
@@ -14,57 +14,83 @@ export default function DiaryPage() {
   const [allEmotions, setAllEmotions] = useState<Emotion[]>([])
   const [selectedEntry, setSelectedEntry] = useState<DiaryEntry | null>(null)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [isDesktop, setIsDesktop] = useState(false)
 
-  const checkIsDesktop = () => typeof window !== 'undefined' && window.innerWidth >= 1440
-
-  const fetchEntries = useCallback(async () => {
-    try {
-      const data = await DiaryService.getEntries()
-      setEntries(data)
-
-      if (selectedEntry) {
-        const updated = data.find((e: DiaryEntry) => e._id === selectedEntry._id)
-        setSelectedEntry(updated || (checkIsDesktop() ? data[0] : null))
-      } else if (checkIsDesktop() && data.length > 0) {
-        setSelectedEntry(data[0])
-      }
-    } catch (e: unknown) {
-      if (axios.isAxiosError(e)) {
-        console.error('Помилка завантаження списку:', e.response?.status, e.message)
+  useEffect(() => {
+    const handleResize = () => {
+      const desktop = window.innerWidth >= 1440
+      setIsDesktop(desktop)
+      if (!desktop) {
+        setSelectedEntry(null)
+      } else if (desktop && !selectedEntry && entries.length > 0) {
+        setSelectedEntry(entries[0])
       }
     }
-  }, [selectedEntry])
+
+    handleResize()
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  })
 
   useEffect(() => {
     let isIgnore = false
 
     async function initData() {
       try {
-        const [emotions, entries] = await Promise.all([
+        const [emotions, data] = await Promise.all([
           DiaryService.getEmotions(),
           DiaryService.getEntries(),
         ])
 
         if (!isIgnore) {
           setAllEmotions(emotions)
-          setEntries(entries)
-
-          if (checkIsDesktop() && entries.length > 0 && !selectedEntry) {
-            setSelectedEntry(entries[0])
+          setEntries(data)
+          if (window.innerWidth >= 1440 && data.length > 0) {
+            setSelectedEntry(data[0])
           }
         }
       } catch (e: unknown) {
         if (axios.isAxiosError(e)) {
-          console.error('Помилка при ініціалізації даних:', e.response?.status)
+          console.error('Помилка ініціалізації:', e.response?.status)
         }
       }
     }
 
     initData()
+
     return () => {
       isIgnore = true
     }
-  }, [selectedEntry])
+  }, [])
+
+  const handleEntrySaved = (savedEntry: DiaryEntry) => {
+    setEntries(prevEntries => {
+      const exists = prevEntries.some(e => e._id === savedEntry._id)
+
+      if (exists) {
+        return prevEntries.map(e => (e._id === savedEntry._id ? savedEntry : e))
+      } else {
+        return [savedEntry, ...prevEntries]
+      }
+    })
+
+    if (selectedEntry && selectedEntry._id === savedEntry._id) {
+      setSelectedEntry(savedEntry)
+    }
+
+    setIsEditModalOpen(false)
+  }
+
+  const handleEntryDeleted = () => {
+    if (!selectedEntry) return
+    const newEntries = entries.filter(e => e._id !== selectedEntry._id)
+    setEntries(newEntries)
+    setSelectedEntry(null)
+    if (isDesktop && newEntries.length > 0) {
+      setSelectedEntry(newEntries[0])
+    }
+  }
 
   return (
     <div className={styles.containersGroup}>
@@ -73,31 +99,31 @@ export default function DiaryPage() {
           entries={entries}
           allEmotions={allEmotions}
           onSelect={setSelectedEntry}
-          onRefresh={fetchEntries}
+          onEntryAdd={handleEntrySaved}
+          onRefresh={() => {}}
         />
       </div>
 
-      <div className={styles.columnRight}>
-        <DiaryEntryDetails
-          entry={selectedEntry}
-          allEmotions={allEmotions}
-          onDeleteSuccess={() => {
-            setSelectedEntry(null)
-            fetchEntries()
-          }}
-          onEditTrigger={(entry: DiaryEntry) => {
-            setSelectedEntry(entry)
-            setIsEditModalOpen(true)
-          }}
-        />
-      </div>
+      {isDesktop && (
+        <div className={styles.columnRight}>
+          <DiaryEntryDetails
+            entry={selectedEntry}
+            allEmotions={allEmotions}
+            onDeleteSuccess={handleEntryDeleted}
+            onEditTrigger={(entry: DiaryEntry) => {
+              setSelectedEntry(entry)
+              setIsEditModalOpen(true)
+            }}
+          />
+        </div>
+      )}
 
       <AddDiaryEntryModal
         isOpen={isEditModalOpen}
         isEdit={true}
         initialData={selectedEntry}
         onClose={() => setIsEditModalOpen(false)}
-        onSubmitSuccess={fetchEntries}
+        onSubmitSuccess={handleEntrySaved}
       />
     </div>
   )

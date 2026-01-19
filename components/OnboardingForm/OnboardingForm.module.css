@@ -20,7 +20,7 @@
   border-bottom: 4px solid var(--theme-main); 
   border-radius: 100px;
   cursor: pointer;
-  font-family: var(--font-family);
+  font-family: var(--font-family-base); 
   font-weight: 500;
   font-size: 16px;
   line-height: 160%;
@@ -47,4 +47,19 @@
   pointer-events: none;
   transform: none;
   border-bottom-width: 4px solid var(--theme-lightest); 
+}
+
+.inputError,
+.invalidInput {
+  border: 2px solid var(--color-danger); 
+  border-radius: 12px;
+}
+
+.error {
+  font-family: var(--font-family);      
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 160%;
+  color: var(--color-red);
+  margin-top: 4px;
 }

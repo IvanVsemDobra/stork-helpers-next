@@ -1,11 +1,12 @@
 /*======Mobile styles======*/
 .container {
   max-width: 375px;
+  padding: 0 20px;
   margin-inline: auto;
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
+} 
 
 .column {
   display: flex;
@@ -29,6 +30,7 @@
 @media (min-width: 768px) {
   .container {
     max-width: 768px;
+    padding: 0 32px;
   }
 
   .column {

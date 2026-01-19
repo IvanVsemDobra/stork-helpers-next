@@ -5,7 +5,9 @@ interface ApiErrorResponse {
   error?: string;
 }
 
-const BASE_URL: string = process.env.NEXT_PUBLIC_API_URL || 'https://stork-helpers-api.onrender.com/api';
+const BASE_URL: string = typeof window === 'undefined'
+  ? (process.env.NEXT_PUBLIC_API_URL || 'https://stork-helpers-api.onrender.com/api')
+  : '/api/proxy'; 
 
 export const api: AxiosInstance = axios.create({
   baseURL: BASE_URL,

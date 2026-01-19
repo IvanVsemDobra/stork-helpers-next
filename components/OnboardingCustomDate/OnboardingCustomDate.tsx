@@ -1,15 +1,25 @@
 'use client'
 
-import { useField } from 'formik'
+import { useField, useFormikContext } from 'formik'
 import styles from './OnboardingCustomDate.module.css'
+
+interface FormValues {
+  dueDate: string
+}
 
 interface OnboardingCustomDateProps {
   className?: string
 }
 
-export default function OnboardingCustomDate({ className }: OnboardingCustomDateProps) {
-  const [field, meta] = useField('dueDate')
+export default function OnboardingCustomDate({
+  className,
+}: OnboardingCustomDateProps) {
+  const [field, meta] = useField<string>('dueDate')
+  const { submitCount } = useFormikContext<FormValues>()
+
   const today = new Date().toISOString().split('T')[0]
+
+  const showError = submitCount > 0 && Boolean(meta.error)
 
   return (
     <div className={styles.wrapper}>
@@ -18,14 +28,13 @@ export default function OnboardingCustomDate({ className }: OnboardingCustomDate
       <input
         type="date"
         {...field}
-        className={`${styles.input} ${meta.touched && meta.error ? styles.invalidInput : ''} ${className || ''}`}
         min={today}
-        required
+        className={`${styles.input} ${
+          showError ? styles.invalidInput : ''
+        } ${className ?? ''}`}
       />
 
-      {meta.touched && meta.error && (
-        <div className={styles.error}>{meta.error}</div>
-      )}
+      {showError && <div className={styles.error}>{meta.error}</div>}
     </div>
   )
 }

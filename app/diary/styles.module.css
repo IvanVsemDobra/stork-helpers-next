@@ -8,10 +8,18 @@
 .columnRight {
     display: flex;
     flex-direction: column;
+    flex: 1;
 }
 
 @media screen and (min-width: 1440px) {
     .containersGroup {
         gap: 32px;
+        margin: 32px;
+        width: calc(100% - 64px);
+    }
+
+    .columnLeft,
+    .columnRight {
+        flex: 1;
     }
 }
