@@ -1,3 +1,9 @@
+// import { redirect } from 'next/navigation'
+
+// export default function JourneyPage() {
+//   redirect('/journey/1')
+// }
+
 'use client'
 
 import React, { useState } from 'react'
@@ -17,7 +23,7 @@ export default function JourneyPage() {
         selectedWeek={selectedWeek}
         onWeekSelect={setSelectedWeek}
       />
-      <JourneyDetails selectedWeek={selectedWeek} />
+      <JourneyDetails weekNumber={selectedWeek} />
     </div>
   )
 }

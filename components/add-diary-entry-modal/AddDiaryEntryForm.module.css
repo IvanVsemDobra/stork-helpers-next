@@ -116,7 +116,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   font-family: Lato, sans-serif;
-
 }
 
 /* Chips */
@@ -234,21 +233,22 @@
 }
 
 .checkboxBoxChecked {
-  background: #000;
+  background: var(--color-neutral-darkest);
 }
 
 .checkboxTick {
-  width: 18px;
-  height: 18px;
-  color: #fff;
+  width: 20px;
+  height: 20px;
+  color: var(--color-white);
   display: block;
 }
 
 .optionText {
   font-family: var(--font-family);
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 600;
-  color: var(--color-scheme-text);
+  color: var(--color-neutral-darkest);
+  line-height: 160%;
 }
 
 /* Buttons */
@@ -286,7 +286,7 @@
 
 .loaderContainer :global(.ant-spin-text) {
   font-family: 'Comfortaa', cursive;
-  color: #FEF1DB;
+  color: #fef1db;
   margin-top: 16px;
   font-size: 16px;
 }
