@@ -1,86 +1,64 @@
-import { NextRequest, NextResponse } from 'next/server'
-import axios, { AxiosError } from 'axios'
-import setCookie from 'set-cookie-parser'
+import { NextRequest, NextResponse } from 'next/server';
+import { api } from '@/services/api';
+import { parse } from 'cookie';
+import axios, { AxiosError } from 'axios';
 
 interface BackendErrorResponse {
-  message?: string
-  error?: string
-}
-
-const API_URL = process.env.API_URL
-
-if (!API_URL) {
-  throw new Error('API_URL is not defined')
-}
-
-function normalizeSameSite(
-  sameSite?: string
-): 'lax' | 'strict' | 'none' | undefined {
-  if (!sameSite) return undefined
-
-  const value = sameSite.toLowerCase()
-
-  if (value === 'lax') return 'lax'
-  if (value === 'strict') return 'strict'
-  if (value === 'none') return 'none'
-
-  return undefined
+  message?: string;
+  error?: string;
 }
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json()
+    const body = await req.json();
+    const apiRes = await api.post('/auth/login', body);
+    const res = NextResponse.json(apiRes.data, { status: apiRes.status });
+    const setCookie = apiRes.headers['set-cookie'];
 
-    const apiRes = await axios.post(`${API_URL}/auth/login`, body, {
-      withCredentials: true,
-      validateStatus: () => true,
-    })
+    if (setCookie) {
+      const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];
 
-    const res = NextResponse.json(apiRes.data, { status: apiRes.status })
+      cookieArray.forEach((cookieStr) => {
+        const parsed = parse(cookieStr);
+        const cookieName = Object.keys(parsed).find(
+          (key) => !['Path', 'Max-Age', 'Expires', 'HttpOnly', 'Secure', 'SameSite', 'Domain'].includes(key)
+        );
+        const cookieValue = cookieName ? parsed[cookieName] : undefined;
 
-    const setCookieHeader = apiRes.headers['set-cookie']
-
-    if (setCookieHeader) {
-      const cookies = setCookie.parse(setCookieHeader)
-
-      cookies.forEach(cookie => {
-        if (!cookie.name || cookie.value === undefined) return
-
-        res.cookies.set(cookie.name, cookie.value, {
-          path: cookie.path ?? '/',
-          httpOnly: cookie.httpOnly,
-          secure: cookie.secure ?? process.env.NODE_ENV === 'production',
-          sameSite: normalizeSameSite(cookie.sameSite) ?? 'lax',
-          maxAge: cookie.maxAge,
-          expires: cookie.expires,
-          domain: cookie.domain,
-        })
-      })
+        if (cookieName && typeof cookieValue === 'string') {
+          res.cookies.set(cookieName, cookieValue, {
+            path: parsed.Path ?? '/',
+            httpOnly: true,
+            maxAge: parsed['Max-Age'] ? Number(parsed['Max-Age']) : undefined,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+          });
+        }
+      });
     }
 
-    return res
+    return res;
+
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError<BackendErrorResponse>
-
-      console.error('🔴 Login API Error:', {
-        message: axiosError.message,
-        status: axiosError.response?.status,
-        data: axiosError.response?.data,
-      })
+      const axiosError = error as AxiosError<BackendErrorResponse>;
+      
+      console.error('🔴 Login API Error:', axiosError.response?.data || axiosError.message);
 
       return NextResponse.json(
-        {
-          error:
-            axiosError.response?.data?.message ||
-            axiosError.response?.data?.error ||
-            axiosError.message,
+        { 
+          error: axiosError.response?.data?.message || 
+                 axiosError.response?.data?.error || 
+                 axiosError.message 
         },
         { status: axiosError.response?.status ?? 500 }
-      )
+      );
     }
 
-    console.error('🔴 Unexpected Login Error:', error)
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+    console.error('🔴 Unexpected Login Error:', error);
+    return NextResponse.json(
+      { error: 'Internal Server Error' }, 
+      { status: 500 }
+    );
   }
 }
