@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
+import {apiError} from '@/utils/error'
 
 interface ApiErrorResponse {
   message?: string;
@@ -20,6 +21,13 @@ export const api: AxiosInstance = axios.create({
 api.interceptors.response.use(
   (response) => response,
   (error: AxiosError<ApiErrorResponse>) => {
+    const backendMessage=
+    error.response?.data?.message ||
+    error.response?.data?.error;
+
+    if(backendMessage && apiError[backendMessage]) {
+      error.message = apiError[backendMessage];
+    }
     if (error.response?.status === 401) {
       console.warn('⚠️ Сесія недійсна або користувач не залогінений');
     }

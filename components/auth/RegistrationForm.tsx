@@ -4,12 +4,10 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-
 import { register } from '@/services/auth.service'
 import { useAuthStore } from '@/store/auth.store'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
-import axios from 'axios'
 import css from '@/components/auth/RegistrationForm.module.css'
 import AppLogo from '@/components/auth/AppLogo'
 import { GoogleButton } from './GoogleButton'
@@ -45,13 +43,11 @@ export const RegistrationForm = () => {
           } else {
             router.push('/')
           }
-        } catch (error: unknown) {
-          if (axios.isAxiosError(error)) {
-            toast.error(error.response?.data?.message || 'Помилка реєстрації. Спробуйте пізніше')
-          } else if (error instanceof Error) {
+          } catch (error: unknown) {
+          if (error instanceof Error) {
             toast.error(error.message)
           } else {
-            toast.error('Невідома помилка')
+            toast.error('Сталася невідома помилка')
           }
         }
       }}
