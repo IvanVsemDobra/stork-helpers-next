@@ -1,15 +1,8 @@
 'use client'
-
-import React from 'react'
-import TasksReminderCard from '../tasks/TasksReminderCard'
-import Image from 'next/image'
-
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import TasksReminderCard from '../tasks/TasksReminderCard'
-import { api } from '@/app/api/client'
 import css from './JourneyDetails.module.css'
-import { useEffect, useState } from 'react'
 import { api } from '@/app/api/client'
 import { Loader } from '@/components/Loader/Loader'
 
