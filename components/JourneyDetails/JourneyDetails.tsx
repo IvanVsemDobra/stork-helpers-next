@@ -1,11 +1,8 @@
 'use client'
-<<<<<<< HEAD
-=======
 
 import React from 'react'
 import TasksReminderCard from '../tasks/TasksReminderCard'
 import Image from 'next/image'
->>>>>>> origin
 
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
