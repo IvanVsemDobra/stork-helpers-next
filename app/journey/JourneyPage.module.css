@@ -3,8 +3,8 @@
   max-width: 375px;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 32px;
-  margin: auto;
+  gap: 32px; /*прибрати*/
+  /* margin: auto; */
   padding: 20px;
 }
 
@@ -22,7 +22,6 @@
   .container {
     max-width: 1128px;
     /* margin-inline: auto; */
-    gap: 32px;
     margin-left: 0;
   }
 }
