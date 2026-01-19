@@ -246,7 +246,7 @@
 .optionText {
   font-family: var(--font-family);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
   color: var(--color-neutral-darkest);
   line-height: 160%;
 }
