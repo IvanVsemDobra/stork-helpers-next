@@ -9,6 +9,7 @@
   flex-direction: column;
   gap: 4px;
   padding: 16px;
+  border: 0px solid rgba(0, 0, 0, 0.15);
 }
 
 .text {
@@ -39,7 +40,6 @@
   .statusItem {
     height: 105px;
     width: 336px;
-    flex: 0 0 auto;
   }
 }
 
@@ -48,10 +48,6 @@
 @media (min-width: 1440px) {
   .statusItem {
     height: 127px;
-    border-radius: 32px;
-    padding: 16px;
-    border: 0px solid rgba(0, 0, 0, 0.15);
-    flex: 0 0 auto;
     width: 305px;
   }
 }

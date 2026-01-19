@@ -9,7 +9,6 @@ export default function JourneyPage() {
     <div>
       <GreetingBlock />
       <WeekSelector currentWeek={4} selectedWeek={5} onWeekSelect={() => {}} />
-
       <JourneyDetails />
     </div>
   )
