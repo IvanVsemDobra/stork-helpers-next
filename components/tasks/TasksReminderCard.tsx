@@ -66,9 +66,9 @@ const TasksList = () => {
         <>
           <p className={styles.emptyBold}>Наразі немає жодних завдань</p>
           <p className={styles.emptyText}>Увійдіть, щоб створювати завдання!</p>
-          <button className={styles.createBtn} onClick={() => router.push('/auth/register')}>
+          {/* <button className={styles.createBtn} onClick={() => router.push('/auth/register')}>
             Створити завдання
-          </button>
+          </button> */}
         </>
       )}
 
