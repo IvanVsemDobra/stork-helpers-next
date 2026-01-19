@@ -6,6 +6,7 @@ import { DiaryService } from '@/services/diary.service'
 import { DiaryList } from '@/components/diary-page/diary-list.component'
 import { DiaryEntryDetails } from '@/components/diary-page/diary-entry-details.component'
 import { AddDiaryEntryModal } from '@/components/add-diary-entry-modal/AddDiaryEntryModal'
+import { GreetingBlock } from '@/components/GreetingBlock/GreetingBlock'
 import { DiaryEntry, Emotion } from '@/interfaces/diary'
 import styles from './styles.module.css'
 
@@ -93,38 +94,43 @@ export default function DiaryPage() {
   }
 
   return (
-    <div className={styles.containersGroup}>
-      <div className={styles.columnLeft}>
-        <DiaryList
-          entries={entries}
-          allEmotions={allEmotions}
-          onSelect={setSelectedEntry}
-          onEntryAdd={handleEntrySaved}
-          onRefresh={() => {}}
-        />
+    <>
+      <div className={styles.greetingBlock}>
+        <GreetingBlock />
       </div>
-
-      {isDesktop && (
-        <div className={styles.columnRight}>
-          <DiaryEntryDetails
-            entry={selectedEntry}
+      <div className={styles.containersGroup}>
+        <div className={styles.columnLeft}>
+          <DiaryList
+            entries={entries}
             allEmotions={allEmotions}
-            onDeleteSuccess={handleEntryDeleted}
-            onEditTrigger={(entry: DiaryEntry) => {
-              setSelectedEntry(entry)
-              setIsEditModalOpen(true)
-            }}
+            onSelect={setSelectedEntry}
+            onEntryAdd={handleEntrySaved}
+            onRefresh={() => {}}
           />
         </div>
-      )}
 
-      <AddDiaryEntryModal
-        isOpen={isEditModalOpen}
-        isEdit={true}
-        initialData={selectedEntry}
-        onClose={() => setIsEditModalOpen(false)}
-        onSubmitSuccess={handleEntrySaved}
-      />
-    </div>
+        {isDesktop && (
+          <div className={styles.columnRight}>
+            <DiaryEntryDetails
+              entry={selectedEntry}
+              allEmotions={allEmotions}
+              onDeleteSuccess={handleEntryDeleted}
+              onEditTrigger={(entry: DiaryEntry) => {
+                setSelectedEntry(entry)
+                setIsEditModalOpen(true)
+              }}
+            />
+          </div>
+        )}
+
+        <AddDiaryEntryModal
+          isOpen={isEditModalOpen}
+          isEdit={true}
+          initialData={selectedEntry}
+          onClose={() => setIsEditModalOpen(false)}
+          onSubmitSuccess={handleEntrySaved}
+        />
+      </div>
+    </>
   )
 }

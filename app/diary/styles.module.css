@@ -11,6 +11,16 @@
     flex: 1;
 }
 
+.greetingBlock {
+    margin-left: 20px;
+}
+
+@media screen and (min-width: 768px) {
+    .greetingBlock {
+        margin-left: 32px;
+    }
+}
+
 @media screen and (min-width: 1440px) {
     .containersGroup {
         gap: 32px;
