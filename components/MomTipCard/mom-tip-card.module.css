@@ -19,6 +19,7 @@
 
 .text {
   font-size: 14px; /* mobile + tablet */
+  font-family: var(--font-family-base);
   line-height: 1.6;
   margin: 0;
 }
