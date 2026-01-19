@@ -1,37 +1,69 @@
-# Pregnancy App
+# 🍼 Stork Helpers
 
-## Опис
-Pregnancy App — веб-застосунок для супроводу вагітності:
-щотижнева інформація, стан мами, емоції, поради та щоденні нотатки.
 
----
+## 🇺🇦 Українська | 🇬🇧 English
 
-## Технології
-- Next.js 15 (App Router)
-- TypeScript
-- React Query
-- Zustand
-- Axios
-- Formik + Yup
 
----
 
-## Вимоги
-- Node.js 18+ (рекомендовано 20 LTS)
-- npm або pnpm
+🇺🇦 Опис проєкту
 
-Перевір версію:
-```bash
-node -v
+Stork Helpers — це вебзастосунок для підтримки молодих батьків.
+Проєкт допомагає відстежувати щоденний стан мами та дитини, керувати завданнями, вести щоденник і працювати з тижневими етапами розвитку.
 
-Архітектурні правила
+Проєкт складається з:
 
-ES modules (import / export)
+Backend API (Node.js, Express, MongoDB)
 
-Усі HTTP-запити тільки через services/api.ts
+Frontend (Next.js, TypeScript)
 
-Серверні дані — React Query
+🇬🇧 Project Description
 
-Глобальний стан — Zustand
+Stork Helpers is a web application designed to support new parents.
+It helps track daily baby and mom status, manage tasks, keep a diary, and work with weekly development journeys.
 
-Компоненти не містять бізнес-логіки
+The project consists of:
+
+Backend API (Node.js, Express, MongoDB)
+
+Frontend (Next.js, TypeScript)
+
+🧩 Архітектура проєкту | Project Architecture
+stork-helpers/
+├── backend/
+└── frontend/
+🖥 Backend
+📁 Структура backend
+src/
+├── config/
+├── constants/
+├── controllers/
+├── db/
+├── docs/
+├── middlewares/
+├── models/
+├── routes/
+├── services/
+├── utils/
+├── validations/
+├── server.js
+🔑 Основні можливості backend
+
+JWT + Google authentication
+
+Робота з користувачами
+
+Щоденники (diaries)
+
+Завдання (tasks)
+
+Емоційний стан
+
+Тижні розвитку (weeks)
+
+Rate limiting, validation, middleware
+
+⚙️ Запуск backend
+npm install
+npm run dev
+
+Створи .env на основі .env.example
