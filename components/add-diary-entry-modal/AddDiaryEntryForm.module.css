@@ -233,13 +233,13 @@
 }
 
 .checkboxBoxChecked {
-  background: #000;
+  background: var(--color-neutral-darkest);
 }
 
 .checkboxTick {
-  width: 18px;
-  height: 18px;
-  color: #fff;
+  width: 20px;
+  height: 20px;
+  color: var(--color-white);
   display: block;
 }
 
