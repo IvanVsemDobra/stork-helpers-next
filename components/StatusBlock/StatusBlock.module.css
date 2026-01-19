@@ -1,27 +1,30 @@
-/*======== MOBILE======== */
-
+/* ========= MOBILE ========== */
 .container {
   width: 100%;
   max-width: 375px;
+  /* padding: 16px 20px 0; */
   display: flex;
-
   gap: 16px;
 }
 
-/*======= TABLET =========*/
+/* ========= TABLET =========== */
 
 @media (min-width: 768px) {
   .container {
-    max-width: 704px;
-    gap: 32px;
-    /* padding: 0px 32px 0px; */
     width: 768px;
+    /* padding: 16px 32px 0; */
+    display: flex;
+    justify-content: space-between;
   }
 }
 
-/*========= DESKTOP =========*/
+/* ========= DESKTOP =========== */
+
 @media (min-width: 1440px) {
   .container {
-    max-width: 642px;
+    width: 674px;
+    /* padding: 16px 0 0 32px; */
+    display: flex;
+    gap: 32px;
   }
 }
