@@ -165,7 +165,9 @@
   height: 27px;
   margin: 0;
   display: flex;
-  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 8px; /* відстань між бейджами */
+  align-items: flex-start;
 
   font-family: var(--font-family);
   font-weight: 600;
@@ -175,11 +177,22 @@
 }
 
 .feeling {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 12px;
+  border-radius: 999px;
+
+  white-space: nowrap; /* бейдж в 1 рядок */
+  max-width: 100%;
+
   border: 1px solid var(--opacity-transparent);
   border-radius: 100px;
   padding: 4px 10px;
   min-width: 61px;
   height: 27px;
+  color: var(--color-scheme-text);
 
   background: var(--opacity-neutral-darkest-5);
 }
