@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import styles from './ProfileEditForm.module.css'
-import { Formik, Form, Field, FormikHelpers, useFormikContext } from 'formik'
+import { Formik, Form, Field, FormikHelpers, useFormikContext, FieldProps } from 'formik'
 import * as Yup from 'yup'
 import toast from 'react-hot-toast'
 import { useAuthStore } from '@/store/auth.store'
@@ -10,6 +10,8 @@ import { useThemeStore } from '@/store/theme.store'
 import { useMutation } from '@tanstack/react-query'
 import { updateProfile, sendVerificationEmail } from '@/services/users.service'
 import type { User } from '@/types/user'
+
+/* -------------------- validation -------------------- */
 
 const validationSchema = Yup.object({
   name: Yup.string().required('Обовʼязкове поле'),
@@ -24,6 +26,8 @@ interface FormValues {
   dueDate: string
 }
 
+/* -------------------- helpers -------------------- */
+
 const ThemeWatcher = () => {
   const { values } = useFormikContext<FormValues>()
   const { setTheme } = useThemeStore()
@@ -36,6 +40,24 @@ const ThemeWatcher = () => {
 
   return null
 }
+
+/* 👉 кастомний DateField */
+const DateField = ({ field, form }: FieldProps) => {
+  const ref = useRef<HTMLInputElement>(null)
+
+  return (
+    <input
+      {...field}
+      ref={ref}
+      type="date"
+      className={styles.input}
+      min={form.values.dueDate ? undefined : undefined}
+      onClick={() => ref.current?.showPicker?.()}
+    />
+  )
+}
+
+/* -------------------- component -------------------- */
 
 export const ProfileEditForm = () => {
   const { user, setUser } = useAuthStore()
@@ -137,13 +159,7 @@ export const ProfileEditForm = () => {
 
             <div className={styles.field}>
               <label className={styles.label}>Планова дата пологів</label>
-              <Field
-                type="date"
-                name="dueDate"
-                className={styles.input}
-                min={today}
-                max={maxDateStr}
-              />
+              <Field name="dueDate" component={DateField} min={today} max={maxDateStr} />
               {touched.dueDate && errors.dueDate && (
                 <span className={styles.error}>{errors.dueDate}</span>
               )}
