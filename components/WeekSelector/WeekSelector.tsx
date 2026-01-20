@@ -6,6 +6,11 @@ import css from './WeekSelector.module.css'
 interface WeekSelectorProps {
   currentWeek: number
 }
+interface WeekSelectorProps {
+  currentWeek: number
+  selectedWeek: number
+  onWeekSelect: (week: number) => void
+}
 
 const TOTAL_WEEKS = 42
 
