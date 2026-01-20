@@ -16,13 +16,15 @@ export function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div className={styles.layout}>
-      {shouldShowSidebar && <Sidebar />}
-      {shouldShowSidebar && <BurgerMenu />}
+      <div className={styles.container}>
+        {shouldShowSidebar && <Sidebar />}
+        {shouldShowSidebar && <BurgerMenu />}
 
-      <div className={!shouldShowSidebar ? styles.authContent : styles.content}>
-        <Header />
-        {!isProfileEditPage && <Breadcrumbs />}
-        <main className={styles.main}>{children}</main>
+        <div className={!shouldShowSidebar ? styles.authContent : styles.content}>
+          <Header />
+          {!isProfileEditPage && <Breadcrumbs />}
+          <main className={styles.main}>{children}</main>
+        </div>
       </div>
     </div>
   )

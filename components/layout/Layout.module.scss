@@ -4,17 +4,21 @@
     background-color: var(--color-bg-primary);
 }
 
+.container {
+    display: flex;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
 .content {
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin-left: 280px;
     background-color: var(--color-bg-primary);
     min-height: 100vh;
-    width: calc(100% - 280px);
 
     @media (max-width: 1439px) {
-        margin-left: 0;
         width: 100%;
     }
 }

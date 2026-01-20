@@ -2,7 +2,8 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    padding: 24px 0 16px 32px;
+    padding: 24px;
+    padding-bottom: 0;
     gap: 4px;
 
     // @media (max-width: 768px) {
