@@ -4,6 +4,7 @@ import { useState } from 'react'
 import WeekSelector from '@/components/WeekSelector/WeekSelector'
 import JourneyDetails from '@/components/JourneyDetails/JourneyDetails'
 import { GreetingBlock } from '@/components/GreetingBlock/GreetingBlock'
+import css from './weekNumber.module.css'
 
 interface PageProps {
   params: {
@@ -17,16 +18,18 @@ export default function JourneyPage({ params }: PageProps) {
   const [selectedWeek, setSelectedWeek] = useState<number>(weekNum)
 
   return (
-    <>
+    <div className={css.container}>
       <GreetingBlock />
 
-      <WeekSelector
-        currentWeek={weekNum}
-        selectedWeek={selectedWeek}
-        onWeekSelect={setSelectedWeek}
-      />
+      <div className={css.week}>
+        <WeekSelector
+          currentWeek={weekNum}
+          selectedWeek={selectedWeek}
+          onWeekSelect={setSelectedWeek}
+        />
+      </div>
 
       <JourneyDetails weekNumber={selectedWeek} />
-    </>
+    </div>
   )
 }
