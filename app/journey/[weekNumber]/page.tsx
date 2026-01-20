@@ -1,20 +1,32 @@
-import { GreetingBlock } from '@/components/GreetingBlock/GreetingBlock'
+'use client'
+
+import { useState } from 'react'
 import WeekSelector from '@/components/WeekSelector/WeekSelector'
 import JourneyDetails from '@/components/JourneyDetails/JourneyDetails'
+import { GreetingBlock } from '@/components/GreetingBlock/GreetingBlock'
 
-export default async function JourneyPageWeekNumber({
-  params,
-}: {
-  params: Promise<{ weekNumber: number }>
-}) {
-  const { weekNumber } = await params
-  const weekNum = Number(weekNumber)
+interface PageProps {
+  params: {
+    weekNumber: string
+  }
+}
+
+export default function JourneyPage({ params }: PageProps) {
+  const weekNum = Number(params.weekNumber)
+
+  const [selectedWeek, setSelectedWeek] = useState<number>(weekNum)
 
   return (
     <>
       <GreetingBlock />
-      <WeekSelector currentWeek={weekNum} />
-      <JourneyDetails weekNumber={weekNum} />
+
+      <WeekSelector
+        currentWeek={weekNum}
+        selectedWeek={selectedWeek}
+        onWeekSelect={setSelectedWeek}
+      />
+
+      <JourneyDetails weekNumber={selectedWeek} />
     </>
   )
 }
