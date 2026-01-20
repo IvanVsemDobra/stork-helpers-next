@@ -4,6 +4,7 @@
 
 /* MOBILE */
 .title {
+  margin: 0;
   font-family: var(--second-family);
   font-weight: 700;
   font-size: 24px;
