@@ -9,6 +9,7 @@ import Image from 'next/image';
 import styles from './BurgerMenu.module.scss';
 import { UserBar } from '@/components/layout/UserBar/UserBar';
 import { AuthBar } from '@/components/layout/AuthBar/AuthBar';
+import AppLogo from '@/components/auth/AppLogo';
 import { useEffect, useState } from 'react';
 
 const NAV_ITEMS = [
@@ -43,8 +44,7 @@ export const BurgerMenu = () => {
             <div className={styles.container}>
                 <div className={styles.header}>
                     <Link href="/" className={styles.logo} onClick={closeBurgerMenu}>
-                        <Image src="/logo.svg" alt="Stork Helpers Logo" width={40} height={40} />
-                        <span>Лелека</span>
+                        <AppLogo className={styles.logoImg} />
                     </Link>
                     <button className={styles.closeButton} onClick={closeBurgerMenu}>
                         ✕
