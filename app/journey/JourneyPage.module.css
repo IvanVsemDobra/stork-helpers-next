@@ -3,9 +3,8 @@
   max-width: 375px;
   display: grid;
   grid-template-columns: 1fr;
-  /* gap: 32px; прибрати */
-  /* margin: auto; */
   padding: 20px;
+  padding-top: 0;
 }
 
 /*======Tablet styles======*/
@@ -13,6 +12,7 @@
   .container {
     max-width: 768px;
     padding: 32px;
+    padding-top: 0;
   }
 }
 

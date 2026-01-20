@@ -4,6 +4,8 @@
   overflow-x: auto;
   scrollbar-width: none;
   scroll-behavior: smooth;
+  margin-top: 24px;
+  margin-bottom: 32px;
 }
 
 .container {
