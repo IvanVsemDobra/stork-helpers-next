@@ -1,4 +1,5 @@
 import { GreetingBlock } from '@/components/GreetingBlock/GreetingBlock'
+import WeekSelector from '@/components/WeekSelector/WeekSelector'
 import JourneyDetails from '@/components/JourneyDetails/JourneyDetails'
 
 export default async function JourneyPageWeekNumber({
@@ -12,11 +13,7 @@ export default async function JourneyPageWeekNumber({
   return (
     <>
       <GreetingBlock />
-      {/* <WeekSelector
-        currentWeek={currentWeek}
-        selectedWeek={selectedWeek}
-        onWeekSelect={setSelectedWeek}
-      /> */}
+      <WeekSelector currentWeek={weekNum} />
       <JourneyDetails weekNumber={weekNum} />
     </>
   )

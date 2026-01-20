@@ -26,7 +26,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 32px;
+    margin-bottom: 16px;
     width: 280px;
     height: 32px;
     padding: 0 0 0 8px;
@@ -35,13 +35,14 @@
 .logo {
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 20px;
-    font-weight: 700;
-    color: #333;
     text-decoration: none;
-    font-family: var(--second-family);
-    pointer-events: none;
+    cursor: pointer;
+}
+
+.logoImg {
+    width: 105px;
+    height: 45px;
+    color: #333;
 }
 
 .closeButton {
@@ -111,7 +112,7 @@
     }
 
     &.active {
-        background-color: var(--color-scheme-foreground);
+        background-color: var(--theme-lighter);
         color: #000;
         font-weight: 500;
         border-radius: 8px;

@@ -7,8 +7,21 @@
   scroll-behavior: smooth;
 }
 
-.list::-webkit-scrollbar {
+.container {
+  display: flex;
+  gap: 12px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.container::-webkit-scrollbar {
   display: none;
+}
+
+.slide {
+  flex: 0 0 auto;
 }
 
 .week {
@@ -27,21 +40,33 @@
   gap: 4px;
 
   user-select: none;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 /* states */
 .past {
   background-color: var(--theme-lighter);
+  opacity: 1;
+  border-color: transparent;
 }
 
-.current {
+.week.hovered {
+  background-color: var(--theme-lighter);
+  border-color: 4px solid rgba(0, 0, 0, 0.15);
+  opacity: 1;
+}
+
+.week.current {
   background-color: var(--theme-main);
-  border: 4px solid rgba(0, 0, 0, 0.15);
+  border-color: rgba(0, 0, 0, 0.15);
+  opacity: 1;
 }
 
-.active {
+.week:not(.disabled):not(.current):hover {
   background-color: var(--theme-light);
-  border: 4px solid rgba(0, 0, 0, 0.15);
+  border-color: rgba(0, 0, 0, 0.15);
 }
 
 .active::after {
