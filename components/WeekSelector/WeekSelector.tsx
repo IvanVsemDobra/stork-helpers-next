@@ -1,44 +1,53 @@
 'use client'
 
+import { useRouter, useParams } from 'next/navigation'
+import { useState } from 'react'
 import css from './WeekSelector.module.css'
 
 interface WeekSelectorProps {
   currentWeek: number
-  selectedWeek: number
-  onWeekSelect: (week: number) => void
 }
 
-const TOTAL_WEEKS = 40
+export default function WeekSelector({ currentWeek }: WeekSelectorProps) {
+  const router = useRouter()
+  const params = useParams<{ weekNumber: string }>()
+  const weekFromParams = params.weekNumber ? Number(params.weekNumber) : currentWeek
 
-const WeekSelector = ({ currentWeek, selectedWeek, onWeekSelect }: WeekSelectorProps) => {
-  const weeks = Array.from({ length: TOTAL_WEEKS }, (_, i) => i + 1)
+  const [selectedWeek, setSelectedWeek] = useState<number>(weekFromParams)
+
+  const weeks = Array.from({ length: 40 }, (_, i) => i + 1)
+
+  const getWeekClassName = (week: number) => {
+    if (week > currentWeek) return `${css.week} ${css.disabled}`
+    if (week === currentWeek) return `${css.week} ${css.current}`
+    if (week === selectedWeek && week < currentWeek) return `${css.week} ${css.hovered}`
+    return `${css.week} ${css.past}`
+  }
 
   const handleWeekClick = (week: number) => {
     if (week > currentWeek) return
-    onWeekSelect(week)
-  }
-
-  const getWeekClassName = (week: number) => {
-    if (week > currentWeek) return css.future
-    if (week === selectedWeek) return css.active
-    if (week === currentWeek) return css.current
-    return css.past
+    if (week === currentWeek) return
+    setSelectedWeek(week)
+    router.push(`/journey/${week}`)
   }
 
   return (
-    <ul className={css.list}>
-      {weeks.map(week => (
-        <li
-          key={week}
-          className={`${css.week} ${getWeekClassName(week)}`}
-          onClick={() => handleWeekClick(week)}
-        >
-          <span className={css.value}>{week}</span>
-          <span className={css.text}>Тиждень</span>
-        </li>
-      ))}
-    </ul>
+    <div className={css.wrapper}>
+      <div className={css.container}>
+        {weeks.map(week => (
+          <div key={week} className="slide">
+            <button
+              type="button"
+              className={getWeekClassName(week)}
+              onClick={() => handleWeekClick(week)}
+              disabled={week > currentWeek}
+            >
+              <span className={css.weekNumber}>{week}</span>
+              <span className={css.weekLabel}>Тиждень</span>
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
   )
 }
-
-export default WeekSelector
