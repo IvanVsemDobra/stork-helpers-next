@@ -1,0 +1,316 @@
+2026-01-07 | IvanPampukha | Initial commit
+2026-01-07 | Jeka | chore: initial project setup
+2026-01-07 | IvanPampukha | Merge pull request #1 from IvanVsemDobra/feature/project-setup
+2026-01-07 | M900425 | Fully implemented modal confirmation window
+2026-01-07 | IvanPampukha | Merge pull request #3 from IvanVsemDobra/#10-ConfirmationModal
+2026-01-07 | M900425 | SVG sprite
+2026-01-07 | M900425 |  Retina files
+2026-01-07 | IvanPampukha | Merge pull request #4 from IvanVsemDobra/#10-ConfirmationModal
+2026-01-07 | Danya | feat: implement responsive layout with sidebar, header and burger menu
+2026-01-07 | Danya | fix: resolve lint errors and add missing imports
+2026-01-07 | YanaKorniichuk25 | feat(profile): add profile page components and styles
+2026-01-08 | M900425 | mock data
+2026-01-08 | M900425 | fix logo
+2026-01-08 | IvanPampukha | Merge pull request #6 from IvanVsemDobra/#21-universal-models-for-working-with-the-frontend
+2026-01-08 | IvanPampukha | Merge pull request #5 from IvanVsemDobra/feature/ProfilePage
+2026-01-08 | M900425 | Merge branch 'main' into #5-DiaryPage
+2026-01-07 | Viktoriia Popel | fix
+2026-01-07 | Viktoriia Popel | WIP: auth forms
+2026-01-08 | Viktoriia Popel | fix changes
+2026-01-08 | Viktoriia Popel | fix route Auth
+2026-01-08 | IvanPampukha | Merge pull request #7 from IvanVsemDobra/AuthPage
+2026-01-08 | Viktoriia Popel | fix registrationForm push to OnboardingPage
+2026-01-08 | Danya | Merge branch 'main' into #2-Layout and resolve conflicts
+2026-01-08 | Viktoriia Popel | Merge branch 'main' of https://github.com/IvanVsemDobra/stork-helpers-next into AuthPage
+2026-01-08 | Viktoriia Popel | fix appLogo .svg
+2026-01-09 | IvanPampukha | Merge pull request #8 from IvanVsemDobra/AuthPage
+2026-01-09 | klytvinenko | feat: add diary entry modal base structure
+2026-01-09 | M900425 | basic layout with mock data
+2026-01-09 | M900425 | Merge branch 'main' into #5-DiaryPage
+2026-01-09 | YanaKorniichuk25 | feat: implement ProfilePage and refactor auth store types
+2026-01-09 | YanaKorniichuk25 | fix: resolve service duplicates, add email field and fix css imports
+2026-01-09 | IvanPampukha | Merge pull request #9 from IvanVsemDobra/feature/ProfilePage
+2026-01-09 | Danya | Merge branch 'main' into #2-Layout
+2026-01-09 | Mykyta | onboarding
+2026-01-09 | IvanPampukha | Merge pull request #10 from IvanVsemDobra/onboarding
+2026-01-09 | Danya | feat: implement UserBar, fix hydration errors, disable logo hover
+2026-01-09 | Danya | Merge main into #2-Layout and resolve conflict by deleting app/profile/edit/page.tsx
+2026-01-09 | IvanPampukha | Merge pull request #12 from IvanVsemDobra/feature/reopen-layout-fixes
+2026-01-09 | Danya | style: fix sidebar logo layout and userbar padding
+2026-01-09 | IvanPampukha | Merge pull request #13 from IvanVsemDobra/feature/reopen-layout-fixes
+2026-01-10 | YanaKorniichuk25 | feat: update profile (#14)
+2026-01-10 | Viktoriia Popel | fix FeelingCheck task
+2026-01-10 | Viktoriia Popel | fix FeelingCheck task (#15)
+2026-01-10 | Viktoriia Popel | fix style button
+2026-01-10 | Viktoriia Popel | fix style button (#16)
+2026-01-10 | FrutSik | task modal
+2026-01-10 | klytvinenko | Add diary entry modal and form
+2026-01-10 | klytvinenko | Feature/add diary entry modal (#18)
+2026-01-10 | FrutSik | task modal (#17)
+2026-01-10 | YanaKorniichuk25 | Fix profile page styles
+2026-01-10 | Olena Kushch | tasks 17 front (#19)
+2026-01-10 | YanaKorniichuk25 | Fix profile page styles (#20)
+2026-01-10 | YanaKorniichuk25 | feat: add GreetingBlock component
+2026-01-10 | YanaKorniichuk25 | feat: add GreetingBlock component (#21)
+2026-01-10 | Nataliia Tkachenko | feature/navigation-setup (#22)
+2026-01-10 | M900425 | fix
+2026-01-10 | Viktoriia Popel | fix auth.store
+2026-01-10 | Viktoriia Popel | Merge branch 'main' into AuthPage
+2026-01-10 | Viktoriia Popel | fix auth route
+2026-01-11 | Viktoriia Popel | fix redirect
+2026-01-11 | Viktoriia Popel | Auth page (#25)
+2026-01-11 | Olena Kushch | fix AddTaskModal (#23)
+2026-01-11 | Микита Бородін | feature/Onboarding (#24)
+2026-01-11 | M900425 | Merge branch 'main' into #5-DiaryPage
+2026-01-11 | YanaKorniichuk25 | Merge branch 'feature/greeting-block' of https://github.com/IvanVsemDobra/stork-helpers-next into feature/greeting-block
+2026-01-11 | YanaKorniichuk25 | refactor: move GreetingBlock to shared components
+2026-01-11 | YanaKorniichuk25 | Feature/greeting block (#26)
+2026-01-11 | Viktoriia Popel | Merge remote-tracking branch 'origin/main' into AuthPage
+2026-01-11 | Viktoriia Popel | fix registration form
+2026-01-11 | Viktoriia Popel | Auth page (#27)
+2026-01-11 | YanaKorniichuk25 | Merge branch 'main' into feature/ProfilePage
+2026-01-11 | M900425 |  connecting to the api
+2026-01-11 | klytvinenko | Resolve stash conflict
+2026-01-11 | YanaKorniichuk25 | refactor: restructure profile page, move components and fix types
+2026-01-11 | klytvinenko | Add diary entry modal and form styles
+2026-01-11 | Yehor Bychuk | add structure
+2026-01-11 | Nataliia Tkachenko | Feature/dashboard page (#30)
+2026-01-11 | YanaKorniichuk25 | Feature/profile page (#28)
+2026-01-11 | Alyona Maksymova | styles StatusBlock (#31)
+2026-01-11 | M900425 |  Logic and stylization
+2026-01-11 | M900425 | Merge branch 'main' into #5-DiaryPage
+2026-01-11 | Danya | feat: update layout styles and fix auth issues
+2026-01-11 | Nataliia Tkachenko | feature/JourneyPage-skeleton
+2026-01-11 | Anton Zorkin | Mom tip card (#32)
+2026-01-11 | IvanPampukha | Merge pull request #33 from IvanVsemDobra/feature/reopen-layout-fixes
+2026-01-11 | Danya | feat: change dev port to 4000 and add API proxy to next.config.ts
+2026-01-11 | IvanPampukha | Merge pull request #34 from IvanVsemDobra/feature/JourneyPage-skeleton
+2026-01-12 | Mykyta | feature/Onboarding
+2026-01-12 | IvanPampukha | Merge pull request #35 from IvanVsemDobra/feature/Onboarding
+2026-01-11 | Alyona Maksymova | styles StatusBlock
+2026-01-12 | Alyona Maksymova | add proxy server
+2026-01-12 | IvanPampukha | Merge pull request #36 from IvanVsemDobra/ProxyServer
+2026-01-12 | Jeka | chore: update package-lock
+2026-01-12 | Jeka | Merge branch 'chore/package-lock'
+2026-01-12 | Jeka | feat(auth): implement stable auth proxy and refresh session flow
+2026-01-12 | IvanPampukha | Merge pull request #37 from IvanVsemDobra/fix/proxy-api
+2026-01-12 | Jeka | fixed proxy
+2026-01-12 | IvanPampukha | Merge pull request #38 from IvanVsemDobra/fix/proxy-api
+2026-01-12 | Jeka | fix road proxs
+2026-01-12 | IvanPampukha | Merge pull request #39 from IvanVsemDobra/fix/proxy-api
+2026-01-12 | M900425 |  Diary page and confirmation modal fix
+2026-01-12 | M900425 | Merge branch 'main' into #5-DiaryPage
+2026-01-12 | M900425 | small fix
+2026-01-12 | klytvinenko | Add diary entry modal, form, and styles
+2026-01-12 | klytvinenko | Resolve merge conflicts for AddDiaryEntryForm.tsx and .env.example
+2026-01-12 | klytvinenko | Merge pull request #40 from IvanVsemDobra/feature/add-diary-entry-modal
+2026-01-12 | M900425 | fix connection
+2026-01-12 | M900425 |  removing the component
+2026-01-12 | IvanPampukha | Merge pull request #41 from IvanVsemDobra/#5-DiaryPage
+2026-01-12 | M900425 | distance correction
+2026-01-12 | IvanPampukha | Merge pull request #42 from IvanVsemDobra/#5-DiaryPage
+2026-01-12 | M900425 | Update diary-list.module.scss
+2026-01-12 | IvanPampukha | Merge pull request #43 from IvanVsemDobra/#5-DiaryPage
+2026-01-12 | Anton Zorkin | Add BabyTodayCard and dashboard data integration
+2026-01-12 | IvanPampukha | Merge pull request #44 from IvanVsemDobra/feature/baby-today-card
+2026-01-12 | Danya | Merge branch 'main' into feature/reopen-layout-fixes
+2026-01-12 | Anton Zorkin | commit message
+2026-01-12 | IvanPampukha | Merge pull request #45 from IvanVsemDobra/feature/baby-today-card
+2026-01-13 | Danya | Fix 401 errors, LCP warning, and modal styling
+2026-01-13 | Danya | Merge branch 'main' into feature/reopen-layout-fixes
+2026-01-13 | Viktoriia Popel | Merge branch 'main' into AuthPage
+2026-01-13 | YanaKorniichuk25 | Merge branch 'main' into feature/ProfilePage
+2026-01-13 | YanaKorniichuk25 | refactor feature/ProfilePage
+2026-01-13 | Viktoriia Popel | fix logo link
+2026-01-13 | Viktoriia Popel | Merge branch 'main' of https://github.com/IvanVsemDobra/stork-helpers-next into DashboardPage(FeelingCheckCard)
+2026-01-13 | Viktoriia Popel | fix task FeelingCheckCard
+2026-01-13 | IvanPampukha | Merge pull request #48 from IvanVsemDobra/AuthPage
+2026-01-13 | IvanPampukha | Merge pull request #47 from IvanVsemDobra/feature/ProfilePage
+2026-01-13 | IvanPampukha | Merge pull request #46 from IvanVsemDobra/feature/reopen-layout-fixes
+2026-01-13 | IvanPampukha | Merge pull request #49 from IvanVsemDobra/DashboardPage(FeelingCheckCard)
+2026-01-13 | Mykyta | feature/Onboarding
+2026-01-13 | IvanPampukha | Merge pull request #50 from IvanVsemDobra/feature/Onboarding
+2026-01-13 | Yehor Bychuk | Merge main into feature/diary-page (take main version)
+2026-01-13 | YanaKorniichuk25 | feat: profile management, avatar upload and theme synchronization
+2026-01-13 | IvanPampukha | Merge pull request #51 from IvanVsemDobra/feature/ProfilePage
+2026-01-13 | Danya | chore: update layout.tsx with fonts and ThemeSync
+2026-01-13 | YanaKorniichuk25 | Merge branch 'main' into feature/greeting-block
+2026-01-13 | YanaKorniichuk25 | feat: implement GreetingBlock and style
+2026-01-14 | Olena Kushch | raw version
+2026-01-14 | IvanPampukha | Merge pull request #52 from IvanVsemDobra/feature/reopen-layout-fixes
+2026-01-14 | IvanPampukha | Merge pull request #53 from IvanVsemDobra/feature/greeting-block
+2026-01-14 | Olena Kushch | Merge branch 'main' into tasks-css
+2026-01-14 | IvanPampukha | Merge pull request #54 from IvanVsemDobra/tasks-css
+2026-01-14 | YanaKorniichuk25 | fix DashboardPage
+2026-01-14 | IvanPampukha | Merge pull request #55 from IvanVsemDobra/feature/greeting-block
+2026-01-14 | YanaKorniichuk25 | fix: update profile components
+2026-01-14 | IvanPampukha | Merge pull request #56 from IvanVsemDobra/feature/ProfilePage
+2026-01-15 | M900425 | login fix
+2026-01-15 | IvanPampukha | Merge pull request #57 from IvanVsemDobra/#5-DiaryPage
+2026-01-15 | M900425 | css and loader
+2026-01-15 | IvanPampukha | Merge pull request #58 from IvanVsemDobra/#5-DiaryPage
+2026-01-15 | YanaKorniichuk25 | style: update profile page and avatar styles
+2026-01-15 | IvanPampukha | Merge pull request #59 from IvanVsemDobra/feature/ProfilePage
+2026-01-14 | Viktoriia Popel | fix google auth
+2026-01-15 | Nataliia Tkachenko | feature/JourneyDetails-UI
+2026-01-16 | Yehor Bychuk | update entry-form
+2026-01-15 | IvanPampukha | Merge pull request #60 from IvanVsemDobra/feature/JourneyDetails-UI
+2026-01-15 | Olena Kushch | fix tasks
+2026-01-15 | Olena Kushch | fixes all files tasks
+2026-01-15 | Olena Kushch | all task files
+2026-01-15 | Olena Kushch | Merge branch 'main' into tasks
+2026-01-15 | Olena Kushch | Merge pull request #61 from IvanVsemDobra/tasks
+2026-01-16 | Alyona Maksymova | add section WeekSelector
+2026-01-16 | Viktoriia Popel | fix google auth button
+2026-01-16 | Olena Kushch | fixes path/proxy, all task files
+2026-01-16 | M900425 | Merge branch 'main' into feature/diary-page
+2026-01-16 | IvanPampukha | Merge pull request #64 from IvanVsemDobra/tasks
+2026-01-16 | M900425 | Merge branch 'main' into feature/diary-page
+2026-01-16 | IvanPampukha | Merge pull request #62 from IvanVsemDobra/feature/diary-page
+2026-01-16 | Viktoriia Popel | fix
+2026-01-16 | YanaKorniichuk25 | fix Profile
+2026-01-16 | IvanPampukha | Merge pull request #66 from IvanVsemDobra/feature/ProfilePage
+2026-01-16 | M900425 | Update UserBar.tsx
+2026-01-16 | IvanPampukha | Merge pull request #67 from IvanVsemDobra/logout-fix
+2026-01-16 | M900425 | logic correction due to backend logic change
+2026-01-16 | M900425 | avatar fix
+2026-01-16 | Alyona Maksymova | resolve merge conflict in app/page.tsx
+2026-01-16 | IvanPampukha | Merge pull request #63 from IvanVsemDobra/WeekSelector
+2026-01-16 | M900425 | Merge branch 'main' into profile-fix
+2026-01-16 | Yehor Bychuk | almost done diary-form
+2026-01-16 | Viktoriia Popel | fix issues in google button
+2026-01-16 | Viktoriia Popel | Merge branch 'main' into auth-google
+2026-01-16 | IvanPampukha | Merge pull request #69 from IvanVsemDobra/auth-google
+2026-01-17 | M900425 | fix
+2026-01-17 | M900425 | Merge branch 'main' into profile-fix
+2026-01-17 | IvanPampukha | Merge pull request #70 from IvanVsemDobra/profile-fix
+2026-01-17 | M900425 | profile fix 2.0
+2026-01-17 | M900425 | Merge branch 'main' into profile-fix-2.0
+2026-01-17 | M900425 | Update ProfileEditForm.tsx
+2026-01-17 | IvanPampukha | Merge pull request #71 from IvanVsemDobra/profile-fix-2.0
+2026-01-17 | M900425 | Merge branch 'feature/diary-page' of https://github.com/IvanVsemDobra/stork-helpers-next into feature/diary-page
+2026-01-17 | M900425 | Merge branch 'main' into feature/diary-page
+2026-01-17 | IvanPampukha | Merge pull request #68 from IvanVsemDobra/feature/diary-page
+2026-01-17 | M900425 | weeks fix
+2026-01-17 | M900425 | Merge branch 'main' into solving-small-errors
+2026-01-17 | IvanPampukha | Merge pull request #72 from IvanVsemDobra/solving-small-errors
+2026-01-17 | M900425 | Update auth.store.ts
+2026-01-17 | M900425 | Merge branch 'main' into solving-small-errors
+2026-01-17 | IvanPampukha | Merge pull request #73 from IvanVsemDobra/solving-small-errors
+2026-01-17 | M900425 | auth-fix
+2026-01-17 | M900425 | Update ProfileEditForm.tsx
+2026-01-17 | M900425 | Update page.tsx
+2026-01-17 | IvanPampukha | Merge pull request #74 from IvanVsemDobra/auth-fix
+2026-01-17 | Nataliia Tkachenko | assembled JourneyPage
+2026-01-17 | IvanPampukha | Merge pull request #75 from IvanVsemDobra/feature/JourneyDetails-UI-2
+2026-01-17 | YanaKorniichuk25 | Update GreetingBlock styles
+2026-01-17 | Mykyta | WIP: локальні зміни перед merge
+2026-01-17 | Mykyta | Merge main into feature/Onboarding
+2026-01-17 | IvanPampukha | Merge pull request #77 from IvanVsemDobra/feature/Onboarding
+2026-01-17 | IvanPampukha | Merge pull request #76 from IvanVsemDobra/feature/greeting-block
+2026-01-17 | FrutSik | Fix-css
+2026-01-17 | Nataliia Tkachenko | feature/JourneyDetails-markup-desctop
+2026-01-17 | IvanPampukha | Merge pull request #79 from IvanVsemDobra/feature/JourneyDetails-UI-2
+2026-01-17 | Olena Kushch | Merge branch 'main' into AddTaskModal
+2026-01-18 | Alyona Maksymova | esolve merge conflict in page.tsx and commit WeekSelector changes :wq
+2026-01-18 | Alyona Maksymova | create new branch
+2026-01-18 | Olena Kushch | tasks css
+2026-01-18 | Alyona Maksymova | fix status block
+2026-01-18 | IvanPampukha | Merge pull request #81 from IvanVsemDobra/StatusBlock-fix
+2026-01-18 | IvanPampukha | Merge pull request #80 from IvanVsemDobra/tasks
+2026-01-18 | Mykyta | Onboarding
+2026-01-18 | Mykyta | feature/Onboarding
+2026-01-18 | Mykyta | feature
+2026-01-18 | Mykyta | feature/Onboarding
+2026-01-18 | M900425 | Merge pull request #78 from IvanVsemDobra/AddTaskModal
+2026-01-18 | Anton Zorkin | my day styles
+2026-01-18 | Mykyta | Onboarding
+2026-01-18 | Anton Zorkin | Resolve MomTipCard stash conflict
+2026-01-18 | Anton Zorkin | commit message
+2026-01-18 | Mykyta | Onboarding
+2026-01-18 | Anton Zorkin | commit message
+2026-01-18 | M900425 | tasks fix
+2026-01-18 | M900425 | Merge pull request #83 from IvanVsemDobra/Onboarding-for-PR
+2026-01-18 | M900425 | Merge branch 'main' into feature/theme-colors
+2026-01-18 | M900425 | Merge pull request #84 from IvanVsemDobra/feature/theme-colors
+2026-01-18 | M900425 | Merge branch 'main' into fix-logout-and-401-errors
+2026-01-18 | M900425 | onboarding fix
+2026-01-18 | Alyona Maksymova | Merge branch 'WeekSelector' into StatusBlock-fix
+2026-01-18 | Alyona Maksymova | Merge branch 'main' of github.com:IvanVsemDobra/stork-helpers-next into StatusBlock-fix
+2026-01-18 | M900425 | small fix
+2026-01-18 | M900425 | Update route.ts
+2026-01-18 | M900425 | page refresh fix
+2026-01-18 | M900425 | logout fix
+2026-01-18 | M900425 | fix logout
+2026-01-18 | M900425 | style fix
+2026-01-18 | M900425 | Merge branch 'main' into fix-logout-and-401-errors
+2026-01-18 | M900425 | Update ProfileEditForm.tsx
+2026-01-18 | IvanPampukha | Merge pull request #86 from IvanVsemDobra/fix-logout-and-401-errors
+2026-01-18 | Anton Zorkin | My day styles
+2026-01-18 | M900425 | Merge pull request #87 from IvanVsemDobra/feature/new-dashboard-layout
+2026-01-18 | M900425 | Update GoogleButton.tsx
+2026-01-18 | M900425 | Merge branch 'main' into fix-logout-and-401-errors
+2026-01-18 | IvanPampukha | Merge pull request #88 from IvanVsemDobra/fix-logout-and-401-errors
+2026-01-18 | M900425 | Update GoogleButton.tsx
+2026-01-18 | M900425 | Merge branch 'main' into fix-logout-and-401-errors
+2026-01-18 | IvanPampukha | Merge pull request #89 from IvanVsemDobra/fix-logout-and-401-errors
+2026-01-18 | Mykyta | Onboarding
+2026-01-18 | Mykyta | Merge branch 'main' into Onboarding-for-PR
+2026-01-18 | Danya | feat: update layout - align logo with navigation and add redirect to My Day
+2026-01-18 | IvanPampukha | Merge pull request #91 from IvanVsemDobra/Onboarding-for-PR
+2026-01-18 | IvanPampukha | Merge pull request #92 from IvanVsemDobra/feature/reopen-layout-fixes
+2026-01-18 | Anton Zorkin | Styles
+2026-01-18 | Anton Zorkin | commit message
+2026-01-18 | Anton Zorkin | Resolve merge conflicts
+2026-01-18 | Olena Kushch | fix styles task-list
+2026-01-18 | IvanPampukha | Merge pull request #94 from IvanVsemDobra/tasks-css
+2026-01-18 | IvanPampukha | Merge pull request #93 from IvanVsemDobra/my-new-branch
+2026-01-18 | M900425 | Style and logic
+2026-01-18 | M900425 | Merge branch 'main' into dairy-page-and-modal
+2026-01-18 | IvanPampukha | Merge pull request #96 from IvanVsemDobra/dairy-page-and-modal
+2026-01-18 | Viktoriia Popel | fix css plus google button
+2026-01-19 | IvanPampukha | Merge pull request #97 from IvanVsemDobra/AuthPage
+2026-01-19 | M900425 | Update diary-entry-details.module.css
+2026-01-19 | IvanPampukha | Merge pull request #98 from IvanVsemDobra/dairy-page-and-modal
+2026-01-18 | Viktoriia Popel | fix button css
+2026-01-19 | IvanPampukha | Merge pull request #99 from IvanVsemDobra/DashboardPage(FeelingCheckCard)
+2026-01-19 | M900425 | connect
+2026-01-19 | M900425 | Merge branch 'main' into journey
+2026-01-19 | YanaKorniichuk25 | fix Styles GreetingBlock and ProfilePage
+2026-01-19 | Viktoriia Popel | Fix error messages language
+2026-01-19 | Alyona Maksymova | change sblock
+2026-01-19 | Alyona Maksymova | Merge branch 'main' into StatusBlock-fix
+2026-01-19 | Alyona Maksymova | change paddings
+2026-01-19 | Nataliia Tkachenko | interactive JourneyPage with fetched data
+2026-01-19 | IvanPampukha | Merge pull request #104 from IvanVsemDobra/JourneyPage-logic2
+2026-01-19 | IvanPampukha | Merge pull request #101 from IvanVsemDobra/feature/greeting-block
+2026-01-19 | IvanPampukha | Merge pull request #102 from IvanVsemDobra/AuthPage
+2026-01-19 | Yehor Bychuk | Update Option-text
+2026-01-19 | IvanPampukha | Merge pull request #105 from IvanVsemDobra/feature/diary-page
+2026-01-19 | Yehor Bychuk | Update CheckIcon
+2026-01-19 | IvanPampukha | Merge pull request #106 from IvanVsemDobra/feature/diary-page
+2026-01-19 | Alyona Maksymova | Merge remote-tracking branch 'origin/main' into StatusBlock-fix
+2026-01-19 | Alyona Maksymova | add WeekSelector on page and fix svg
+2026-01-19 | IvanPampukha | Merge pull request #103 from IvanVsemDobra/StatusBlock-fix
+2026-01-19 | Jeka | Уніфіковано auth API та proxy, додано set-cookie-parser
+2026-01-19 | Jeka | Resolve merge conflicts with main
+2026-01-19 | Jeka | psth
+2026-01-19 | IvanPampukha | Merge pull request #107 from IvanVsemDobra/fix/api-routes-proxy
+2026-01-19 | M900425 | fix
+2026-01-19 | IvanPampukha | Merge pull request #108 from IvanVsemDobra/fix-logout-and-401-errors
+2026-01-19 | M900425 | Update JourneyDetails.tsx
+2026-01-19 | M900425 | Merge branch 'main' into fix-logout-and-401-errors
+2026-01-19 | IvanPampukha | Merge pull request #109 from IvanVsemDobra/fix-logout-and-401-errors
+2026-01-19 | M900425 | Update AddDiaryEntryForm.module.css
+2026-01-19 | M900425 | Merge branch 'main' into fix-logout-and-401-errors
+2026-01-19 | IvanPampukha | Merge pull request #110 from IvanVsemDobra/fix-logout-and-401-errors
+2026-01-19 | M900425 | Greeting
+2026-01-19 | M900425 | Merge branch 'main' into fix-logout-and-401-errors
+2026-01-19 | IvanPampukha | Merge pull request #111 from IvanVsemDobra/fix-logout-and-401-errors
+2026-01-19 | Anton Zorkin | Fix styles
+2026-01-19 | IvanPampukha | Merge pull request #112 from IvanVsemDobra/new-styles
+2026-01-19 | Viktoriia Popel | Remove hover-focus styles and link from logo
+2026-01-19 | IvanPampukha | Merge pull request #113 from IvanVsemDobra/AuthPage
+2026-01-19 | Anton Zorkin | commit message
+2026-01-19 | Anton Zorkin | commit message
+2026-01-19 | IvanPampukha | Merge pull request #114 from IvanVsemDobra/some-styles
