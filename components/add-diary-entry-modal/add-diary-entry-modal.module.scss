@@ -44,6 +44,19 @@
   z-index: 20;
 }
 
+.closeBtn svg {
+    stroke: currentColor;
+    stroke-width: 48px;
+}
+
+.closeBtn:hover {
+    color: #B2B2B2;
+}
+
+.closeBtn:active {
+    color: #ffffff;
+}
+
 
 .loadingOverlay {
   position: absolute;

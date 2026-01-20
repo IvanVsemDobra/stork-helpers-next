@@ -6,13 +6,11 @@
 
 .fullscreen {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
   background-color: var(--opacity-white-60);
   backdrop-filter: blur(2px);
   z-index: 9999;
+  pointer-events: all;
 }
 
 .inline {
@@ -28,6 +26,7 @@
   border-top: 4px solid var(--theme-main);
   border-radius: 50%;
   animation: spin 1s linear infinite;
+  will-change: transform;
 }
 
 button .spinner {
@@ -37,10 +36,7 @@ button .spinner {
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
+  to {
     transform: rotate(360deg);
   }
 }
