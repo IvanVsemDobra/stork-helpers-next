@@ -1,0 +1,20 @@
+{
+  "/(private routes)/profile/page": "/profile",
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/api/auth/login/route": "/api/auth/login",
+  "/api/auth/logout/route": "/api/auth/logout",
+  "/api/auth/refresh/route": "/api/auth/refresh",
+  "/api/auth/register/route": "/api/auth/register",
+  "/api/proxy/[...path]/route": "/api/proxy/[...path]",
+  "/api/tasks/[id]/status/route": "/api/tasks/[id]/status",
+  "/api/tasks/route": "/api/tasks",
+  "/auth/[authType]/page": "/auth/[authType]",
+  "/diary/[entryId]/page": "/diary/[entryId]",
+  "/diary/page": "/diary",
+  "/icon.png/route": "/icon.png",
+  "/journey/[weekNumber]/page": "/journey/[weekNumber]",
+  "/journey/page": "/journey",
+  "/page": "/",
+  "/profile/edit/page": "/profile/edit"
+}

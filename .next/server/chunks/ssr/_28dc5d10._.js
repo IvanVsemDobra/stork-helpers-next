@@ -1,0 +1,3 @@
+module.exports=[86001,a=>{a.v({fullscreen:"Loader-module__ciLxHG__fullscreen",inline:"Loader-module__ciLxHG__inline",spin:"Loader-module__ciLxHG__spin",spinner:"Loader-module__ciLxHG__spinner",wrapper:"Loader-module__ciLxHG__wrapper"})},63588,a=>{"use strict";var b=a.i(7997),c=a.i(86001);let d=({variant:a="inline"})=>(0,b.jsx)("div",{className:`${c.default.wrapper} ${c.default[a]}`,children:(0,b.jsx)("div",{className:c.default.spinner})});function e(){return(0,b.jsx)(d,{variant:"fullscreen"})}a.s(["default",()=>e],63588)}];
+
+//# sourceMappingURL=_28dc5d10._.js.map

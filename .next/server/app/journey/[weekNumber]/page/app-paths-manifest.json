@@ -1,0 +1,3 @@
+{
+  "/journey/[weekNumber]/page": "app/journey/[weekNumber]/page.js"
+}
