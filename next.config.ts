@@ -1,8 +1,12 @@
 import type { NextConfig } from "next";
 
+const repoName = '/stork-helpers-next'; // назва репозиторію на GitHub
+
 const nextConfig: NextConfig = {
-  /* config options here */
   reactCompiler: true,
+  output: 'export',            // щоб next export створював статичну версію
+  basePath: repoName,          // додаємо базовий шлях для GitHub Pages
+  assetPrefix: repoName + '/', // щоб статика підтягулась правильно
   images: {
     remotePatterns: [
       {
@@ -11,14 +15,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  async rewrites() {
-    return [
-      {
-        source: '/api-proxy/:path*',
-        destination: 'https://stork-helpers-api.onrender.com/api/:path*',
-      },
-    ];
-  },
+  // rewrites не працюють з output: 'export', треба видалити для деплою на GitHub Pages
 };
 
 export default nextConfig;
